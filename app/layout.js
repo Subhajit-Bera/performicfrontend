@@ -34,8 +34,8 @@ import { Toaster } from 'sonner';
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "EduElevate - Your Career Guidance Platform",
-  description: "Discover top universities, explore career paths, and apply to your dream college with EduElevate.",
+  title: "PerFormic - Your Career Guidance Platform",
+  description: "Discover top universities, explore career paths, and apply to your dream college with PerFormic.",
 };
 
 export default function RootLayout({ children }) {

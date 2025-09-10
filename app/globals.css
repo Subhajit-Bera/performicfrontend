@@ -1,10 +1,7 @@
-/* Tell Tailwind to inject its base, component, and utility styles. */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* --- PART 1: DEFINE YOUR THEME VARIABLES --- */
-/* This section defines all the colors and settings for your theme. */
 @layer base {
   :root {
     --background: 222.2 84% 4.9%;
@@ -30,42 +27,17 @@
   }
 }
 
-/* --- PART 2: APPLY BASE STYLES & ANIMATIONS --- */
-/* This section uses the variables (via Tailwind classes) to style your app. */
-@layer base {
-  * {
-    @apply border-border;
-  }
-  
-  body {
-    @apply bg-background text-foreground;
-    font-feature-settings: "rlig" 1, "calt" 1;
-  }
+/* .scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; } */
 
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-bold tracking-tight;
-  }
 
-  h1 { @apply text-4xl sm:text-5xl; }
-  h2 { @apply text-3xl; }
-  h3 { @apply text-2xl; }
-
-  a {
-    /* By default, links will use the accent color defined in the theme */
-    @apply text-accent-foreground hover:underline underline-offset-4 transition-colors;
+/* Add this at the end of your globals.css file */
+@layer utilities {
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
   }
-
-  button {
-    @apply inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50;
-  }
-  
-  /* Adding a subtle fade-in animation for page loads */
-  .fade-in {
-    animation: fadeInAnimation 0.5s ease-in-out;
-  }
-
-  @keyframes fadeInAnimation {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+  .scrollbar-hide {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
   }
 }

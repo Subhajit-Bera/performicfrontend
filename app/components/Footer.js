@@ -66,7 +66,7 @@ export default function Footer() {
     return (
         <footer className="bg-primary border-t border-secondary">
             <div className="container mx-auto px-6 py-12 text-center">
-                <h3 className="text-xl font-bold text-white mb-4">Edu<span className="text-accent">Elevate</span></h3>
+                <h3 className="text-xl font-bold text-white mb-4">Per<span className="text-accent">Formic</span></h3>
                 <p className="text-text-secondary text-sm max-w-md mx-auto">Your trusted partner in navigating the path to higher education and a successful career.</p>
                 <div className="flex justify-center space-x-4 my-6">
                     <a href="#" className="text-text-secondary hover:text-accent transition-colors"><Facebook size={20} /></a>
@@ -75,7 +75,7 @@ export default function Footer() {
                     <a href="#" className="text-text-secondary hover:text-accent transition-colors"><Linkedin size={20} /></a>
                 </div>
                 <div className="mt-8 border-t border-secondary pt-6">
-                    <p className="text-text-secondary text-sm">&copy; {new Date().getFullYear()} EduElevate. All Rights Reserved.</p>
+                    <p className="text-text-secondary text-sm">&copy; {new Date().getFullYear()} PerFormic. All Rights Reserved.</p>
                 </div>
             </div>
         </footer>

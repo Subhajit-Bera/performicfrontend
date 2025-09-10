@@ -116,6 +116,7 @@ import Link from 'next/link';
 import { Calendar, PenSquare, Loader2 } from 'lucide-react';
 import api from '../utils/api';
 import { toast } from 'sonner';
+import Loader from '@/app/components/Loader';
 
 export default function BookAppointmentPage() {
     const { isAuthenticated, loading, profileCompletion } = useAuth();
@@ -142,7 +143,7 @@ export default function BookAppointmentPage() {
     };
 
     if (loading) {
-        return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+        return <Loader/>
     }
 
     return (

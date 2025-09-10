@@ -148,7 +148,7 @@ export default function RegisterPage() {
         <div className="min-h-screen flex items-center justify-center bg-background p-4">
             <div className="bg-primary rounded-2xl p-8 max-w-md w-full shadow-2xl border border-secondary">
                 <h2 className="text-3xl font-bold text-text text-center mb-2">Create Your Account</h2>
-                <p className="text-text-secondary text-center mb-6">Start your journey with EduElevate.</p>
+                <p className="text-text-secondary text-center mb-6">Start your journey with PerFormic.</p>
                 <form onSubmit={handleSubmit} className="space-y-4">
                      <div className="relative">
                         <User className="absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary" size={20} />

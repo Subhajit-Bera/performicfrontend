@@ -4,6 +4,7 @@ import api from '../../utils/api';
 import Link from 'next/link';
 import { Plus, Edit, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
+import Loader from '@/app/components/Loader';
 
 export default function ManageExamsPage() {
     const [exams, setExams] = useState([]);
@@ -57,7 +58,7 @@ export default function ManageExamsPage() {
                         </thead>
                         <tbody>
                             {loading ? (
-                                <tr><td colSpan="4" className="text-center p-4">Loading...</td></tr>
+                                <Loader/>
                             ) : exams.length === 0 ? (
                                 <tr><td colSpan="4" className="text-center p-4 text-text-secondary">No exams found.</td></tr>
                             ) : (

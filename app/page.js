@@ -26,6 +26,8 @@ import Hero from './components/Hero';
 import FeaturedUniversities from './components/FeaturedUniversities';
 import UpcomingExams from './components/UpcomingExams';
 import Footer from './components/Footer';
+import CareerOptions from './components/CareerOptions';
+import CareerPartners from './components/CareerPartners';
 
 export default function Home() {
   return (
@@ -35,6 +37,8 @@ export default function Home() {
         <Hero />
         <FeaturedUniversities />
         <UpcomingExams />
+        <CareerOptions/>
+        <CareerPartners/>
       </main>
       <Footer />
     </div>
