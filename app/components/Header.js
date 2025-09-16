@@ -202,7 +202,7 @@
 //         setIsMenuOpen(false);
 //         setIsMobileUniMenuOpen(false); // Also close submenu
 //     };
-    
+
 //     const ProfileProgressCircle = ({ percentage }) => {
 //         const radius = 18;
 //         const circumference = 2 * Math.PI * radius;
@@ -226,7 +226,7 @@
 //                     <MegaMenu streams={streams} onLinkClick={() => { }} />
 //                 </NavItemWithMenu>
 //             </div>
-            
+
 //             {/* Mobile University Menu (UPDATED for left alignment) */}
 //             <div className="md:hidden w-full">
 //                 <button onClick={() => setIsMobileUniMenuOpen(!isMobileUniMenuOpen)} className="flex justify-between items-center w-full hover:text-accent transition-colors py-2 text-left">
@@ -306,6 +306,7 @@ import { useAuth } from '../context/AuthContext';
 import { User, LogOut, Menu, X, LayoutDashboard, ChevronDown, Briefcase } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import api from '../utils/api';
+import Image from 'next/image';
 
 // Mega Menu Component for Desktop (UPDATED for single-column, left-aligned layout)
 const MegaMenu = ({ streams, onLinkClick }) => (
@@ -317,7 +318,8 @@ const MegaMenu = ({ streams, onLinkClick }) => (
         className="absolute top-full left-0 mt-2 w-60 bg-primary border border-secondary rounded-lg shadow-lg p-2"
     >
         <div className="flex flex-col">
-            <Link href="/universities?filter=top" onClick={onLinkClick} className="font-semibold text-text hover:bg-secondary/50 p-2 rounded-md transition-colors text-sm text-left">Top Universities</Link>
+            {/* <Link href="/universities?filter=top" onClick={onLinkClick} className="font-semibold text-text hover:bg-secondary/50 p-2 rounded-md transition-colors text-sm text-left">Top Universities</Link> */}
+            <Link href="/top-universities" onClick={onLinkClick} className="font-semibold text-text hover:bg-secondary/50 p-2 rounded-md transition-colors text-sm text-left">Top Universities</Link>
             <hr className="border-secondary my-1" />
             <Link href="/universities" onClick={onLinkClick} className="font-semibold text-text hover:bg-secondary/50 p-2 rounded-md transition-colors text-sm text-left">All Universities</Link>
             {streams.map(stream => (
@@ -355,7 +357,7 @@ export default function Header() {
         setIsMenuOpen(false);
         setIsMobileUniMenuOpen(false);
     };
-    
+
     const ProfileProgressCircle = ({ percentage }) => {
         const radius = 18;
         const circumference = 2 * Math.PI * radius;
@@ -372,13 +374,13 @@ export default function Header() {
     const NavLinks = ({ inMobileMenu = false }) => (
         <>
             <Link href="/" className="hover:text-accent transition-colors py-2 w-full text-left" onClick={() => inMobileMenu && closeMobileMenu()}>Home</Link>
-            
+
             <div className="hidden md:block">
                 <NavItemWithMenu label="Universities">
-                    <MegaMenu streams={streams} onLinkClick={() => {}} />
+                    <MegaMenu streams={streams} onLinkClick={() => { }} />
                 </NavItemWithMenu>
             </div>
-            
+
             <div className="md:hidden w-full">
                 <button onClick={() => setIsMobileUniMenuOpen(!isMobileUniMenuOpen)} className="flex justify-between items-center w-full hover:text-accent transition-colors py-2 text-left">
                     <span>Universities</span>
@@ -396,7 +398,7 @@ export default function Header() {
                                 <Link href="/universities?filter=top" onClick={closeMobileMenu} className="text-text-secondary hover:text-accent py-1.5 transition-colors text-sm w-full text-left">Top Universities</Link>
                                 <Link href="/universities" onClick={closeMobileMenu} className="text-text-secondary hover:text-accent py-1.5 transition-colors text-sm w-full text-left">All Universities</Link>
                                 {streams.map(stream => (
-                                     <Link key={stream.id} href={`/universities?stream=${stream.slug}`} onClick={closeMobileMenu} className="text-text-secondary hover:text-accent py-1.5 transition-colors text-sm w-full text-left">{stream.name}</Link>
+                                    <Link key={stream.id} href={`/universities?stream=${stream.slug}`} onClick={closeMobileMenu} className="text-text-secondary hover:text-accent py-1.5 transition-colors text-sm w-full text-left">{stream.name}</Link>
                                 ))}
                             </div>
                         </motion.div>
@@ -411,7 +413,7 @@ export default function Header() {
                     <LayoutDashboard size={18} /> Admin
                 </Link>
             )}
-             {isAuthenticated && user?.role === 'agent' && (
+            {isAuthenticated && user?.role === 'agent' && (
                 <Link href="/agent" className="flex items-center gap-2 hover:text-accent transition-colors py-2" onClick={() => inMobileMenu && closeMobileMenu()}>
                     <Briefcase size={18} /> Agent Dashboard
                 </Link>
@@ -422,7 +424,16 @@ export default function Header() {
     return (
         <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm border-b border-secondary/50">
             <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-                <Link href="/" className="text-2xl font-bold">Edu<span className="text-accent">Elevate</span></Link>
+                {/* <Link href="/" className="text-2xl font-bold">Edu<span className="text-accent">Elevate</span></Link> */}
+                <Link href="/" className="flex items-center">
+                    <Image
+                        src="/Logo.png"
+                        alt="Performic Consultancy Services Logo"
+                        width={180}
+                        height={40}
+                        priority
+                    />
+                </Link>
                 <nav className="hidden md:flex items-center space-x-8 text-sm font-medium text-text"><NavLinks /></nav>
                 <div className="flex items-center gap-4">
                     {isAuthenticated ? (

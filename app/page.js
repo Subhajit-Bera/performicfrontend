@@ -28,6 +28,7 @@ import UpcomingExams from './components/UpcomingExams';
 import Footer from './components/Footer';
 import CareerOptions from './components/CareerOptions';
 import CareerPartners from './components/CareerPartners';
+import FaqSection from './components/FaqSection'; 
 
 export default function Home() {
   return (
@@ -39,6 +40,7 @@ export default function Home() {
         <UpcomingExams />
         <CareerOptions/>
         <CareerPartners/>
+        <FaqSection /> 
       </main>
       <Footer />
     </div>
