@@ -63,7 +63,7 @@ export default function CareerPartners() {
 
             <Reveal delay={0.1} className="mt-12">
                 {partners.length > 0 ? (
-                    <Marquee duration={30}>
+                    <Marquee duration={80}>
                         {partners.map((p) => <PartnerTile key={p.id} partner={p} />)}
                     </Marquee>
                 ) : (

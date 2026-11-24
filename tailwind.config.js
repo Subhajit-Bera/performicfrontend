@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  darkMode: 'class',
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -12,22 +13,22 @@ module.exports = {
     },
     extend: {
       colors: {
-        // Legacy tokens, retuned so every existing page inherits the new system.
-        background: '#05070F',
-        primary: '#0E1426',
-        secondary: '#223052',
-        accent: '#6366F1',
-        'accent-hover': '#818CF8',
-        text: '#EEF1FA',
-        'text-secondary': '#9AA5C4',
+        background: 'rgb(var(--color-bg) / <alpha-value>)',
+        primary: 'rgb(var(--color-primary) / <alpha-value>)',
+        secondary: 'rgb(var(--color-secondary) / <alpha-value>)',
+        accent: 'rgb(var(--color-accent) / <alpha-value>)',
+        'accent-hover': 'rgb(var(--color-accent-hover) / <alpha-value>)',
+        text: 'rgb(var(--color-text) / <alpha-value>)',
+        'text-secondary': 'rgb(var(--color-text-secondary) / <alpha-value>)',
+        muted: 'rgb(var(--color-muted) / <alpha-value>)',
 
         ink: {
-          950: '#05070F',
-          900: '#0A0E1C',
-          800: '#0E1426',
-          700: '#141C33',
-          600: '#1B2440',
-          500: '#223052',
+          950: 'rgb(var(--color-ink-950) / <alpha-value>)',
+          900: 'rgb(var(--color-ink-900) / <alpha-value>)',
+          800: 'rgb(var(--color-ink-800) / <alpha-value>)',
+          700: 'rgb(var(--color-ink-700) / <alpha-value>)',
+          600: 'rgb(var(--color-ink-600) / <alpha-value>)',
+          500: 'rgb(var(--color-ink-500) / <alpha-value>)',
         },
         brand: {
           300: '#A5B4FC',
@@ -42,7 +43,6 @@ module.exports = {
         rose: { DEFAULT: '#F43F5E', soft: '#FB7185' },
         emerald: { DEFAULT: '#34D399', deep: '#059669' },
         cream: '#F6F4EF',
-        muted: '#6B7699',
       },
       fontFamily: {
         sans: ['var(--font-inter)', 'ui-sans-serif', 'system-ui', 'sans-serif'],

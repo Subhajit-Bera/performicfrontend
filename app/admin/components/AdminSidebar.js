@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '../../context/AuthContext';
 import { LogOut, Menu, X } from 'lucide-react';
+import ThemeToggle from '../../components/ThemeToggle';
 
 export default function AdminSidebar({ navItems = [], title = "Admin Panel" }) {
     const pathname = usePathname();
@@ -57,15 +58,18 @@ export default function AdminSidebar({ navItems = [], title = "Admin Panel" }) {
                         {title}
                     </span>
                 </div>
-                <button
-                    type="button"
-                    onClick={logout}
-                    className="p-2 -mr-2 text-text-secondary hover:text-red-400 hover:bg-secondary/50 rounded-lg transition-colors"
-                    title="Logout"
-                    aria-label="Logout"
-                >
-                    <LogOut size={20} />
-                </button>
+                <div className="flex items-center gap-1.5">
+                    <ThemeToggle iconSize={16} className="!p-1.5" />
+                    <button
+                        type="button"
+                        onClick={logout}
+                        className="p-2 -mr-2 text-text-secondary hover:text-red-400 hover:bg-secondary/50 rounded-lg transition-colors"
+                        title="Logout"
+                        aria-label="Logout"
+                    >
+                        <LogOut size={20} />
+                    </button>
+                </div>
             </header>
 
             {/* Mobile Backdrop Overlay */}
@@ -101,15 +105,18 @@ export default function AdminSidebar({ navItems = [], title = "Admin Panel" }) {
                             </Link>
                             <p className="text-[11px] text-text-secondary font-semibold mt-2 tracking-wider uppercase">{title}</p>
                         </div>
-                        {/* Mobile close button */}
-                        <button
-                            type="button"
-                            onClick={() => setMobileOpen(false)}
-                            className="lg:hidden p-2 rounded-lg text-text-secondary hover:text-text hover:bg-secondary/50 transition-colors"
-                            aria-label="Close navigation menu"
-                        >
-                            <X size={20} />
-                        </button>
+                        <div className="flex items-center gap-1.5">
+                            <ThemeToggle iconSize={16} className="hidden lg:inline-flex !p-1.5" />
+                            {/* Mobile close button */}
+                            <button
+                                type="button"
+                                onClick={() => setMobileOpen(false)}
+                                className="lg:hidden p-2 rounded-lg text-text-secondary hover:text-text hover:bg-secondary/50 transition-colors"
+                                aria-label="Close navigation menu"
+                            >
+                                <X size={20} />
+                            </button>
+                        </div>
                     </div>
 
                     {/* Navigation Items */}

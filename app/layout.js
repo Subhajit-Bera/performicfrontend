@@ -1,6 +1,7 @@
 import { Inter, Sora, Instrument_Serif } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from './context/AuthContext';
+import { ThemeProvider } from './context/ThemeContext';
 import { Toaster } from 'sonner';
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
@@ -24,31 +25,54 @@ export const metadata = {
 };
 
 export const viewport = {
-  themeColor: "#05070F",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#F8FAFC" },
+    { media: "(prefers-color-scheme: dark)", color: "#05070F" },
+  ],
   width: "device-width",
   initialScale: 1,
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${inter.variable} ${sora.variable} ${instrument.variable}`}>
+    <html lang="en" className={`${inter.variable} ${sora.variable} ${instrument.variable}`} suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function() {
+              try {
+                var storedTheme = localStorage.getItem('theme');
+                if (storedTheme === 'dark') {
+                  document.documentElement.classList.add('dark');
+                  document.documentElement.classList.remove('light');
+                } else {
+                  document.documentElement.classList.add('light');
+                  document.documentElement.classList.remove('dark');
+                }
+              } catch (e) {}
+            })()`,
+          }}
+        />
+      </head>
       <body className="bg-background font-sans text-text">
-        <AuthProvider>
-          {children}
-          <Toaster
-            richColors
-            closeButton
-            position="top-right"
-            toastOptions={{
-              style: {
-                background: "rgba(14,20,38,0.92)",
-                border: "1px solid rgba(129,140,248,0.28)",
-                color: "#EEF1FA",
-                backdropFilter: "blur(14px)",
-              },
-            }}
-          />
-        </AuthProvider>
+        <ThemeProvider>
+          <AuthProvider>
+            {children}
+            <Toaster
+              richColors
+              closeButton
+              position="top-right"
+              toastOptions={{
+                style: {
+                  background: "var(--popover)",
+                  border: "1px solid var(--border)",
+                  color: "var(--foreground)",
+                  backdropFilter: "blur(14px)",
+                },
+              }}
+            />
+          </AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -107,14 +107,15 @@ export default function UniversityCard({ university }) {
                     </div>
 
                     <div className="mt-auto flex items-center gap-2 pt-5">
-                        <span className="btn-ghost btn-sm flex-1 !py-2 text-xs">
-                            Details <ArrowUpRight size={13} className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                        <span className="btn-ghost btn-sm flex-1 !py-2 !px-2.5 text-xs whitespace-nowrap justify-center">
+                            Details <ArrowUpRight size={13} className="shrink-0 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                         </span>
                         <button
                             onClick={handleApply}
-                            className="btn-primary btn-sm flex-1 !py-2 text-xs"
+                            className="btn-primary btn-sm flex-1 !py-2 !px-2.5 text-xs whitespace-nowrap justify-center"
                         >
-                            <BadgeCheck size={13} /> Apply now
+                            <BadgeCheck size={14} className="shrink-0" />
+                            <span>Apply now</span>
                         </button>
                     </div>
                 </div>

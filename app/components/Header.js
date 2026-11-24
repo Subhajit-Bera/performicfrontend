@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import api from '../utils/api';
+import ThemeToggle from './ThemeToggle';
 
 const EASE = [0.22, 1, 0.36, 1];
 
@@ -222,7 +223,7 @@ export default function Header() {
             <header
                 className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ease-premium ${
                     scrolled
-                        ? 'border-b border-white/[0.08] bg-ink-950/85 shadow-[0_18px_50px_-30px_rgba(0,0,0,0.95)] backdrop-blur-xl'
+                        ? 'border-b border-slate-200/80 dark:border-white/[0.08] bg-white/90 dark:bg-ink-950/85 shadow-md dark:shadow-[0_18px_50px_-30px_rgba(0,0,0,0.95)] backdrop-blur-xl'
                         : 'border-b border-transparent bg-transparent'
                 }`}
             >
@@ -232,6 +233,7 @@ export default function Header() {
                     <nav className="hidden items-center gap-1 lg:flex" aria-label="Primary">{desktopLinks}</nav>
 
                     <div className="flex items-center gap-2.5">
+                        <ThemeToggle className="hidden sm:inline-flex" />
                         <Link href="/book-appointment" className="btn-gold btn-sm hidden md:inline-flex">
                             <CalendarCheck size={15} /> Book a session
                         </Link>
@@ -278,15 +280,18 @@ export default function Header() {
                             animate={{ x: 0 }}
                             exit={{ x: '100%' }}
                             transition={{ duration: 0.45, ease: EASE }}
-                            className="fixed inset-y-0 right-0 z-[70] flex w-[86%] max-w-sm flex-col border-l border-white/10 bg-ink-900/95 backdrop-blur-2xl lg:hidden"
+                            className="fixed inset-y-0 right-0 z-[70] flex w-[86%] max-w-sm flex-col border-l border-slate-200 dark:border-white/10 bg-white/95 dark:bg-ink-900/95 backdrop-blur-2xl lg:hidden shadow-2xl"
                             role="dialog"
                             aria-label="Menu"
                         >
-                            <div className="flex items-center justify-between border-b border-white/[0.07] px-5 py-4">
+                            <div className="flex items-center justify-between border-b border-slate-200/80 dark:border-white/[0.07] px-5 py-4">
                                 <Logo compact />
-                                <button onClick={closeMobileMenu} aria-label="Close menu" className="rounded-lg border border-white/10 p-2 text-text-secondary transition-colors hover:text-text">
-                                    <X size={18} />
-                                </button>
+                                <div className="flex items-center gap-2">
+                                    <ThemeToggle />
+                                    <button onClick={closeMobileMenu} aria-label="Close menu" className="rounded-lg border border-slate-200 dark:border-white/10 p-2 text-text-secondary transition-colors hover:text-text">
+                                        <X size={18} />
+                                    </button>
+                                </div>
                             </div>
 
                             <nav className="flex-1 overflow-y-auto px-5 py-5" aria-label="Mobile">

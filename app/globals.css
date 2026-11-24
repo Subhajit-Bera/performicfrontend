@@ -4,26 +4,67 @@
 
 @layer base {
   :root {
+    /* Light Mode (Default) */
+    --color-bg: 248 250 252;          /* #F8FAFC (slate-50) */
+    --color-primary: 255 255 255;      /* #FFFFFF */
+    --color-secondary: 241 245 249;    /* #F1F5F9 (slate-100) */
+    --color-accent: 79 70 229;         /* #4F46E5 (indigo-600) */
+    --color-accent-hover: 67 56 202;   /* #4338CA (indigo-700) */
+    --color-text: 15 23 42;            /* #0F172A (slate-900) */
+    --color-text-secondary: 71 85 105; /* #475569 (slate-600) */
+    --color-muted: 100 116 139;        /* #64748B (slate-500) */
+
+    --color-ink-950: 255 255 255;      /* #FFFFFF */
+    --color-ink-900: 248 250 252;      /* #F8FAFC */
+    --color-ink-800: 255 255 255;      /* #FFFFFF */
+    --color-ink-700: 241 245 249;      /* #F1F5F9 */
+    --color-ink-600: 226 232 240;      /* #E2E8F0 */
+    --color-ink-500: 203 213 225;      /* #CBD5E1 */
+
+    /* Shadcn / compatibility variables */
+    --background: 210 40% 98%;
+    --foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    --primary: 239 84% 67%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222 47% 11%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 239 84% 67%;
+    --radius: 0.875rem;
+  }
+
+  html.dark {
+    /* Dark Mode */
+    --color-bg: 5 7 15;               /* #05070F */
+    --color-primary: 14 20 38;         /* #0E1426 */
+    --color-secondary: 34 48 82;       /* #223052 */
+    --color-accent: 99 102 241;        /* #6366F1 */
+    --color-accent-hover: 129 140 248; /* #818CF8 */
+    --color-text: 238 241 250;         /* #EEF1FA */
+    --color-text-secondary: 154 165 196;/* #9AA5C4 */
+    --color-muted: 107 118 153;        /* #6B7699 */
+
+    --color-ink-950: 5 7 15;           /* #05070F */
+    --color-ink-900: 10 14 28;         /* #0A0E1C */
+    --color-ink-800: 14 20 38;         /* #0E1426 */
+    --color-ink-700: 20 28 51;         /* #141C33 */
+    --color-ink-600: 27 36 64;         /* #1B2440 */
+    --color-ink-500: 34 48 82;         /* #223052 */
+
+    /* Shadcn dark */
     --background: 228 45% 4%;
     --foreground: 228 40% 96%;
     --card: 226 42% 10%;
     --card-foreground: 228 40% 96%;
     --popover: 226 42% 10%;
     --popover-foreground: 228 40% 96%;
-    --primary: 239 84% 67%;
-    --primary-foreground: 228 45% 6%;
-    --secondary: 224 42% 23%;
-    --secondary-foreground: 228 40% 96%;
-    --muted: 224 42% 23%;
-    --muted-foreground: 226 22% 69%;
-    --accent: 239 84% 67%;
-    --accent-foreground: 228 45% 6%;
-    --destructive: 347 87% 60%;
-    --destructive-foreground: 228 40% 98%;
     --border: 224 42% 23%;
     --input: 224 42% 23%;
-    --ring: 239 84% 67%;
-    --radius: 0.875rem;
   }
 
   html {
@@ -33,7 +74,7 @@
   }
 
   body {
-    @apply bg-background text-text antialiased;
+    @apply bg-background text-text antialiased transition-colors duration-200;
     font-feature-settings: 'cv02', 'cv03', 'cv04', 'ss01';
     overflow-x: hidden;
   }
@@ -54,27 +95,44 @@
     border-radius: 6px;
   }
 
-  /* Scrollbars drawn in the site's own palette, not the browser default. */
+  /* Scrollbars: light mode default, dark mode when html.dark */
   * {
     scrollbar-width: thin;
-    scrollbar-color: #4338ca #0a0e1c;
+    scrollbar-color: #94a3b8 #f1f5f9;
   }
   *::-webkit-scrollbar {
     width: 10px;
     height: 10px;
   }
   *::-webkit-scrollbar-track {
-    background: #0a0e1c;
+    background: #f1f5f9;
   }
   *::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, #4f46e5, #7c3aed);
+    background: #cbd5e1;
     border-radius: 999px;
-    border: 2px solid #0a0e1c;
+    border: 2px solid #f1f5f9;
   }
   *::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(180deg, #818cf8, #a855f7);
+    background: #94a3b8;
   }
   *::-webkit-scrollbar-corner {
+    background: #f1f5f9;
+  }
+
+  html.dark * {
+    scrollbar-color: #4338ca #0a0e1c;
+  }
+  html.dark *::-webkit-scrollbar-track {
+    background: #0a0e1c;
+  }
+  html.dark *::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #4f46e5, #7c3aed);
+    border: 2px solid #0a0e1c;
+  }
+  html.dark *::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #818cf8, #a855f7);
+  }
+  html.dark *::-webkit-scrollbar-corner {
     background: #0a0e1c;
   }
 
@@ -108,8 +166,8 @@
     background-image: linear-gradient(120deg, #f5b301, #ff8a3d);
   }
   .btn-ghost {
-    @apply btn text-text border border-white/15 bg-white/[0.04] backdrop-blur-md
-      hover:border-brand-400/60 hover:bg-white/[0.08] hover:-translate-y-0.5 active:translate-y-0;
+    @apply btn text-text border border-slate-200 dark:border-white/15 bg-white/70 dark:bg-white/[0.04] backdrop-blur-md
+      hover:border-brand-500/50 dark:hover:border-brand-400/60 hover:bg-slate-100 dark:hover:bg-white/[0.08] hover:-translate-y-0.5 active:translate-y-0 shadow-sm dark:shadow-none;
   }
   .btn-sm {
     @apply px-4 py-2 text-sm;
@@ -122,30 +180,30 @@
   }
 
   .surface {
-    @apply rounded-2xl border border-white/[0.07] bg-ink-800/80 shadow-card backdrop-blur-xl;
+    @apply rounded-2xl border border-slate-200/90 dark:border-white/[0.07] bg-white/95 dark:bg-ink-800/80 shadow-md dark:shadow-card backdrop-blur-xl text-text;
   }
   .surface-hover {
-    @apply transition-all duration-500 ease-premium hover:border-brand-400/40 hover:shadow-lift hover:-translate-y-1.5;
+    @apply transition-all duration-500 ease-premium hover:border-brand-500/40 dark:hover:border-brand-400/40 hover:shadow-xl dark:hover:shadow-lift hover:-translate-y-1.5;
   }
 
   .chip {
-    @apply inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.05]
+    @apply inline-flex items-center gap-1.5 rounded-full border border-slate-200 dark:border-white/10 bg-slate-100/90 dark:bg-white/[0.05]
       px-3 py-1 text-xs font-medium tracking-wide text-text-secondary;
   }
 
   .eyebrow {
-    @apply inline-flex items-center gap-2 rounded-full border border-brand-400/30 bg-brand-500/10
-      px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-brand-300;
+    @apply inline-flex items-center gap-2 rounded-full border border-brand-500/25 dark:border-brand-400/30 bg-brand-500/10
+      px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-brand-600 dark:text-brand-300;
   }
 
   .field {
-    @apply w-full rounded-xl border border-white/10 bg-ink-900/70 px-4 py-3 text-sm text-text
+    @apply w-full rounded-xl border border-slate-300 dark:border-white/10 bg-white dark:bg-ink-900/70 px-4 py-3 text-sm text-text
       placeholder:text-muted transition-colors duration-300
-      focus:border-brand-400/70 focus:bg-ink-900 focus:outline-none focus:ring-2 focus:ring-brand-500/25;
+      focus:border-brand-500 dark:focus:border-brand-400/70 focus:bg-white dark:focus:bg-ink-900 focus:outline-none focus:ring-2 focus:ring-brand-500/25;
   }
 
   .link-quiet {
-    @apply text-text-secondary transition-colors duration-300 hover:text-brand-300;
+    @apply text-text-secondary transition-colors duration-300 hover:text-brand-600 dark:hover:text-brand-300;
   }
 }
 
@@ -178,6 +236,12 @@
   }
 
   .grid-lines {
+    background-image:
+      linear-gradient(to right, rgba(99, 102, 241, 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(99, 102, 241, 0.05) 1px, transparent 1px);
+    background-size: 64px 64px;
+  }
+  html.dark .grid-lines {
     background-image:
       linear-gradient(to right, rgba(148, 163, 255, 0.055) 1px, transparent 1px),
       linear-gradient(to bottom, rgba(148, 163, 255, 0.055) 1px, transparent 1px);
