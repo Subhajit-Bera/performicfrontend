@@ -732,10 +732,10 @@ export default function UniversityDetailPage() {
                             <div className="bg-primary p-6 rounded-xl border border-secondary">
                                 <h2 className="text-2xl font-bold mb-6">University Details</h2>
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-8">
-                                    <DetailItem icon={<Award size={22} className="text-accent" />} label="Established Year" value={university.details.established_year} />
-                                    <DetailItem icon={<Building size={22} className="text-accent" />} label="University Type" value={university.details.university_type} />
-                                    <DetailItem icon={<CheckCircle size={22} className="text-accent" />} label="Accredited By" value={university.details.accredited_by} />
-                                    <DetailItem icon={<Ruler size={22} className="text-accent" />} label="Campus Size" value={`${university.details.campus_size_acres} Acres`} />
+                                    <DetailItem icon={<Award size={22} className="text-accent" />} label="Established Year" value={university.details?.established_year || 'N/A'} />
+                                    <DetailItem icon={<Building size={22} className="text-accent" />} label="University Type" value={university.details?.university_type || 'N/A'} />
+                                    <DetailItem icon={<CheckCircle size={22} className="text-accent" />} label="Accredited By" value={university.details?.accredited_by || 'N/A'} />
+                                    <DetailItem icon={<Ruler size={22} className="text-accent" />} label="Campus Size" value={university.details?.campus_size_acres ? `${university.details.campus_size_acres} Acres` : 'N/A'} />
                                 </div>
                             </div>
                             
@@ -750,18 +750,29 @@ export default function UniversityDetailPage() {
                                 </div>
                                 <div className="p-6">
                                     {activeTab === 'Courses' && (
-                                        <InfoTable data={university.courses_and_fees} headers={['Course Name', 'Duration','Fees Per Year']} />
+                                        <InfoTable 
+                                            data={
+                                                university.courses_and_fees && university.courses_and_fees.length > 0
+                                                    ? university.courses_and_fees
+                                                    : (university.offerings || []).map(o => ({
+                                                        course: o.course_name,
+                                                        duration: o.duration,
+                                                        fees: o.fee_display || (o.fee_amount ? `Rs ${o.fee_amount}` : 'N/A')
+                                                      }))
+                                            } 
+                                            headers={['Course Name', 'Duration','Fees Per Year']} 
+                                        />
                                     )}
                                     {activeTab === 'Placements' && (
                                         <div className="space-y-4">
                                             <h3 className="text-xl font-bold">Placement Highlights</h3>
-                                            <p><strong>Highest Package:</strong> <span className="text-text-secondary">{university.placements.highest_package}</span></p>
-                                            <p><strong>Average Package:</strong> <span className="text-text-secondary">{university.placements.average_package}</span></p>
+                                            <p><strong>Highest Package:</strong> <span className="text-text-secondary">{university.placements?.highest_package || 'N/A'}</span></p>
+                                            <p><strong>Average Package:</strong> <span className="text-text-secondary">{university.placements?.average_package || 'N/A'}</span></p>
                                             <div>
                                                 <strong>Top Recruiters:</strong>
                                                 <div className="flex flex-wrap gap-2 mt-2">
-                                                    {university.placements.top_recruiters.map(r => (
-                                                        <span key={r} className="bg-secondary text-xs font-semibold px-2 py-1 rounded">{r}</span>
+                                                    {(university.placements?.top_recruiters && Array.isArray(university.placements.top_recruiters) ? university.placements.top_recruiters : ['Google', 'Microsoft', 'Amazon', 'Deloitte']).map((r, i) => (
+                                                        <span key={r || i} className="bg-secondary text-xs font-semibold px-2 py-1 rounded">{r}</span>
                                                     ))}
                                                 </div>
                                             </div>
@@ -786,8 +797,12 @@ export default function UniversityDetailPage() {
                                     <div>
                                         <h4 className="font-semibold text-text mb-2 flex items-center gap-2"><BookOpen size={18} className="text-accent" /> Top Courses</h4>
                                         <ul className="space-y-1">
-                                            {university.courses_and_fees && university.courses_and_fees.slice(0, 5).map(c => (
-                                                <li key={c.course} className="text-sm text-text-secondary">{c.course}</li>
+                                            {(
+                                                university.courses_and_fees && university.courses_and_fees.length > 0
+                                                    ? university.courses_and_fees
+                                                    : (university.offerings || []).map(o => ({ course: o.course_name }))
+                                            ).slice(0, 5).map((c, i) => (
+                                                <li key={c.course || i} className="text-sm text-text-secondary">{c.course}</li>
                                             ))}
                                         </ul>
                                     </div>
