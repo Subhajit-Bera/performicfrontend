@@ -83,7 +83,7 @@ function StreamShowcase({ streamData, index }) {
                         <ArrowUpRight size={18} />
                     </span>
                     <div className="mt-6">
-                        <p className="font-display text-base font-bold text-text transition-colors group-hover:text-brand-300">
+                        <p className="font-display text-base font-bold text-text transition-colors group-hover:text-brand-600 dark:group-hover:text-brand-300">
                             See every {streamData.stream_name} campus
                         </p>
                         <p className="mt-1 text-xs text-text-secondary">Full catalogue with fees and cutoffs.</p>
@@ -92,7 +92,7 @@ function StreamShowcase({ streamData, index }) {
             </div>
 
             <div className="mt-1 flex items-center gap-3">
-                <div className="h-0.5 flex-1 overflow-hidden rounded-full bg-white/[0.06]">
+                <div className="h-0.5 flex-1 overflow-hidden rounded-full bg-slate-200 dark:bg-white/[0.06]">
                     <div
                         className="h-full rounded-full bg-brand-gradient transition-[width] duration-300"
                         style={{ width: `${Math.max(progress * 100, 8)}%` }}
@@ -141,12 +141,12 @@ export default function TopUniversitiesPage() {
                         {loading ? (
                             [0, 1].map((i) => (
                                 <div key={i}>
-                                    <div className="h-8 w-64 animate-pulse rounded-lg bg-white/[0.07]" />
+                                    <div className="h-8 w-64 animate-pulse rounded-lg bg-slate-200 dark:bg-white/[0.07]" />
                                     <div className="mt-6 flex gap-5 overflow-hidden">
                                         {[0, 1, 2].map((j) => (
                                             <div key={j} className="surface h-80 w-[85vw] max-w-[22rem] shrink-0 animate-pulse p-6 sm:w-[22rem]">
-                                                <div className="h-36 w-full rounded-xl bg-white/[0.06]" />
-                                                <div className="mt-5 h-5 w-2/3 rounded bg-white/[0.07]" />
+                                                <div className="h-36 w-full rounded-xl bg-slate-200/80 dark:bg-white/[0.06]" />
+                                                <div className="mt-5 h-5 w-2/3 rounded bg-slate-200 dark:bg-white/[0.07]" />
                                             </div>
                                         ))}
                                     </div>

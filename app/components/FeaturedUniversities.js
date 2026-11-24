@@ -87,10 +87,10 @@ export default function FeaturedUniversities() {
                         className="max-w-2xl"
                     />
                     <Reveal delay={0.15} className="flex items-center gap-2">
-                        <button onClick={() => scrollRail(-1)} aria-label="Scroll universities left" className="rounded-xl border border-white/10 bg-white/[0.04] p-3 text-text-secondary transition-all duration-300 hover:border-brand-400/50 hover:text-text">
+                        <button onClick={() => scrollRail(-1)} aria-label="Scroll universities left" className="rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/[0.04] p-3 text-text-secondary transition-all duration-300 hover:border-brand-500 dark:hover:border-brand-400/50 hover:text-text shadow-xs dark:shadow-none">
                             <ArrowLeft size={17} />
                         </button>
-                        <button onClick={() => scrollRail(1)} aria-label="Scroll universities right" className="rounded-xl border border-white/10 bg-white/[0.04] p-3 text-text-secondary transition-all duration-300 hover:border-brand-400/50 hover:text-text">
+                        <button onClick={() => scrollRail(1)} aria-label="Scroll universities right" className="rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/[0.04] p-3 text-text-secondary transition-all duration-300 hover:border-brand-500 dark:hover:border-brand-400/50 hover:text-text shadow-xs dark:shadow-none">
                             <ArrowRight size={17} />
                         </button>
                     </Reveal>
@@ -104,7 +104,7 @@ export default function FeaturedUniversities() {
                             className={`rounded-full px-4 py-2 text-xs font-semibold transition-all duration-300 ${
                                 filter === f.value
                                     ? 'bg-brand-gradient text-white shadow-glow'
-                                    : 'border border-white/10 bg-white/[0.03] text-text-secondary hover:border-brand-400/40 hover:text-text'
+                                    : 'border border-slate-200 dark:border-white/10 bg-white dark:bg-white/[0.03] text-slate-600 dark:text-text-secondary hover:border-slate-300 dark:hover:border-brand-400/40 hover:text-slate-900 dark:hover:text-text shadow-xs dark:shadow-none'
                             }`}
                         >
                             {f.label}
@@ -155,7 +155,7 @@ export default function FeaturedUniversities() {
                                         <Link
                                             key={s.id}
                                             href={`/universities?stream=${s.slug}`}
-                                            className="group flex items-center justify-between rounded-xl border border-white/[0.07] bg-white/[0.03] px-4 py-2.5 text-sm font-medium text-text-secondary transition-all duration-300 hover:border-cyan/40 hover:text-text"
+                                            className="group flex items-center justify-between rounded-xl border border-slate-200 dark:border-white/[0.07] bg-slate-50/80 dark:bg-white/[0.03] px-4 py-2.5 text-sm font-medium text-text-secondary transition-all duration-300 hover:border-brand-500 hover:text-text"
                                         >
                                             {s.name}
                                             <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-1" />
@@ -183,7 +183,7 @@ export default function FeaturedUniversities() {
                     )}
                 </div>
 
-                <div className="mt-2 h-0.5 w-full overflow-hidden rounded-full bg-white/[0.06]">
+                <div className="mt-2 h-0.5 w-full overflow-hidden rounded-full bg-slate-200 dark:bg-white/[0.06]">
                     <div
                         className="h-full rounded-full bg-gradient-to-r from-brand-400 to-gold transition-[width] duration-200"
                         style={{ width: `${Math.max(progress * 100, 8)}%` }}

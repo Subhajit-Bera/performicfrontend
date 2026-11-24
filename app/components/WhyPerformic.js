@@ -88,7 +88,7 @@ export default function WhyPerformic() {
                                     <p className="mt-1 text-xs uppercase tracking-[0.16em] text-text-secondary">{v.stat.label}</p>
                                     <div className="mt-6 grid grid-cols-3 gap-2">
                                         {['Fees', 'Cutoffs', 'Placements'].map((label) => (
-                                            <span key={label} className="rounded-lg border border-white/[0.07] bg-white/[0.03] px-2 py-2 text-center text-[10px] font-semibold uppercase tracking-wide text-text-secondary">
+                                            <span key={label} className="rounded-lg border border-slate-200 dark:border-white/[0.07] bg-slate-100 dark:bg-white/[0.03] px-2 py-2 text-center text-[10px] font-semibold uppercase tracking-wide text-slate-700 dark:text-text-secondary">
                                                 {label}
                                             </span>
                                         ))}

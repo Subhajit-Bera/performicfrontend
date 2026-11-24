@@ -76,7 +76,7 @@ export default function UniversityCard({ university }) {
                             <div className="absolute inset-0 grid-lines opacity-40" />
                         </div>
                     )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-ink-950 via-ink-950/25 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20" />
 
                     {university.admission_open && (
                         <span className="absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full bg-rose/90 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white shadow-plate backdrop-blur">
@@ -84,23 +84,23 @@ export default function UniversityCard({ university }) {
                             Admission {university.admission_year} open
                         </span>
                     )}
-                    <span className="absolute right-3 top-3 inline-flex items-center gap-1 rounded-full border border-white/15 bg-ink-950/70 px-2.5 py-1 text-xs font-bold text-gold backdrop-blur">
+                    <span className="absolute right-3 top-3 inline-flex items-center gap-1 rounded-full border border-white/20 bg-black/60 px-2.5 py-1 text-xs font-bold text-amber-300 backdrop-blur">
                         <Star size={12} className="fill-current" /> {university.rating}
                     </span>
                 </div>
 
                 <div className="flex flex-1 flex-col p-5">
-                    <h3 className="font-display text-base font-bold leading-snug text-text transition-colors duration-300 group-hover:text-brand-300">
+                    <h3 className="font-display text-base font-bold leading-snug text-text transition-colors duration-300 group-hover:text-brand-600 dark:group-hover:text-brand-300">
                         {university.name}
                     </h3>
                     <p className="mt-1.5 flex items-center gap-1.5 text-xs text-text-secondary">
-                        <MapPin size={13} className="shrink-0 text-cyan" />
+                        <MapPin size={13} className="shrink-0 text-[#0891B2] dark:text-cyan" />
                         <span className="truncate">{location || 'Location on request'}</span>
                     </p>
 
                     <div className="mt-3 flex flex-wrap gap-1.5">
                         {(university.streams || []).slice(0, 3).map((stream) => (
-                            <span key={stream} className="rounded-md border border-white/[0.08] bg-white/[0.04] px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide text-text-secondary">
+                            <span key={stream} className="rounded-md border border-slate-200 dark:border-white/[0.08] bg-slate-100/90 dark:bg-white/[0.04] px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-slate-700 dark:text-text-secondary">
                                 {stream}
                             </span>
                         ))}

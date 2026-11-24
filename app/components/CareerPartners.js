@@ -30,10 +30,10 @@ function PartnerTile({ partner }) {
             </span>
             <span className="min-w-0">
                 <span className="flex items-center gap-1.5 font-display text-base font-bold text-text">
-                    <MapPin size={14} className="shrink-0 text-gold" /> {partner.location}
+                    <MapPin size={14} className="shrink-0 text-amber-600 dark:text-gold" /> {partner.location}
                 </span>
                 <span className="mt-1 block truncate text-xs text-text-secondary">{partner.featured_text}</span>
-                <span className="mt-2 flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider text-brand-300">
+                <span className="mt-2 flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider text-brand-600 dark:text-brand-300">
                     Explore <ArrowUpRight size={12} className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </span>
             </span>
@@ -81,7 +81,7 @@ export default function CareerPartners() {
                         <Reveal key={city.slug} delay={i * 0.1}>
                             <Link
                                 href={`/universities?city=${city.slug}`}
-                                className="group flex items-center justify-between rounded-2xl border border-white/[0.07] bg-white/[0.03] px-5 py-4 transition-all duration-500 hover:border-gold/40 hover:bg-gold/[0.06]"
+                                className="group flex items-center justify-between rounded-2xl border border-slate-200 dark:border-white/[0.07] bg-white dark:bg-white/[0.03] px-5 py-4 shadow-xs dark:shadow-none transition-all duration-300 hover:border-gold/60 hover:bg-gold/5 dark:hover:border-gold/40 dark:hover:bg-gold/[0.06] hover:shadow-md"
                             >
                                 <span>
                                     <span className="block font-display text-base font-bold text-text">{city.name}</span>

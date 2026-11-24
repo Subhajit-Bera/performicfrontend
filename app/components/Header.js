@@ -84,11 +84,11 @@ function UniversitiesMenu({ streams, onNavigate }) {
                         </span>
                         <ArrowUpRight size={17} className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                     </Link>
-                    <Link href="/universities" onClick={onNavigate} className="col-span-2 flex items-center justify-between rounded-xl px-4 py-2.5 text-sm font-semibold text-text transition-colors hover:bg-white/[0.06]">
+                    <Link href="/universities" onClick={onNavigate} className="col-span-2 flex items-center justify-between rounded-xl px-4 py-2.5 text-sm font-semibold text-text transition-colors hover:bg-slate-100 dark:hover:bg-white/[0.06]">
                         Browse the full catalogue
                         <ArrowUpRight size={15} className="text-muted" />
                     </Link>
-                    <div className="col-span-2 my-1 h-px bg-white/[0.07]" />
+                    <div className="col-span-2 my-1 h-px bg-slate-200 dark:bg-white/[0.07]" />
                     {streams.map((stream) => {
                         const Icon = STREAM_ICONS[stream.slug] || GraduationCap;
                         return (
@@ -96,9 +96,9 @@ function UniversitiesMenu({ streams, onNavigate }) {
                                 key={stream.id}
                                 href={`/universities?stream=${stream.slug}`}
                                 onClick={onNavigate}
-                                className="group flex items-center gap-3 rounded-xl px-3.5 py-2.5 transition-colors hover:bg-white/[0.06]"
+                                className="group flex items-center gap-3 rounded-xl px-3.5 py-2.5 transition-colors hover:bg-slate-100 dark:hover:bg-white/[0.06]"
                             >
-                                <span className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 bg-white/[0.04] text-brand-300 transition-colors group-hover:border-brand-400/50 group-hover:text-gold">
+                                <span className="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 dark:border-white/10 bg-slate-100/80 dark:bg-white/[0.04] text-brand-600 dark:text-brand-300 transition-colors group-hover:border-brand-500/50 group-hover:text-amber-600 dark:group-hover:text-gold">
                                     <Icon size={15} />
                                 </span>
                                 <span className="text-sm font-medium text-text-secondary transition-colors group-hover:text-text">{stream.name}</span>

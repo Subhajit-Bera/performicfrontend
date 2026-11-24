@@ -55,6 +55,7 @@ module.exports = {
         'display-md': ['clamp(1.6rem, 2.6vw, 2.25rem)', { lineHeight: '1.15', letterSpacing: '-0.02em' }],
       },
       boxShadow: {
+        xs: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
         glow: '0 0 0 1px rgba(99,102,241,0.35), 0 18px 60px -18px rgba(99,102,241,0.55)',
         'glow-gold': '0 0 0 1px rgba(245,179,1,0.35), 0 18px 60px -18px rgba(245,179,1,0.45)',
         card: '0 1px 0 0 rgba(255,255,255,0.04) inset, 0 24px 60px -30px rgba(0,0,0,0.9)',
@@ -65,7 +66,7 @@ module.exports = {
         'brand-gradient': 'linear-gradient(120deg, #4F46E5 0%, #7C3AED 45%, #A855F7 100%)',
         'gold-gradient': 'linear-gradient(120deg, #F5B301 0%, #FF8A3D 100%)',
         'aurora-gradient': 'linear-gradient(135deg, #22D3EE 0%, #6366F1 50%, #A855F7 100%)',
-        'fade-down': 'linear-gradient(180deg, rgba(5,7,15,0) 0%, #05070F 100%)',
+        'fade-down': 'linear-gradient(180deg, rgba(var(--color-bg) / 0) 0%, rgb(var(--color-bg)) 100%)',
       },
       keyframes: {
         aurora: {

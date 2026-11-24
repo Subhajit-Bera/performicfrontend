@@ -180,26 +180,26 @@
   }
 
   .surface {
-    @apply rounded-2xl border border-slate-200/90 dark:border-white/[0.07] bg-white/95 dark:bg-ink-800/80 shadow-md dark:shadow-card backdrop-blur-xl text-text;
+    @apply rounded-2xl border border-slate-200 dark:border-white/[0.08] bg-white dark:bg-ink-800/80 shadow-[0_1px_3px_0_rgba(0,0,0,0.05),0_1px_2px_0_rgba(0,0,0,0.03)] dark:shadow-card backdrop-blur-xl text-text;
   }
   .surface-hover {
-    @apply transition-all duration-500 ease-premium hover:border-brand-500/40 dark:hover:border-brand-400/40 hover:shadow-xl dark:hover:shadow-lift hover:-translate-y-1.5;
+    @apply transition-all duration-300 ease-premium hover:border-slate-300 hover:shadow-[0_12px_28px_-6px_rgba(0,0,0,0.08),0_8px_12px_-6px_rgba(0,0,0,0.04)] dark:hover:border-brand-400/40 dark:hover:shadow-lift hover:-translate-y-1.5;
   }
 
   .chip {
-    @apply inline-flex items-center gap-1.5 rounded-full border border-slate-200 dark:border-white/10 bg-slate-100/90 dark:bg-white/[0.05]
-      px-3 py-1 text-xs font-medium tracking-wide text-text-secondary;
+    @apply inline-flex items-center gap-1.5 rounded-full border border-slate-200 dark:border-white/10 bg-white dark:bg-white/[0.05]
+      px-3 py-1 text-xs font-medium tracking-wide text-slate-700 dark:text-text-secondary shadow-sm dark:shadow-none;
   }
 
   .eyebrow {
     @apply inline-flex items-center gap-2 rounded-full border border-brand-500/25 dark:border-brand-400/30 bg-brand-500/10
-      px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-brand-600 dark:text-brand-300;
+      px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-brand-700 dark:text-brand-300;
   }
 
   .field {
-    @apply w-full rounded-xl border border-slate-300 dark:border-white/10 bg-white dark:bg-ink-900/70 px-4 py-3 text-sm text-text
-      placeholder:text-muted transition-colors duration-300
-      focus:border-brand-500 dark:focus:border-brand-400/70 focus:bg-white dark:focus:bg-ink-900 focus:outline-none focus:ring-2 focus:ring-brand-500/25;
+    @apply w-full rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-ink-900/70 px-4 py-3 text-sm text-text
+      placeholder:text-muted transition-colors duration-300 shadow-sm dark:shadow-none
+      focus:border-brand-500 dark:focus:border-brand-400/70 focus:bg-white dark:focus:bg-ink-900 focus:outline-none focus:ring-2 focus:ring-brand-500/20;
   }
 
   .link-quiet {
@@ -218,10 +218,16 @@
 
   .text-gradient {
     @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(100deg, #4f46e5 0%, #6366f1 35%, #9333ea 70%, #d97706 100%);
+  }
+  html.dark .text-gradient {
     background-image: linear-gradient(100deg, #a5b4fc 0%, #818cf8 35%, #c084fc 70%, #f5b301 100%);
   }
   .text-gradient-gold {
     @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(100deg, #d97706, #ea580c);
+  }
+  html.dark .text-gradient-gold {
     background-image: linear-gradient(100deg, #ffc53d, #ff8a3d);
   }
 

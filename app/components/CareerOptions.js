@@ -64,13 +64,13 @@ export default function CareerOptions() {
                                         </span>
                                         <ArrowUpRight size={18} className="text-muted transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-gold" />
                                     </div>
-                                    <h3 className="mt-5 font-display text-lg font-bold text-text transition-colors duration-300 group-hover:text-brand-300">
+                                    <h3 className="mt-5 font-display text-lg font-bold text-text transition-colors duration-300 group-hover:text-brand-600 dark:group-hover:text-brand-300">
                                         {course.name}
                                     </h3>
                                     <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-text-secondary">
                                         {course.description || COURSE_COPY[course.slug] || 'Eligibility, fees and campus options curated by our counsellors.'}
                                     </p>
-                                    <span className="mt-auto pt-5 text-xs font-semibold uppercase tracking-[0.14em] text-muted transition-colors duration-300 group-hover:text-brand-300">
+                                    <span className="mt-auto pt-5 text-xs font-semibold uppercase tracking-[0.14em] text-muted transition-colors duration-300 group-hover:text-brand-600 dark:group-hover:text-brand-300">
                                         View programme
                                     </span>
                                 </Link>

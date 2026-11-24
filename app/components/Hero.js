@@ -154,7 +154,7 @@ export default function Hero() {
                             initial={{ opacity: 0, y: 22 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.8, delay: 0.32, ease: EASE }}
-                            className="mt-8 flex max-w-xl items-center gap-2 rounded-2xl border border-white/10 bg-ink-900/70 p-2 shadow-card backdrop-blur-xl focus-within:border-brand-400/60"
+                            className="mt-8 flex max-w-xl items-center gap-2 rounded-2xl border border-slate-200 dark:border-white/10 bg-white/95 dark:bg-ink-900/70 p-2 shadow-sm dark:shadow-card backdrop-blur-xl focus-within:border-brand-500 dark:focus-within:border-brand-400/60 focus-within:ring-2 focus-within:ring-brand-500/20"
                         >
                             <Search size={18} className="ml-3 shrink-0 text-muted" aria-hidden="true" />
                             <input
@@ -213,7 +213,7 @@ export default function Hero() {
                                     <p className="text-xs text-text-secondary">2,400+ students counselled</p>
                                 </div>
                             </div>
-                            <div className="hidden h-8 w-px bg-white/10 sm:block" />
+                            <div className="hidden h-8 w-px bg-slate-300/80 dark:bg-white/10 sm:block" />
                             <p className="flex items-center gap-2 text-xs text-text-secondary">
                                 <CheckCircle2 size={15} className="text-emerald" />
                                 Zero spam. One counsellor, end to end.
@@ -254,15 +254,15 @@ export default function Hero() {
                                     {MATCHES.map((m, i) => <MatchRow key={m.name} item={m} index={i} />)}
                                 </div>
 
-                                <div className="mt-4 flex items-center justify-between gap-3 rounded-xl border border-gold/25 bg-gold/[0.07] px-3.5 py-3">
+                                <div className="mt-4 flex items-center justify-between gap-3 rounded-xl border border-amber-200/80 dark:border-gold/25 bg-amber-50/80 dark:bg-gold/[0.07] px-3.5 py-3">
                                     <div className="flex min-w-0 items-center gap-2.5">
-                                        <Clock3 size={16} className="shrink-0 text-gold" />
+                                        <Clock3 size={16} className="shrink-0 text-amber-600 dark:text-gold" />
                                         <div className="min-w-0">
                                             <p className="truncate text-xs font-semibold text-text">Next counselling slot</p>
                                             <p className="truncate text-[11px] text-text-secondary">Today · 4:30 PM IST</p>
                                         </div>
                                     </div>
-                                    <Link href="/book-appointment" className="shrink-0 text-xs font-bold text-gold transition-colors hover:text-gold-soft">
+                                    <Link href="/book-appointment" className="shrink-0 text-xs font-bold text-amber-600 dark:text-gold transition-colors hover:text-amber-700 dark:hover:text-gold-soft">
                                         Confirm
                                     </Link>
                                 </div>
@@ -309,7 +309,7 @@ export default function Hero() {
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.9, delay: 0.75, ease: EASE }}
-                    className="surface mt-16 grid grid-cols-2 divide-white/[0.06] md:mt-20 md:grid-cols-4 md:divide-x"
+                    className="surface mt-16 grid grid-cols-2 divide-y divide-slate-200 dark:divide-white/[0.06] md:mt-20 md:grid-cols-4 md:divide-y-0 md:divide-x"
                 >
                     {STATS.map((s) => (
                         <div key={s.label} className="flex flex-col items-center gap-1 px-4 py-6 text-center">
@@ -323,10 +323,10 @@ export default function Hero() {
                 </motion.div>
 
                 <div className="mt-10 flex justify-center">
-                    <a href="#universities" aria-label="Scroll to universities" className="group flex flex-col items-center gap-2 text-muted transition-colors hover:text-brand-300">
+                    <a href="#universities" aria-label="Scroll to universities" className="group flex flex-col items-center gap-2 text-muted transition-colors hover:text-brand-600 dark:hover:text-brand-300">
                         <span className="text-[10px] uppercase tracking-[0.3em]">Scroll</span>
-                        <span className="flex h-9 w-5 items-start justify-center rounded-full border border-white/15 p-1">
-                            <span className="h-1.5 w-1.5 rounded-full bg-brand-400 animate-scroll-dot" />
+                        <span className="flex h-9 w-5 items-start justify-center rounded-full border border-slate-300 dark:border-white/15 p-1">
+                            <span className="h-1.5 w-1.5 rounded-full bg-brand-500 animate-scroll-dot" />
                         </span>
                     </a>
                 </div>

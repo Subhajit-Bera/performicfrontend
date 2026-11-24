@@ -597,7 +597,7 @@ const UniversityFilterComponent = () => {
                                     className={`rounded-full px-4 py-2 text-xs font-semibold transition-all duration-300 ${
                                         streamFilter === stream
                                             ? 'bg-brand-gradient text-white shadow-glow'
-                                            : 'border border-white/10 bg-white/[0.03] text-text-secondary hover:border-brand-400/40 hover:text-text'
+                                            : 'border border-slate-200 dark:border-white/10 bg-white dark:bg-white/[0.03] text-slate-600 dark:text-text-secondary hover:border-slate-300 dark:hover:border-brand-400/40 hover:text-slate-900 dark:hover:text-text shadow-xs dark:shadow-none'
                                     }`}
                                 >
                                     {stream}

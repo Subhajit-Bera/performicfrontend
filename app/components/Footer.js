@@ -41,7 +41,7 @@ const SOCIALS = [
 
 export default function Footer() {
     return (
-        <footer className="relative overflow-hidden border-t border-white/[0.07] bg-ink-900">
+        <footer className="relative overflow-hidden border-t border-slate-200 dark:border-white/[0.07] bg-slate-100/70 dark:bg-ink-900">
             <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand-400/60 to-transparent" />
             <div aria-hidden="true" className="pointer-events-none absolute left-1/2 top-[-14rem] h-[24rem] w-[46rem] -translate-x-1/2 rounded-full bg-brand-600/10 blur-[130px]" />
 
@@ -63,7 +63,7 @@ export default function Footer() {
                                     target="_blank"
                                     rel="noreferrer noopener"
                                     aria-label={s.label}
-                                    className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/[0.08] bg-white/[0.03] text-text-secondary transition-all duration-300 hover:-translate-y-0.5 hover:border-brand-400/50 hover:text-brand-300"
+                                    className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 dark:border-white/[0.08] bg-white dark:bg-white/[0.03] text-text-secondary transition-all duration-300 hover:-translate-y-0.5 hover:border-brand-500 hover:text-brand-600 dark:hover:text-brand-300 shadow-xs dark:shadow-none"
                                 >
                                     <s.icon size={17} />
                                 </a>

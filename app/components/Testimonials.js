@@ -50,14 +50,14 @@ export default function Testimonials() {
                             transition={{ duration: 0.7, delay: i * 0.12, ease: [0.22, 1, 0.36, 1] }}
                             className="group surface surface-hover relative flex h-full flex-col p-7"
                         >
-                            <Quote size={30} className="absolute right-6 top-6 text-white/[0.07] transition-colors duration-500 group-hover:text-brand-400/25" />
+                            <Quote size={30} className="absolute right-6 top-6 text-slate-200 dark:text-white/[0.07] transition-colors duration-500 group-hover:text-brand-400/25" />
                             <div className="flex items-center gap-1 text-gold">
                                 {[0, 1, 2, 3, 4].map((n) => <Star key={n} size={14} className="fill-current" />)}
                             </div>
                             <blockquote className="mt-5 flex-1 text-sm leading-relaxed text-text-secondary">
                                 “{s.quote}”
                             </blockquote>
-                            <figcaption className="mt-7 flex items-center gap-3 border-t border-white/[0.07] pt-5">
+                            <figcaption className="mt-7 flex items-center gap-3 border-t border-slate-200 dark:border-white/[0.07] pt-5">
                                 <span className={`flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br ${s.tone} font-display text-sm font-bold text-white`}>
                                     {s.initials}
                                 </span>

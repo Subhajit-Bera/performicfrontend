@@ -62,7 +62,7 @@ const faqData = [
 function FaqItem({ question, answer, open, onToggle }) {
     const panelId = useId();
     return (
-        <div className={`overflow-hidden rounded-2xl border transition-colors duration-500 ${open ? 'border-brand-400/40 bg-white/[0.04]' : 'border-white/[0.07] bg-white/[0.02] hover:border-white/15'}`}>
+        <div className={`overflow-hidden rounded-2xl border transition-colors duration-500 ${open ? 'border-brand-500/50 bg-brand-50/50 dark:bg-white/[0.04]' : 'border-slate-200 dark:border-white/[0.07] bg-white dark:bg-white/[0.02] hover:border-slate-300 dark:hover:border-white/15 shadow-xs dark:shadow-none'}`}>
             <button
                 type="button"
                 onClick={onToggle}
@@ -73,7 +73,7 @@ function FaqItem({ question, answer, open, onToggle }) {
                 <span className={`font-display text-sm font-semibold transition-colors duration-300 md:text-base ${open ? 'text-text' : 'text-text-secondary'}`}>
                     {question}
                 </span>
-                <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full border transition-all duration-500 ${open ? 'rotate-45 border-gold/50 bg-gold/15 text-gold' : 'border-white/10 text-text-secondary'}`}>
+                <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full border transition-all duration-500 ${open ? 'rotate-45 border-gold/50 bg-gold/15 text-gold' : 'border-slate-200 dark:border-white/10 text-text-secondary'}`}>
                     <Plus size={16} />
                 </span>
             </button>

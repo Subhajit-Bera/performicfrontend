@@ -116,9 +116,9 @@ export default function UpcomingExams() {
                                 {CALENDAR.map((row, i) => (
                                     <li key={row.month} className="relative flex gap-4 pb-6 last:pb-0">
                                         {i < CALENDAR.length - 1 && (
-                                            <span className="absolute left-[5px] top-4 h-full w-px bg-gradient-to-b from-white/20 to-transparent" />
+                                            <span className="absolute left-[5px] top-4 h-full w-px bg-gradient-to-b from-slate-300 dark:from-white/20 to-transparent" />
                                         )}
-                                        <span className={`relative mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full ${row.tone} shadow-[0_0_0_4px_rgba(255,255,255,0.05)]`} />
+                                        <span className={`relative mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full ${row.tone} shadow-[0_0_0_4px_rgba(0,0,0,0.04)] dark:shadow-[0_0_0_4px_rgba(255,255,255,0.05)]`} />
                                         <div>
                                             <p className="font-display text-sm font-bold text-text">{row.month}</p>
                                             <p className="text-xs text-text-secondary">{row.exam}</p>
