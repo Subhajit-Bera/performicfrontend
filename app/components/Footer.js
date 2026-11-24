@@ -1,147 +1,124 @@
-// import React from 'react';
-// import Link from 'next/link';
-// import { Facebook, Twitter, Linkedin, Instagram } from 'lucide-react';
-
-// export default function Footer() {
-//     return (
-//         <footer className="bg-slate-900 border-t border-slate-800">
-//             <div className="container mx-auto px-6 py-12">
-//                 <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-//                     {/* Column 1: Brand & About */}
-//                     <div className="md:col-span-1">
-//                         <h3 className="text-xl font-bold text-white mb-4">Edu<span className="text-cyan-400">Elevate</span></h3>
-//                         <p className="text-slate-400 text-sm">Your trusted partner in navigating the path to higher education and a successful career.</p>
-//                     </div>
-
-//                     {/* Column 2: Quick Links */}
-//                     <div>
-//                         <h4 className="font-semibold text-white mb-4">Quick Links</h4>
-//                         <ul className="space-y-2 text-sm">
-//                             <li><Link href="/" className="text-slate-400 hover:text-cyan-400 transition-colors">Home</Link></li>
-//                             <li><Link href="/universities" className="text-slate-400 hover:text-cyan-400 transition-colors">Universities</Link></li>
-//                             <li><Link href="/book-appointment" className="text-slate-400 hover:text-cyan-400 transition-colors">Book Appointment</Link></li>
-//                             <li><Link href="/profile" className="text-slate-400 hover:text-cyan-400 transition-colors">My Profile</Link></li>
-//                         </ul>
-//                     </div>
-
-//                     {/* Column 3: Contact */}
-//                     <div>
-//                         <h4 className="font-semibold text-white mb-4">Contact Us</h4>
-//                         <ul className="space-y-2 text-sm text-slate-400">
-//                             <li>Email: support@eduelevate.com</li>
-//                             <li>Phone: +1 (234) 567-890</li>
-//                             <li>Kolkata, West Bengal, India</li>
-//                         </ul>
-//                     </div>
-                    
-//                     {/* Column 4: Social Media */}
-//                     <div>
-//                         <h4 className="font-semibold text-white mb-4">Follow Us</h4>
-//                         <div className="flex space-x-4">
-//                             <a href="#" className="text-slate-400 hover:text-cyan-400 transition-colors"><Facebook size={20} /></a>
-//                             <a href="#" className="text-slate-400 hover:text-cyan-400 transition-colors"><Twitter size={20} /></a>
-//                             <a href="#" className="text-slate-400 hover:text-cyan-400 transition-colors"><Instagram size={20} /></a>
-//                             <a href="#" className="text-slate-400 hover:text-cyan-400 transition-colors"><Linkedin size={20} /></a>
-//                         </div>
-//                     </div>
-//                 </div>
-
-//                 <div className="mt-12 border-t border-slate-800 pt-6 text-center">
-//                     <p className="text-slate-500 text-sm">&copy; {new Date().getFullYear()} EduElevate. All Rights Reserved.</p>
-//                 </div>
-//             </div>
-//         </footer>
-//     );
-// }
-
-
-
-
-
-// import React from 'react';
-// import Link from 'next/link';
-// import { Facebook, Twitter, Linkedin, Instagram } from 'lucide-react';
-
-// export default function Footer() {
-//     return (
-//         <footer className="bg-primary border-t border-secondary">
-//             <div className="container mx-auto px-6 py-12 text-center">
-//                 <h3 className="text-xl font-bold text-white mb-4">Per<span className="text-accent">Formic</span></h3>
-//                 <p className="text-text-secondary text-sm max-w-md mx-auto">Your trusted partner in navigating the path to higher education and a successful career.</p>
-//                 <div className="flex justify-center space-x-4 my-6">
-//                     <a href="#" className="text-text-secondary hover:text-accent transition-colors"><Facebook size={20} /></a>
-//                     <a href="#" className="text-text-secondary hover:text-accent transition-colors"><Twitter size={20} /></a>
-//                     <a href="#" className="text-text-secondary hover:text-accent transition-colors"><Instagram size={20} /></a>
-//                     <a href="#" className="text-text-secondary hover:text-accent transition-colors"><Linkedin size={20} /></a>
-//                 </div>
-//                 <div className="mt-8 border-t border-secondary pt-6">
-//                     <p className="text-text-secondary text-sm">&copy; {new Date().getFullYear()} PerFormic. All Rights Reserved.</p>
-//                 </div>
-//             </div>
-//         </footer>
-//     );
-// }
-
-
-
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Phone, MapPin, Mail, Facebook, Linkedin, Twitter, Instagram } from 'lucide-react';
+import { Phone, MapPin, Mail, Facebook, Linkedin, Twitter, Instagram, ArrowUp } from 'lucide-react';
+
+const COLUMNS = [
+    {
+        title: 'Company',
+        links: [
+            { href: '/about', label: 'About us' },
+            { href: '/universities', label: 'Universities' },
+            { href: '/top-universities', label: 'Top universities' },
+            { href: '/contact', label: 'Contact us' },
+        ],
+    },
+    {
+        title: 'Students',
+        links: [
+            { href: '/book-appointment', label: 'Book counselling' },
+            { href: '/#exams', label: 'Entrance exams' },
+            { href: '/#careers', label: 'Career options' },
+            { href: '/profile', label: 'My profile' },
+        ],
+    },
+    {
+        title: 'Legal',
+        links: [
+            { href: '/privacy-policy', label: 'Privacy policy' },
+            { href: '/terms', label: 'Terms & refund policy' },
+            { href: '/#faq', label: 'FAQ' },
+        ],
+    },
+];
+
+const SOCIALS = [
+    { icon: Facebook, label: 'Facebook', href: 'https://facebook.com' },
+    { icon: Instagram, label: 'Instagram', href: 'https://instagram.com' },
+    { icon: Linkedin, label: 'LinkedIn', href: 'https://linkedin.com' },
+    { icon: Twitter, label: 'X / Twitter', href: 'https://twitter.com' },
+];
 
 export default function Footer() {
     return (
-        <footer className="bg-primary border-t border-secondary">
-            <div className="container mx-auto px-6 py-12">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-sm">
-                    {/* Column 1: Logo & Socials */}
-                    <div className="space-y-4">
-                        <Link href="/" className="inline-block">
-                             <Image 
-                                src="/Logo.png" 
-                                alt="Performic Consultancy Services Logo" 
-                                width={180} 
-                                height={40}
-                            />
+        <footer className="relative overflow-hidden border-t border-white/[0.07] bg-ink-900">
+            <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand-400/60 to-transparent" />
+            <div aria-hidden="true" className="pointer-events-none absolute left-1/2 top-[-14rem] h-[24rem] w-[46rem] -translate-x-1/2 rounded-full bg-brand-600/10 blur-[130px]" />
+
+            <div className="container relative mx-auto px-5 py-16 sm:px-6">
+                <div className="grid gap-12 lg:grid-cols-12">
+                    <div className="lg:col-span-4">
+                        <Link href="/" aria-label="PerFormic home" className="inline-block rounded-xl bg-[#F7F8FC] px-3 py-2 shadow-plate ring-1 ring-white/15">
+                            <Image src="/Logo.png" alt="PerFormic Consultancy Services" width={150} height={48} style={{ height: 40, width: 'auto' }} />
                         </Link>
-                    </div>
-
-                    {/* Column 2: Company Links */}
-                    <div className="space-y-3">
-                        <h4 className="font-bold text-base text-text mb-4">Company</h4>
-                        <Link href="/about" className="block text-text-secondary hover:text-accent transition-colors">About Us</Link>
-                        <Link href="/universities" className="block text-text-secondary hover:text-accent transition-colors">Universities</Link>
-                        <Link href="/contact" className="block text-text-secondary hover:text-accent transition-colors">Contact Us</Link>
-                    </div>
-
-                    {/* Column 3: Quick Links */}
-                    <div className="space-y-3">
-                        <h4 className="font-bold text-base text-text mb-4">Quick Links</h4>
-                        <Link href="/privacy-policy" className="block text-text-secondary hover:text-accent transition-colors">Privacy Policy</Link>
-                        <Link href="/terms" className="block text-text-secondary hover:text-accent transition-colors">Terms & Refund Policy</Link>
-                        <Link href="/#faq" className="block text-text-secondary hover:text-accent transition-colors">FAQ</Link>
-                    </div>
-                    
-                    {/* Column 4: Contact Us */}
-                    <div className="space-y-3">
-                        <h4 className="font-bold text-base text-text mb-4">Contact Us</h4>
-                        <a href="tel:+918207283226" className="flex items-start gap-2 text-text-secondary hover:text-accent transition-colors">
-                            <Phone size={16} className="mt-1 flex-shrink-0" />
-                            <span>+91 8207283226</span>
-                        </a>
-                         <a href="mailto:performic45@gmail.com" className="flex items-start gap-2 text-text-secondary hover:text-accent transition-colors">
-                            <Mail size={16} className="mt-1 flex-shrink-0" />
-                            <span>performic45@gmail.com</span>
-                        </a>
-                        <p className="flex items-start gap-2 text-text-secondary">
-                            <MapPin size={16} className="mt-1 flex-shrink-0" />
-                            <span>2/1, Russel St, Park Street area, Kolkata, West Bengal 700071</span>
+                        <p className="mt-5 max-w-sm text-sm leading-relaxed text-text-secondary">
+                            An admissions consultancy that behaves like your own admissions office — evidence-led
+                            shortlists, transparent fees and one counsellor from first call to enrolment.
                         </p>
+                        <div className="mt-6 flex gap-2.5">
+                            {SOCIALS.map((s) => (
+                                <a
+                                    key={s.label}
+                                    href={s.href}
+                                    target="_blank"
+                                    rel="noreferrer noopener"
+                                    aria-label={s.label}
+                                    className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/[0.08] bg-white/[0.03] text-text-secondary transition-all duration-300 hover:-translate-y-0.5 hover:border-brand-400/50 hover:text-brand-300"
+                                >
+                                    <s.icon size={17} />
+                                </a>
+                            ))}
+                        </div>
+                    </div>
+
+                    {COLUMNS.map((col) => (
+                        <nav key={col.title} className="lg:col-span-2" aria-label={col.title}>
+                            <h4 className="font-display text-xs font-bold uppercase tracking-[0.18em] text-text">{col.title}</h4>
+                            <ul className="mt-5 space-y-3">
+                                {col.links.map((l) => (
+                                    <li key={l.href + l.label}>
+                                        <Link href={l.href} className="link-quiet text-sm">{l.label}</Link>
+                                    </li>
+                                ))}
+                            </ul>
+                        </nav>
+                    ))}
+
+                    <div className="lg:col-span-2">
+                        <h4 className="font-display text-xs font-bold uppercase tracking-[0.18em] text-text">Reach us</h4>
+                        <ul className="mt-5 space-y-4 text-sm">
+                            <li>
+                                <a href="tel:+918207283226" className="group flex items-start gap-2.5 text-text-secondary transition-colors hover:text-text">
+                                    <Phone size={15} className="mt-0.5 shrink-0 text-gold" /> +91 82072 83226
+                                </a>
+                            </li>
+                            <li>
+                                <a href="mailto:performic45@gmail.com" className="group flex items-start gap-2.5 break-all text-text-secondary transition-colors hover:text-text">
+                                    <Mail size={15} className="mt-0.5 shrink-0 text-cyan" /> performic45@gmail.com
+                                </a>
+                            </li>
+                            <li className="flex items-start gap-2.5 text-text-secondary">
+                                <MapPin size={15} className="mt-0.5 shrink-0 text-rose-soft" />
+                                2/1, Russel St, Park Street area, Kolkata, West Bengal 700071
+                            </li>
+                        </ul>
                     </div>
                 </div>
 
-                <div className="mt-12 border-t border-secondary pt-6 text-center">
-                    <p className="text-text-secondary text-xs">&copy; {new Date().getFullYear()} Performic Consultancy Services. All rights reserved.</p>
+                <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-white/[0.07] pt-6 md:flex-row">
+                    <p className="text-xs text-muted">
+                        © {new Date().getFullYear()} PerFormic Consultancy Services. All rights reserved.
+                    </p>
+                    <div className="flex items-center gap-5">
+                        <p className="text-xs text-muted">Kolkata · Chennai · Bangalore</p>
+                        <a
+                            href="#main-content"
+                            aria-label="Back to top"
+                            className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] text-text-secondary transition-all duration-300 hover:-translate-y-1 hover:border-gold/50 hover:text-gold"
+                        >
+                            <ArrowUp size={15} />
+                        </a>
+                    </div>
                 </div>
             </div>
         </footer>

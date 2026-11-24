@@ -1341,10 +1341,20 @@ export default function UniversityForm({ onSave, initialData }) {
             const placements = initialData.placements || {};
             const topRecruiters = Array.isArray(placements.top_recruiters) ? placements.top_recruiters.join(', ') : '';
             const facilities = Array.isArray(initialData.facilities) ? initialData.facilities.join(', ') : '';
+            // Nullable columns come back as null. FormInput coerces, but the raw
+            // checkbox/select bindings treat null as uncontrolled and warn on the
+            // first edit, and formData.details is dereferenced directly when rendering.
             setFormData({
                 ...initialData,
+                admission_year: initialData.admission_year ?? '',
+                admission_open: Boolean(initialData.admission_open),
+                is_top_university: Boolean(initialData.is_top_university),
                 stream_ids: initialData.stream_ids || [],
                 top_stream_ids: initialData.top_stream_ids || [],
+                details: initialData.details || {},
+                courses_and_fees: Array.isArray(initialData.courses_and_fees)
+                    ? initialData.courses_and_fees.map((item) => ({ ...item, course: item?.course ?? '' }))
+                    : [],
                 placements: { ...placements, top_recruiters: topRecruiters },
                 facilities: facilities
             });

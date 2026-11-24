@@ -1,182 +1,201 @@
-// "use client";
-// import React, { useState, useEffect } from 'react';
-// import api from '../utils/api';
-// import UniversityCard from './UniversityCard';
-
-// export default function FeaturedUniversities() {
-//     const [universities, setUniversities] = useState([]);
-//     const [loading, setLoading] = useState(true);
-
-//     useEffect(() => {
-//         const fetchUniversities = async () => {
-//             try {
-//                 const { data } = await api.get('/universities');
-//                 // Show first 4 as featured
-//                 setUniversities(data.slice(0, 4));
-//             } catch (error) {
-//                 console.error("Failed to fetch universities", error);
-//             } finally {
-//                 setLoading(false);
-//             }
-//         };
-//         fetchUniversities();
-//     }, []);
-
-//     return (
-//         <section className="py-20 bg-slate-800/50">
-//             <div className="container mx-auto px-6">
-//                 <h2 className="text-4xl font-bold text-center mb-12">Featured Universities</h2>
-//                 {loading ? (
-//                     <div className="text-center">Loading...</div>
-//                 ) : (
-//                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-//                         {universities.map(uni => (
-//                             <UniversityCard key={uni.id} university={uni} />
-//                         ))}
-//                     </div>
-//                 )}
-//             </div>
-//         </section>
-//     );
-// }
-
-
-
-// "use client";
-// import React, { useState, useEffect } from 'react';
-// import api from '../utils/api';
-// import UniversityCard from './UniversityCard';
-// import Loader from './Loader';
-// export default function FeaturedUniversities() {
-//     const [universities, setUniversities] = useState([]);
-//     const [loading, setLoading] = useState(true);
-
-//     useEffect(() => {
-//         const fetchUniversities = async () => {
-//             try {
-//                 const { data } = await api.get('/universities');
-//                 setUniversities(data.slice(0, 4));
-//             } catch (error) {
-//                 console.error("Failed to fetch universities", error);
-//             } finally {
-//                 setLoading(false);
-//             }
-//         };
-//         fetchUniversities();
-//     }, []);
-
-//     return (
-//         <section className="py-20 bg-primary/50">
-//             <div className="container mx-auto px-6">
-//                 <h2 className="text-4xl font-bold text-center mb-12">Featured Universities</h2>
-//                 {loading ? (
-//                     <Loader/>
-//                 ) : (
-//                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-//                         {universities.map(uni => (
-//                             <UniversityCard key={uni.id} university={uni} />
-//                         ))}
-//                     </div>
-//                 )}
-//             </div>
-//         </section>
-//     );
-// }
-
-
-
-
-
-
-
-//Prev
-// "use client";
-// import React, { useState, useEffect } from 'react';
-// import api from '../utils/api';
-// import UniversityCard from './UniversityCard';
-
-// export default function FeaturedUniversities() {
-//     const [universities, setUniversities] = useState([]);
-//     const [loading, setLoading] = useState(true);
-
-//     useEffect(() => {
-//         const fetchUniversities = async () => {
-//             try {
-//                 const { data } = await api.get('/universities');
-//                 setUniversities(data.slice(0, 8)); // Fetch a few more for a good scroll
-//             } catch (error) {
-//                 console.error("Failed to fetch universities", error);
-//             } finally {
-//                 setLoading(false);
-//             }
-//         };
-//         fetchUniversities();
-//     }, []);
-
-//     return (
-//         <section className="py-20 bg-primary/30">
-//             <div className="container mx-auto px-6">
-//                 <h2 className="text-4xl font-bold text-center mb-12">Featured Universities</h2>
-//                 {loading ? (
-//                     <div className="text-center">Loading...</div>
-//                 ) : (
-//                     // THE FIX: Changed from a grid to a horizontally scrolling flex container
-//                     <div className="flex gap-6 pb-4 -mx-6 px-6 overflow-x-auto scrollbar-hide">
-//                         {universities.map(uni => (
-//                             // Added a wrapper to control the width and prevent shrinking
-//                             <div key={uni.id} className="flex-shrink-0 w-72">
-//                                 <UniversityCard university={uni} />
-//                             </div>
-//                         ))}
-//                     </div>
-//                 )}
-//             </div>
-//         </section>
-//     );
-// }
-
 "use client";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
+import Link from 'next/link';
+import { motion } from 'framer-motion';
+import { ArrowLeft, ArrowRight, Compass, CalendarCheck, GraduationCap } from 'lucide-react';
 import api from '../utils/api';
 import UniversityCard from './UniversityCard';
+import { SectionHeading, Reveal } from './ui';
+
+function SkeletonCard() {
+    return (
+        <div className="surface h-[22rem] w-[20rem] shrink-0 overflow-hidden sm:w-[22rem]">
+            <div className="h-44 animate-pulse bg-white/[0.05]" />
+            <div className="space-y-3 p-5">
+                <div className="h-4 w-3/4 animate-pulse rounded bg-white/[0.07]" />
+                <div className="h-3 w-1/2 animate-pulse rounded bg-white/[0.05]" />
+                <div className="flex gap-2 pt-2">
+                    <div className="h-5 w-16 animate-pulse rounded bg-white/[0.05]" />
+                    <div className="h-5 w-16 animate-pulse rounded bg-white/[0.05]" />
+                </div>
+                <div className="h-9 w-full animate-pulse rounded-xl bg-white/[0.05]" />
+            </div>
+        </div>
+    );
+}
 
 export default function FeaturedUniversities() {
     const [universities, setUniversities] = useState([]);
+    const [streams, setStreams] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [filter, setFilter] = useState('all');
+    const [progress, setProgress] = useState(0);
+    const railRef = useRef(null);
 
     useEffect(() => {
-        const fetchUniversities = async () => {
-            try {
-                const { data } = await api.get('/universities');
-                setUniversities(data.slice(0, 8)); // Fetch a few more for a good scroll
-            } catch (error) {
-                console.error("Failed to fetch universities", error);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchUniversities();
+        let alive = true;
+        Promise.all([api.get('/universities'), api.get('/streams')])
+            .then(([uniRes, streamRes]) => {
+                if (!alive) return;
+                setUniversities(uniRes.data);
+                setStreams(streamRes.data);
+            })
+            .catch(() => {})
+            .finally(() => alive && setLoading(false));
+        return () => { alive = false; };
     }, []);
 
+    const visible = useMemo(() => {
+        if (filter === 'all') return universities;
+        return universities.filter((u) => (u.streams || []).some((s) => s.toLowerCase() === filter.toLowerCase()));
+    }, [universities, filter]);
+
+    const scrollRail = (dir) => {
+        const rail = railRef.current;
+        if (!rail) return;
+        rail.scrollBy({ left: dir * Math.min(rail.clientWidth * 0.8, 380), behavior: 'smooth' });
+    };
+
+    useEffect(() => {
+        railRef.current?.scrollTo({ left: 0 });
+    }, [filter]);
+
+    const onRailScroll = () => {
+        const rail = railRef.current;
+        if (!rail) return;
+        const max = rail.scrollWidth - rail.clientWidth;
+        setProgress(max > 0 ? rail.scrollLeft / max : 0);
+    };
+
+    const filters = [{ label: 'All campuses', value: 'all' }, ...streams.map((s) => ({ label: s.name, value: s.name }))];
+
     return (
-        <section className="py-20 bg-primary/30">
-            <div className="container mx-auto px-6">
-                <h2 className="text-4xl font-bold text-center mb-12">Featured Universities</h2>
-                {loading ? (
-                    <div className="text-center">Loading...</div>
-                ) : (
-                    // THE FIX: Added scroll-snap properties for a better scrolling experience
-                    <div className="flex gap-6 pb-4 -mx-6 px-6 overflow-x-auto scrollbar-hide snap-x snap-mandatory">
-                        {universities.map(uni => (
-                            // THE FIX: 
-                            // 1. Added a responsive width: 5/6 of the screen on small devices, fixed 72 on larger ones.
-                            // 2. Added snap-start to align cards cleanly when scrolling.
-                            <div key={uni.id} className="flex-shrink-0 w-11/12 sm:w-80">
-                                <UniversityCard university={uni} />
+        <section id="universities" className="relative overflow-hidden py-20 md:py-28">
+            <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+                <div className="absolute left-[-10%] top-1/4 h-[26rem] w-[26rem] rounded-full bg-brand-600/10 blur-[130px]" />
+                <div className="absolute bottom-0 right-[-8%] h-[22rem] w-[22rem] rounded-full bg-gold/[0.06] blur-[120px]" />
+            </div>
+
+            <div className="container relative mx-auto px-5 sm:px-6">
+                <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
+                    <SectionHeading
+                        align="left"
+                        eyebrow="Partner campuses"
+                        title="Universities we"
+                        highlight="actually place students in"
+                        description="Every campus on this list is verified by our counsellors — fees, intake dates and placement records checked against the registrar, not the brochure."
+                        className="max-w-2xl"
+                    />
+                    <Reveal delay={0.15} className="flex items-center gap-2">
+                        <button onClick={() => scrollRail(-1)} aria-label="Scroll universities left" className="rounded-xl border border-white/10 bg-white/[0.04] p-3 text-text-secondary transition-all duration-300 hover:border-brand-400/50 hover:text-text">
+                            <ArrowLeft size={17} />
+                        </button>
+                        <button onClick={() => scrollRail(1)} aria-label="Scroll universities right" className="rounded-xl border border-white/10 bg-white/[0.04] p-3 text-text-secondary transition-all duration-300 hover:border-brand-400/50 hover:text-text">
+                            <ArrowRight size={17} />
+                        </button>
+                    </Reveal>
+                </div>
+
+                <Reveal delay={0.1} className="mt-8 flex flex-wrap gap-2">
+                    {filters.map((f) => (
+                        <button
+                            key={f.value}
+                            onClick={() => setFilter(f.value)}
+                            className={`rounded-full px-4 py-2 text-xs font-semibold transition-all duration-300 ${
+                                filter === f.value
+                                    ? 'bg-brand-gradient text-white shadow-glow'
+                                    : 'border border-white/10 bg-white/[0.03] text-text-secondary hover:border-brand-400/40 hover:text-text'
+                            }`}
+                        >
+                            {f.label}
+                        </button>
+                    ))}
+                </Reveal>
+
+                <div
+                    ref={railRef}
+                    onScroll={onRailScroll}
+                    className="scrollbar-hide -mx-5 mt-8 flex snap-x snap-mandatory gap-5 overflow-x-auto px-5 pb-4 scroll-pl-5 sm:-mx-6 sm:px-6 sm:scroll-pl-6"
+                >
+                    {loading ? (
+                        [0, 1, 2].map((i) => <SkeletonCard key={i} />)
+                    ) : (
+                        <>
+                            {visible.map((uni, i) => (
+                                <motion.div
+                                    key={uni.id}
+                                    initial={{ opacity: 0, y: 26 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true, amount: 0.2 }}
+                                    transition={{ duration: 0.6, delay: Math.min(i * 0.08, 0.4), ease: [0.22, 1, 0.36, 1] }}
+                                    className="w-[85vw] shrink-0 snap-start sm:w-[22rem]"
+                                >
+                                    <UniversityCard university={uni} />
+                                </motion.div>
+                            ))}
+
+                            {visible.length === 0 && (
+                                <div className="surface flex w-[85vw] shrink-0 flex-col items-center justify-center gap-3 p-10 text-center sm:w-[22rem]">
+                                    <GraduationCap size={28} className="text-muted" />
+                                    <p className="text-sm text-text-secondary">No campuses in this stream yet.</p>
+                                    <button onClick={() => setFilter('all')} className="btn-ghost btn-sm">Show all campuses</button>
+                                </div>
+                            )}
+
+                            <div className="surface flex w-[85vw] shrink-0 snap-start flex-col justify-between p-6 sm:w-[22rem]">
+                                <div>
+                                    <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-cyan/15 text-cyan">
+                                        <Compass size={19} />
+                                    </span>
+                                    <h3 className="mt-4 font-display text-lg font-bold text-text">Browse by stream</h3>
+                                    <p className="mt-1.5 text-sm text-text-secondary">Jump straight to the discipline you are aiming for.</p>
+                                </div>
+                                <div className="mt-5 flex flex-col gap-2">
+                                    {streams.map((s) => (
+                                        <Link
+                                            key={s.id}
+                                            href={`/universities?stream=${s.slug}`}
+                                            className="group flex items-center justify-between rounded-xl border border-white/[0.07] bg-white/[0.03] px-4 py-2.5 text-sm font-medium text-text-secondary transition-all duration-300 hover:border-cyan/40 hover:text-text"
+                                        >
+                                            {s.name}
+                                            <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-1" />
+                                        </Link>
+                                    ))}
+                                </div>
                             </div>
-                        ))}
-                    </div>
-                )}
+
+                            <div className="relative flex w-[85vw] shrink-0 snap-start flex-col justify-between overflow-hidden rounded-2xl bg-brand-gradient p-6 sm:w-[22rem]">
+                                <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-white/15 blur-2xl" />
+                                <div className="relative">
+                                    <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/15 text-white">
+                                        <CalendarCheck size={19} />
+                                    </span>
+                                    <h3 className="mt-4 font-display text-lg font-bold text-white">Not sure where you fit?</h3>
+                                    <p className="mt-1.5 text-sm text-white/80">
+                                        A 20-minute call with a counsellor narrows 120 campuses down to the three worth your application fee.
+                                    </p>
+                                </div>
+                                <Link href="/book-appointment" className="btn-gold btn-md relative mt-6 w-full">
+                                    Book free counselling
+                                </Link>
+                            </div>
+                        </>
+                    )}
+                </div>
+
+                <div className="mt-2 h-0.5 w-full overflow-hidden rounded-full bg-white/[0.06]">
+                    <div
+                        className="h-full rounded-full bg-gradient-to-r from-brand-400 to-gold transition-[width] duration-200"
+                        style={{ width: `${Math.max(progress * 100, 8)}%` }}
+                    />
+                </div>
+
+                <Reveal delay={0.1} className="mt-8 flex justify-center">
+                    <Link href="/universities" className="btn-ghost btn-md group">
+                        View the full catalogue
+                        <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
+                    </Link>
+                </Reveal>
             </div>
         </section>
     );

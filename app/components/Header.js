@@ -1,469 +1,385 @@
-// "use client";
-// import React, { useState, useEffect } from 'react';
-// import Link from 'next/link';
-// import { useAuth } from '../context/AuthContext';
-// import { User, LogOut, Menu, X, LayoutDashboard, ChevronDown } from 'lucide-react';
-// import { motion, AnimatePresence } from 'framer-motion';
-// import api from '../utils/api';
-
-// // Mega Menu Component for Desktop
-// const MegaMenu = ({ streams, onLinkClick }) => (
-//     <motion.div
-//         initial={{ opacity: 0, y: -10 }}
-//         animate={{ opacity: 1, y: 0 }}
-//         exit={{ opacity: 0, y: -10 }}
-//         transition={{ duration: 0.2 }}
-//         className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-max max-w-sm bg-primary border border-secondary rounded-lg shadow-lg p-4"
-//     >
-//         <div className="grid grid-cols-2 gap-x-6 gap-y-2">
-//             <Link href="/universities" onClick={onLinkClick} className="font-semibold text-text hover:text-accent p-2 rounded-md transition-colors text-sm">All Universities</Link>
-//             {streams.map(stream => (
-//                 <Link key={stream.id} href={`/universities?stream=${stream.slug}`} onClick={onLinkClick} className="text-text-secondary hover:text-accent p-2 rounded-md transition-colors text-sm">{stream.name}</Link>
-//             ))}
-//         </div>
-//     </motion.div>
-// );
-
-// // Navigation Item with Hover Logic for Desktop
-// const NavItemWithMenu = ({ label, children }) => {
-//     const [isHovered, setIsHovered] = useState(false);
-//     return (
-//         <div className="relative" onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
-//             <div className="flex items-center gap-1 cursor-pointer">
-//                 {label} <ChevronDown size={16} className={`transition-transform duration-200 ${isHovered ? 'rotate-180' : ''}`} />
-//             </div>
-//             <AnimatePresence>{isHovered && children}</AnimatePresence>
-//         </div>
-//     );
-// };
-
-// export default function Header() {
-//     const { isAuthenticated, user, logout, profileCompletion } = useAuth();
-//     const [isMenuOpen, setIsMenuOpen] = useState(false);
-//     const [isMobileUniMenuOpen, setIsMobileUniMenuOpen] = useState(false);
-//     const [streams, setStreams] = useState([]);
-
-//     useEffect(() => {
-//         api.get('/streams').then(res => setStreams(res.data)).catch(err => console.error("Failed to fetch streams"));
-//     }, []);
-
-//     const closeMobileMenu = () => setIsMenuOpen(false);
-
-//     // const ProfileProgressCircle = ({ percentage }) => { /* ... unchanged ... */ };
-//     const ProfileProgressCircle = ({ percentage }) => {
-//         const radius = 18;
-//         const circumference = 2 * Math.PI * radius;
-//         const offset = circumference - (percentage / 100) * circumference;
-
-//         return (
-//             <svg className="w-10 h-10 transform -rotate-90" viewBox="0 0 40 40">
-//                 <circle className="text-secondary" strokeWidth="4" stroke="currentColor" fill="transparent" r={radius} cx="20" cy="20" />
-//                 <motion.circle className="text-accent" strokeWidth="4" strokeDasharray={circumference} strokeDashoffset={offset} strokeLinecap="round" stroke="currentColor" fill="transparent" r={radius} cx="20" cy="20" initial={{ strokeDashoffset: circumference }} animate={{ strokeDashoffset: offset }} transition={{ duration: 1, ease: "easeInOut" }} />
-//             </svg>
-//         );
-//     };
-
-//     const NavLinks = ({ inMobileMenu = false }) => (
-//         <>
-//             <Link href="/" className="hover:text-accent transition-colors py-2" onClick={() => inMobileMenu && closeMobileMenu()}>Home</Link>
-
-//             {/* Desktop University Menu */}
-//             <div className="hidden md:block">
-//                 <NavItemWithMenu label="Universities">
-//                     <MegaMenu streams={streams} onLinkClick={() => { }} />
-//                 </NavItemWithMenu>
-//             </div>
-
-//             {/* Mobile University Menu */}
-//             <div className="md:hidden w-full">
-//                 <button onClick={() => setIsMobileUniMenuOpen(!isMobileUniMenuOpen)} className="flex justify-between items-center w-full hover:text-accent transition-colors py-2">
-//                     <span>Universities</span>
-//                     <ChevronDown size={20} className={`transition-transform duration-300 ${isMobileUniMenuOpen ? 'rotate-180' : ''}`} />
-//                 </button>
-//                 <AnimatePresence>
-//                     {isMobileUniMenuOpen && (
-//                         <motion.div
-//                             initial={{ height: 0, opacity: 0 }}
-//                             animate={{ height: 'auto', opacity: 1 }}
-//                             exit={{ height: 0, opacity: 0 }}
-//                             className="overflow-hidden pl-4 border-l border-secondary"
-//                         >
-//                             <div className="flex flex-col items-start py-2">
-//                                 <Link href="/universities" onClick={closeMobileMenu} className="text-text-secondary hover:text-accent py-1.5 transition-colors text-sm w-full text-left">All Universities</Link>
-//                                 {streams.map(stream => (
-//                                     <Link key={stream.id} href={`/universities?stream=${stream.slug}`} onClick={closeMobileMenu} className="text-text-secondary hover:text-accent py-1.5 transition-colors text-sm w-full text-left">{stream.name}</Link>
-//                                 ))}
-//                             </div>
-//                         </motion.div>
-//                     )}
-//                 </AnimatePresence>
-//             </div>
-
-//             <Link href="/#exams" className="hover:text-accent transition-colors py-2" onClick={() => inMobileMenu && closeMobileMenu()}>Exams</Link>
-//             <Link href="/book-appointment" className="hover:text-accent transition-colors py-2" onClick={() => inMobileMenu && closeMobileMenu()}>Book Appointment</Link>
-//             {isAuthenticated && user?.role === 'admin' && (
-//                 <Link href="/admin" className="flex items-center gap-2 hover:text-accent transition-colors py-2" onClick={() => inMobileMenu && closeMobileMenu()}>
-//                     <LayoutDashboard size={18} /> Admin
-//                 </Link>
-//             )}
-//         </>
-//     );
-
-//     return (
-//         <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm border-b border-secondary/50">
-//             <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-//                 <Link href="/" className="text-2xl font-bold">Per<span className="text-accent">Formic</span></Link>
-//                 <nav className="hidden md:flex items-center space-x-8 text-sm font-medium text-text"><NavLinks /></nav>
-//                 <div className="flex items-center gap-4">
-//                     {/* ... Auth Buttons and Mobile Menu Icon ... */}
-//                     {isAuthenticated ? (
-//                         <div className="flex items-center gap-4">
-//                             <Link href="/profile" className="relative flex items-center justify-center">
-//                                 <ProfileProgressCircle percentage={profileCompletion} />
-//                                 <User className="absolute text-text" size={18} />
-//                             </Link>
-//                             <button onClick={logout} className="hidden md:flex items-center gap-2 text-text-secondary hover:text-red-400 transition-colors"><LogOut size={18} /></button>
-//                         </div>
-//                     ) : (
-//                         <div className="hidden md:flex items-center gap-2">
-//                             <Link href="/login" className="px-4 py-2 text-sm rounded-md hover:bg-primary transition-colors">Login</Link>
-//                             <Link href="/register" className="px-4 py-2 text-sm bg-accent rounded-md hover:bg-accent-hover transition-colors">Sign Up</Link>
-//                         </div>
-//                     )}
-//                     <div className="md:hidden"><button onClick={() => setIsMenuOpen(!isMenuOpen)}>{isMenuOpen ? <X /> : <Menu />}</button></div>
-//                 </div>
-//             </div>
-//             <AnimatePresence>
-//                 {isMenuOpen && (
-//                     <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} className="md:hidden bg-primary border-t border-secondary">
-//                         <nav className="flex flex-col items-center divide-y divide-secondary/50 px-6 pt-2 pb-4 text-text"><NavLinks inMobileMenu={true} /></nav>
-//                     </motion.div>
-//                 )}
-//             </AnimatePresence>
-//         </header>
-//     );
-// }
-
-
-
-// "use client";
-// import React, { useState, useEffect } from 'react';
-// import Link from 'next/link';
-// import { useAuth } from '../context/AuthContext';
-// import { User, LogOut, Menu, X, LayoutDashboard, ChevronDown } from 'lucide-react';
-// import { motion, AnimatePresence } from 'framer-motion';
-// import api from '../utils/api';
-
-// // Mega Menu Component for Desktop (UPDATED for better styling)
-// const MegaMenu = ({ streams, onLinkClick }) => (
-//     <motion.div
-//         initial={{ opacity: 0, y: -10 }}
-//         animate={{ opacity: 1, y: 0 }}
-//         exit={{ opacity: 0, y: -10 }}
-//         transition={{ duration: 0.2 }}
-//         className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-60 bg-primary border border-secondary rounded-lg shadow-lg p-2"
-//     >
-//         <div className="flex flex-col">
-//             <Link href="/universities?filter=top" onClick={onLinkClick} className="font-semibold text-text hover:bg-secondary/50 p-2 rounded-md transition-colors text-sm">Top Universities</Link>
-//             <hr className="border-secondary my-1" />
-//             <Link href="/universities" onClick={onLinkClick} className="font-semibold text-text hover:bg-secondary/50 p-2 rounded-md transition-colors text-sm">All Universities</Link>
-//             {streams.map(stream => (
-//                 <Link key={stream.id} href={`/universities?stream=${stream.slug}`} onClick={onLinkClick} className="text-text-secondary hover:bg-secondary/50 p-2 rounded-md transition-colors text-sm">{stream.name}</Link>
-//             ))}
-//         </div>
-//     </motion.div>
-// );
-
-// // Navigation Item with Hover Logic for Desktop
-// const NavItemWithMenu = ({ label, children }) => {
-//     const [isHovered, setIsHovered] = useState(false);
-//     return (
-//         <div className="relative" onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
-//             <div className="flex items-center gap-1 cursor-pointer py-2">
-//                 {label} <ChevronDown size={16} className={`transition-transform duration-200 ${isHovered ? 'rotate-180' : ''}`} />
-//             </div>
-//             <AnimatePresence>{isHovered && children}</AnimatePresence>
-//         </div>
-//     );
-// };
-
-
-// export default function Header() {
-//     const { isAuthenticated, user, logout, profileCompletion } = useAuth();
-//     const [isMenuOpen, setIsMenuOpen] = useState(false);
-//     const [isMobileUniMenuOpen, setIsMobileUniMenuOpen] = useState(false);
-//     const [streams, setStreams] = useState([]);
-
-//     useEffect(() => {
-//         api.get('/streams').then(res => setStreams(res.data)).catch(err => console.error("Failed to fetch streams"));
-//     }, []);
-
-//     const closeMobileMenu = () => {
-//         setIsMenuOpen(false);
-//         setIsMobileUniMenuOpen(false); // Also close submenu
-//     };
-
-//     const ProfileProgressCircle = ({ percentage }) => {
-//         const radius = 18;
-//         const circumference = 2 * Math.PI * radius;
-//         const offset = circumference - (percentage / 100) * circumference;
-
-//         return (
-//             <svg className="w-10 h-10 transform -rotate-90" viewBox="0 0 40 40">
-//                 <circle className="text-secondary" strokeWidth="4" stroke="currentColor" fill="transparent" r={radius} cx="20" cy="20" />
-//                 <motion.circle className="text-accent" strokeWidth="4" strokeDasharray={circumference} strokeDashoffset={offset} strokeLinecap="round" stroke="currentColor" fill="transparent" r={radius} cx="20" cy="20" initial={{ strokeDashoffset: circumference }} animate={{ strokeDashoffset: offset }} transition={{ duration: 1, ease: "easeInOut" }} />
-//             </svg>
-//         );
-//     };
-
-//     const NavLinks = ({ inMobileMenu = false }) => (
-//         <>
-//             <Link href="/" className="hover:text-accent transition-colors py-2 w-full text-left" onClick={() => inMobileMenu && closeMobileMenu()}>Home</Link>
-
-//             {/* Desktop University Menu */}
-//             <div className="hidden md:block">
-//                 <NavItemWithMenu label="Universities">
-//                     <MegaMenu streams={streams} onLinkClick={() => { }} />
-//                 </NavItemWithMenu>
-//             </div>
-
-//             {/* Mobile University Menu (UPDATED for left alignment) */}
-//             <div className="md:hidden w-full">
-//                 <button onClick={() => setIsMobileUniMenuOpen(!isMobileUniMenuOpen)} className="flex justify-between items-center w-full hover:text-accent transition-colors py-2 text-left">
-//                     <span>Universities</span>
-//                     <ChevronDown size={20} className={`transition-transform duration-300 ${isMobileUniMenuOpen ? 'rotate-180' : ''}`} />
-//                 </button>
-//                 <AnimatePresence>
-//                     {isMobileUniMenuOpen && (
-//                         <motion.div
-//                             initial={{ height: 0, opacity: 0 }}
-//                             animate={{ height: 'auto', opacity: 1 }}
-//                             exit={{ height: 0, opacity: 0 }}
-//                             className="overflow-hidden pl-4 border-l border-secondary"
-//                         >
-//                             <div className="flex flex-col items-start pt-2">
-//                                 <Link href="/universities?filter=top" onClick={closeMobileMenu} className="text-text-secondary hover:text-accent py-1.5 transition-colors text-sm w-full text-left">Top Universities</Link>
-//                                 <Link href="/universities" onClick={closeMobileMenu} className="text-text-secondary hover:text-accent py-1.5 transition-colors text-sm w-full text-left">All Universities</Link>
-//                                 {streams.map(stream => (
-//                                     <Link key={stream.id} href={`/universities?stream=${stream.slug}`} onClick={closeMobileMenu} className="text-text-secondary hover:text-accent py-1.5 transition-colors text-sm w-full text-left">{stream.name}</Link>
-//                                 ))}
-//                             </div>
-//                         </motion.div>
-//                     )}
-//                 </AnimatePresence>
-//             </div>
-
-//             <Link href="/#exams" className="hover:text-accent transition-colors py-2 w-full text-left" onClick={() => inMobileMenu && closeMobileMenu()}>Exams</Link>
-//             <Link href="/book-appointment" className="hover:text-accent transition-colors py-2 w-full text-left" onClick={() => inMobileMenu && closeMobileMenu()}>Book Appointment</Link>
-//             {isAuthenticated && user?.role === 'admin' && (
-//                 <Link href="/admin" className="flex items-center gap-2 hover:text-accent transition-colors py-2 w-full text-left" onClick={() => inMobileMenu && closeMobileMenu()}>
-//                     <LayoutDashboard size={18} /> Admin
-//                 </Link>
-//             )}
-//         </>
-//     );
-
-//     return (
-//         <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm border-b border-secondary/50">
-//             <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-//                 <Link href="/" className="text-2xl font-bold">Per<span className="text-accent">Formic</span></Link>
-//                 <nav className="hidden md:flex items-center space-x-8 text-sm font-medium text-text"><NavLinks /></nav>
-//                 <div className="flex items-center gap-4">
-//                     {isAuthenticated ? (
-//                         <div className="flex items-center gap-4">
-//                             <Link href="/profile" className="relative flex items-center justify-center">
-//                                 <ProfileProgressCircle percentage={profileCompletion} />
-//                                 <User className="absolute text-text" size={18} />
-//                             </Link>
-//                             <button onClick={logout} className="hidden md:flex items-center gap-2 text-text-secondary hover:text-red-400 transition-colors"><LogOut size={18} /></button>
-//                         </div>
-//                     ) : (
-//                         <div className="hidden md:flex items-center gap-2">
-//                             <Link href="/login" className="px-4 py-2 text-sm rounded-md hover:bg-primary transition-colors">Login</Link>
-//                             <Link href="/register" className="px-4 py-2 text-sm bg-accent rounded-md hover:bg-accent-hover transition-colors">Sign Up</Link>
-//                         </div>
-//                     )}
-//                     <div className="md:hidden"><button onClick={() => setIsMenuOpen(!isMenuOpen)}>{isMenuOpen ? <X /> : <Menu />}</button></div>
-//                 </div>
-//             </div>
-//             <AnimatePresence>
-//                 {isMenuOpen && (
-//                     <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} className="md:hidden bg-primary border-t border-secondary">
-//                         <nav className="flex flex-col items-start divide-y divide-secondary/50 px-6 pt-2 pb-4 text-text"><NavLinks inMobileMenu={true} /></nav>
-//                     </motion.div>
-//                 )}
-//             </AnimatePresence>
-//         </header>
-//     );
-// }
-
-
-
 "use client";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 import { useAuth } from '../context/AuthContext';
-import { User, LogOut, Menu, X, LayoutDashboard, ChevronDown, Briefcase } from 'lucide-react';
+import {
+    User, LogOut, Menu, X, LayoutDashboard, ChevronDown, Briefcase,
+    GraduationCap, Stethoscope, FlaskConical, CalendarCheck, ArrowUpRight, Sparkles,
+} from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import api from '../utils/api';
-import Image from 'next/image';
 
-// Mega Menu Component for Desktop (UPDATED for single-column, left-aligned layout)
-const MegaMenu = ({ streams, onLinkClick }) => (
-    <motion.div
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -10 }}
-        transition={{ duration: 0.2 }}
-        className="absolute top-full left-0 mt-2 w-60 bg-primary border border-secondary rounded-lg shadow-lg p-2"
-    >
-        <div className="flex flex-col">
-            {/* <Link href="/universities?filter=top" onClick={onLinkClick} className="font-semibold text-text hover:bg-secondary/50 p-2 rounded-md transition-colors text-sm text-left">Top Universities</Link> */}
-            <Link href="/top-universities" onClick={onLinkClick} className="font-semibold text-text hover:bg-secondary/50 p-2 rounded-md transition-colors text-sm text-left">Top Universities</Link>
-            <hr className="border-secondary my-1" />
-            <Link href="/universities" onClick={onLinkClick} className="font-semibold text-text hover:bg-secondary/50 p-2 rounded-md transition-colors text-sm text-left">All Universities</Link>
-            {streams.map(stream => (
-                <Link key={stream.id} href={`/universities?stream=${stream.slug}`} onClick={onLinkClick} className="text-text-secondary hover:bg-secondary/50 p-2 rounded-md transition-colors text-sm text-left">{stream.name}</Link>
-            ))}
-        </div>
-    </motion.div>
-);
+const EASE = [0.22, 1, 0.36, 1];
 
-// Navigation Item with Hover Logic for Desktop
-const NavItemWithMenu = ({ label, children }) => {
-    const [isHovered, setIsHovered] = useState(false);
-    return (
-        <div className="relative" onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
-            <div className="flex items-center gap-1 cursor-pointer py-2">
-                {label} <ChevronDown size={16} className={`transition-transform duration-200 ${isHovered ? 'rotate-180' : ''}`} />
-            </div>
-            <AnimatePresence>{isHovered && children}</AnimatePresence>
-        </div>
-    );
+const STREAM_ICONS = {
+    engineering: FlaskConical,
+    medical: Stethoscope,
+    pharmacy: FlaskConical,
 };
 
+function Logo({ compact = false }) {
+    return (
+        <Link href="/" aria-label="PerFormic home" className="group flex items-center">
+            <span className="rounded-xl bg-[#F7F8FC] px-2.5 py-1.5 shadow-plate ring-1 ring-white/20 transition-transform duration-500 ease-premium group-hover:scale-[1.03]">
+                <Image
+                    src="/Logo.png"
+                    alt="PerFormic Consultancy Services"
+                    width={compact ? 118 : 148}
+                    height={compact ? 38 : 48}
+                    priority
+                    className="h-auto w-auto"
+                    style={{ height: compact ? 30 : 38, width: 'auto' }}
+                />
+            </span>
+        </Link>
+    );
+}
 
 function ProfileProgressCircle({ percentage }) {
-    const radius = 18;
+    const radius = 16;
     const circumference = 2 * Math.PI * radius;
     const offset = circumference - (percentage / 100) * circumference;
-
     return (
-        <svg className="w-10 h-10 transform -rotate-90" viewBox="0 0 40 40">
-            <circle className="text-secondary" strokeWidth="4" stroke="currentColor" fill="transparent" r={radius} cx="20" cy="20" />
-            <motion.circle className="text-accent" strokeWidth="4" strokeDasharray={circumference} strokeDashoffset={offset} strokeLinecap="round" stroke="currentColor" fill="transparent" r={radius} cx="20" cy="20" initial={{ strokeDashoffset: circumference }} animate={{ strokeDashoffset: offset }} transition={{ duration: 1, ease: "easeInOut" }} />
+        <svg className="h-10 w-10 -rotate-90" viewBox="0 0 40 40" aria-hidden="true">
+            <circle className="text-white/10" strokeWidth="3.5" stroke="currentColor" fill="transparent" r={radius} cx="20" cy="20" />
+            <motion.circle
+                className="text-gold"
+                strokeWidth="3.5"
+                strokeDasharray={circumference}
+                strokeLinecap="round"
+                stroke="currentColor"
+                fill="transparent"
+                r={radius}
+                cx="20"
+                cy="20"
+                initial={{ strokeDashoffset: circumference }}
+                animate={{ strokeDashoffset: offset }}
+                transition={{ duration: 1.1, ease: EASE }}
+            />
         </svg>
     );
 }
 
-function NavLinks({ inMobileMenu = false, streams, isMobileUniMenuOpen, setIsMobileUniMenuOpen, closeMobileMenu, isAuthenticated, user }) {
+function UniversitiesMenu({ streams, onNavigate }) {
     return (
-        <>
-            <Link href="/" className="hover:text-accent transition-colors py-2 w-full text-left" onClick={() => inMobileMenu && closeMobileMenu()}>Home</Link>
-
-            <div className="hidden md:block">
-                <NavItemWithMenu label="Universities">
-                    <MegaMenu streams={streams} onLinkClick={() => { }} />
-                </NavItemWithMenu>
+        <motion.div
+            initial={{ opacity: 0, y: 10, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 8, scale: 0.98 }}
+            transition={{ duration: 0.24, ease: EASE }}
+            className="absolute left-1/2 top-full z-50 mt-3 w-[30rem] -translate-x-1/2"
+        >
+            <div className="surface overflow-hidden !rounded-2xl p-2 shadow-lift">
+                <div className="grid grid-cols-2 gap-1">
+                    <Link href="/top-universities" onClick={onNavigate} className="group col-span-2 flex items-center justify-between rounded-xl bg-brand-gradient px-4 py-3 text-white transition-transform duration-300 hover:scale-[1.01]">
+                        <span className="flex items-center gap-2.5">
+                            <Sparkles size={17} className="text-gold-soft" />
+                            <span>
+                                <span className="block text-sm font-bold">Top universities 2026</span>
+                                <span className="block text-[11px] text-white/75">Ranked by outcomes, not brochures</span>
+                            </span>
+                        </span>
+                        <ArrowUpRight size={17} className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                    </Link>
+                    <Link href="/universities" onClick={onNavigate} className="col-span-2 flex items-center justify-between rounded-xl px-4 py-2.5 text-sm font-semibold text-text transition-colors hover:bg-white/[0.06]">
+                        Browse the full catalogue
+                        <ArrowUpRight size={15} className="text-muted" />
+                    </Link>
+                    <div className="col-span-2 my-1 h-px bg-white/[0.07]" />
+                    {streams.map((stream) => {
+                        const Icon = STREAM_ICONS[stream.slug] || GraduationCap;
+                        return (
+                            <Link
+                                key={stream.id}
+                                href={`/universities?stream=${stream.slug}`}
+                                onClick={onNavigate}
+                                className="group flex items-center gap-3 rounded-xl px-3.5 py-2.5 transition-colors hover:bg-white/[0.06]"
+                            >
+                                <span className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 bg-white/[0.04] text-brand-300 transition-colors group-hover:border-brand-400/50 group-hover:text-gold">
+                                    <Icon size={15} />
+                                </span>
+                                <span className="text-sm font-medium text-text-secondary transition-colors group-hover:text-text">{stream.name}</span>
+                            </Link>
+                        );
+                    })}
+                </div>
             </div>
+        </motion.div>
+    );
+}
 
-            <div className="md:hidden w-full">
-                <button onClick={() => setIsMobileUniMenuOpen(!isMobileUniMenuOpen)} className="flex justify-between items-center w-full hover:text-accent transition-colors py-2 text-left">
-                    <span>Universities</span>
-                    <ChevronDown size={20} className={`transition-transform duration-300 ${isMobileUniMenuOpen ? 'rotate-180' : ''}`} />
-                </button>
-                <AnimatePresence>
-                    {isMobileUniMenuOpen && (
-                        <motion.div
-                            initial={{ height: 0, opacity: 0 }}
-                            animate={{ height: 'auto', opacity: 1 }}
-                            exit={{ height: 0, opacity: 0 }}
-                            className="overflow-hidden pl-4 border-l border-secondary"
-                        >
-                            <div className="flex flex-col items-start pt-2">
-                                <Link href="/universities?filter=top" onClick={closeMobileMenu} className="text-text-secondary hover:text-accent py-1.5 transition-colors text-sm w-full text-left">Top Universities</Link>
-                                <Link href="/universities" onClick={closeMobileMenu} className="text-text-secondary hover:text-accent py-1.5 transition-colors text-sm w-full text-left">All Universities</Link>
-                                {streams.map(stream => (
-                                    <Link key={stream.id} href={`/universities?stream=${stream.slug}`} onClick={closeMobileMenu} className="text-text-secondary hover:text-accent py-1.5 transition-colors text-sm w-full text-left">{stream.name}</Link>
-                                ))}
-                            </div>
-                        </motion.div>
-                    )}
-                </AnimatePresence>
-            </div>
-
-            <Link href="/#exams" className="hover:text-accent transition-colors py-2 w-full text-left" onClick={() => inMobileMenu && closeMobileMenu()}>Exams</Link>
-            <Link href="/book-appointment" className="hover:text-accent transition-colors py-2 w-full text-left" onClick={() => inMobileMenu && closeMobileMenu()}>Book Appointment</Link>
-            {isAuthenticated && user?.role === 'admin' && (
-                <Link href="/admin" className="flex items-center gap-2 hover:text-accent transition-colors py-2 w-full text-left" onClick={() => inMobileMenu && closeMobileMenu()}>
-                    <LayoutDashboard size={18} /> Admin
-                </Link>
-            )}
-            {isAuthenticated && user?.role === 'agent' && (
-                <Link href="/agent" className="flex items-center gap-2 hover:text-accent transition-colors py-2" onClick={() => inMobileMenu && closeMobileMenu()}>
-                    <Briefcase size={18} /> Agent Dashboard
-                </Link>
-            )}
-        </>
+function Underline({ active }) {
+    return (
+        <span
+            className={`pointer-events-none absolute inset-x-3 -bottom-0.5 h-px bg-gradient-to-r from-brand-400 via-violet to-gold transition-opacity duration-300 ${
+                active ? 'opacity-100' : 'opacity-0'
+            }`}
+        />
     );
 }
 
 export default function Header() {
     const { isAuthenticated, user, logout, profileCompletion } = useAuth();
+    const pathname = usePathname();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isMobileUniMenuOpen, setIsMobileUniMenuOpen] = useState(false);
+    const [uniMenuOpen, setUniMenuOpen] = useState(false);
+    const [scrolled, setScrolled] = useState(false);
+    const [activeSection, setActiveSection] = useState('');
     const [streams, setStreams] = useState([]);
+    const closeTimer = useRef(null);
 
     useEffect(() => {
-        api.get('/streams').then(res => setStreams(res.data)).catch(err => console.error("Failed to fetch streams"));
+        api.get('/streams').then((res) => setStreams(res.data)).catch(() => {});
     }, []);
 
-    const closeMobileMenu = () => {
+    useEffect(() => {
+        const onScroll = () => setScrolled(window.scrollY > 24);
+        onScroll();
+        window.addEventListener('scroll', onScroll, { passive: true });
+        return () => window.removeEventListener('scroll', onScroll);
+    }, []);
+
+    useEffect(() => {
         setIsMenuOpen(false);
-        setIsMobileUniMenuOpen(false);
+        setUniMenuOpen(false);
+    }, [pathname]);
+
+    useEffect(() => {
+        document.body.style.overflow = isMenuOpen ? 'hidden' : '';
+        return () => { document.body.style.overflow = ''; };
+    }, [isMenuOpen]);
+
+    useEffect(() => {
+        if (pathname !== '/') { setActiveSection(''); return; }
+        const ids = ['universities', 'exams', 'careers', 'partners', 'faq'];
+        const attach = () => {
+            const observer = new IntersectionObserver(
+                (entries) => entries.forEach((e) => { if (e.isIntersecting) setActiveSection(`#${e.target.id}`); }),
+                { rootMargin: '-40% 0px -55% 0px' }
+            );
+            ids.forEach((id) => { const el = document.getElementById(id); if (el) observer.observe(el); });
+            return observer;
+        };
+        let observer = attach();
+        const retry = setTimeout(() => { observer.disconnect(); observer = attach(); }, 900);
+        return () => { clearTimeout(retry); observer.disconnect(); };
+    }, [pathname]);
+
+    const openMenu = () => { clearTimeout(closeTimer.current); setUniMenuOpen(true); };
+    const scheduleClose = () => { closeTimer.current = setTimeout(() => setUniMenuOpen(false), 140); };
+    const closeMobileMenu = () => { setIsMenuOpen(false); setIsMobileUniMenuOpen(false); };
+
+    const isActive = (href) => {
+        if (href.startsWith('/#')) return pathname === '/' && activeSection === href.slice(1);
+        if (href === '/') return pathname === '/' && !activeSection;
+        return pathname === href || pathname.startsWith(`${href}/`);
     };
 
-    const navLinkProps = { streams, isMobileUniMenuOpen, setIsMobileUniMenuOpen, closeMobileMenu, isAuthenticated, user };
+    const navClass = (href) =>
+        `relative rounded-lg px-3 py-2 text-sm font-medium transition-colors duration-300 ${
+            isActive(href) ? 'text-text' : 'text-text-secondary hover:text-text'
+        }`;
+
+    const desktopLinks = (
+        <>
+            <Link href="/" className={navClass('/')}>Home<Underline active={isActive('/')} /></Link>
+            <div className="relative" onMouseEnter={openMenu} onMouseLeave={scheduleClose}>
+                <button
+                    type="button"
+                    onClick={() => setUniMenuOpen((v) => !v)}
+                    aria-expanded={uniMenuOpen}
+                    className={`${navClass('/universities')} flex items-center gap-1`}
+                >
+                    Universities
+                    <ChevronDown size={15} className={`transition-transform duration-300 ${uniMenuOpen ? 'rotate-180' : ''}`} />
+                    <Underline active={isActive('/universities')} />
+                </button>
+                <AnimatePresence>
+                    {uniMenuOpen && <UniversitiesMenu streams={streams} onNavigate={() => setUniMenuOpen(false)} />}
+                </AnimatePresence>
+            </div>
+            <Link href="/#exams" className={navClass('/#exams')}>Exams<Underline active={isActive('/#exams')} /></Link>
+            <Link href="/#careers" className={navClass('/#careers')}>Careers<Underline active={isActive('/#careers')} /></Link>
+            <Link href="/contact" className={navClass('/contact')}>Contact<Underline active={isActive('/contact')} /></Link>
+            {isAuthenticated && user?.role === 'admin' && (
+                <Link href="/admin" className={`${navClass('/admin')} flex items-center gap-1.5`}>
+                    <LayoutDashboard size={15} /> Admin
+                </Link>
+            )}
+            {isAuthenticated && user?.role === 'agent' && (
+                <Link href="/agent" className={`${navClass('/agent')} flex items-center gap-1.5`}>
+                    <Briefcase size={15} /> Agent
+                </Link>
+            )}
+        </>
+    );
 
     return (
-        <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm border-b border-secondary/50">
-            <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-                {/* <Link href="/" className="text-2xl font-bold">Edu<span className="text-accent">Elevate</span></Link> */}
-                <Link href="/" className="flex items-center">
-                    <Image
-                        src="/Logo.png"
-                        alt="Performic Consultancy Services Logo"
-                        width={180}
-                        height={40}
-                        priority
-                    />
-                </Link>
-                <nav className="hidden md:flex items-center space-x-8 text-sm font-medium text-text"><NavLinks {...navLinkProps} /></nav>
-                <div className="flex items-center gap-4">
-                    {isAuthenticated ? (
-                        <div className="flex items-center gap-4">
-                            <Link href="/profile" className="relative flex items-center justify-center">
-                                <ProfileProgressCircle percentage={profileCompletion} />
-                                <User className="absolute text-text" size={18} />
-                            </Link>
-                            <button onClick={logout} className="hidden md:flex items-center gap-2 text-text-secondary hover:text-red-400 transition-colors"><LogOut size={18} /></button>
-                        </div>
-                    ) : (
-                        <div className="hidden md:flex items-center gap-2">
-                            <Link href="/login" className="px-4 py-2 text-sm rounded-md hover:bg-primary transition-colors">Login</Link>
-                            <Link href="/register" className="px-4 py-2 text-sm bg-accent rounded-md hover:bg-accent-hover transition-colors">Sign Up</Link>
-                        </div>
-                    )}
-                    <div className="md:hidden"><button onClick={() => setIsMenuOpen(!isMenuOpen)}>{isMenuOpen ? <X /> : <Menu />}</button></div>
+        <>
+            <header
+                className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ease-premium ${
+                    scrolled
+                        ? 'border-b border-white/[0.08] bg-ink-950/85 shadow-[0_18px_50px_-30px_rgba(0,0,0,0.95)] backdrop-blur-xl'
+                        : 'border-b border-transparent bg-transparent'
+                }`}
+            >
+                <div className={`container mx-auto flex items-center justify-between gap-4 px-5 transition-all duration-500 sm:px-6 ${scrolled ? 'py-2.5' : 'py-4'}`}>
+                    <Logo compact={scrolled} />
+
+                    <nav className="hidden items-center gap-1 lg:flex" aria-label="Primary">{desktopLinks}</nav>
+
+                    <div className="flex items-center gap-2.5">
+                        <Link href="/book-appointment" className="btn-gold btn-sm hidden md:inline-flex">
+                            <CalendarCheck size={15} /> Book a session
+                        </Link>
+                        {isAuthenticated ? (
+                            <div className="flex items-center gap-2">
+                                <Link href="/profile" aria-label={`Profile ${profileCompletion}% complete`} className="relative flex items-center justify-center rounded-full transition-transform duration-300 hover:scale-105">
+                                    <ProfileProgressCircle percentage={profileCompletion} />
+                                    <User className="absolute text-text" size={16} />
+                                </Link>
+                                <button onClick={logout} aria-label="Sign out" className="hidden rounded-lg p-2 text-text-secondary transition-colors hover:bg-rose/10 hover:text-rose-soft md:flex">
+                                    <LogOut size={17} />
+                                </button>
+                            </div>
+                        ) : (
+                            <div className="hidden items-center gap-1.5 md:flex">
+                                <Link href="/login" className="btn-ghost btn-sm">Login</Link>
+                                <Link href="/register" className="btn-primary btn-sm">Sign up</Link>
+                            </div>
+                        )}
+                        <button
+                            onClick={() => setIsMenuOpen(true)}
+                            aria-label="Open menu"
+                            className="rounded-lg border border-white/10 bg-white/[0.05] p-2 text-text transition-colors hover:border-brand-400/50 lg:hidden"
+                        >
+                            <Menu size={19} />
+                        </button>
+                    </div>
                 </div>
-            </div>
+            </header>
+
             <AnimatePresence>
                 {isMenuOpen && (
-                    <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} className="md:hidden bg-primary border-t border-secondary">
-                        <nav className="flex flex-col items-start divide-y divide-secondary/50 px-6 pt-2 pb-4 text-text"><NavLinks inMobileMenu={true} {...navLinkProps} /></nav>
-                    </motion.div>
+                    <>
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.3 }}
+                            onClick={closeMobileMenu}
+                            className="fixed inset-0 z-[60] bg-ink-950/70 backdrop-blur-sm lg:hidden"
+                        />
+                        <motion.aside
+                            initial={{ x: '100%' }}
+                            animate={{ x: 0 }}
+                            exit={{ x: '100%' }}
+                            transition={{ duration: 0.45, ease: EASE }}
+                            className="fixed inset-y-0 right-0 z-[70] flex w-[86%] max-w-sm flex-col border-l border-white/10 bg-ink-900/95 backdrop-blur-2xl lg:hidden"
+                            role="dialog"
+                            aria-label="Menu"
+                        >
+                            <div className="flex items-center justify-between border-b border-white/[0.07] px-5 py-4">
+                                <Logo compact />
+                                <button onClick={closeMobileMenu} aria-label="Close menu" className="rounded-lg border border-white/10 p-2 text-text-secondary transition-colors hover:text-text">
+                                    <X size={18} />
+                                </button>
+                            </div>
+
+                            <nav className="flex-1 overflow-y-auto px-5 py-5" aria-label="Mobile">
+                                <motion.div
+                                    initial="hidden"
+                                    animate="show"
+                                    variants={{ show: { transition: { staggerChildren: 0.05, delayChildren: 0.1 } } }}
+                                    className="flex flex-col gap-1"
+                                >
+                                    {[
+                                        { href: '/', label: 'Home' },
+                                        { href: '/#exams', label: 'Exams' },
+                                        { href: '/#careers', label: 'Career options' },
+                                        { href: '/#partners', label: 'Partner campuses' },
+                                        { href: '/#faq', label: 'FAQ' },
+                                        { href: '/contact', label: 'Contact' },
+                                    ].map((item) => (
+                                        <motion.div key={item.href} variants={{ hidden: { opacity: 0, x: 24 }, show: { opacity: 1, x: 0 } }}>
+                                            <Link href={item.href} onClick={closeMobileMenu} className="flex items-center justify-between rounded-xl px-3 py-3 text-base font-medium text-text-secondary transition-colors hover:bg-white/[0.05] hover:text-text">
+                                                {item.label}
+                                                <ArrowUpRight size={15} className="text-muted" />
+                                            </Link>
+                                        </motion.div>
+                                    ))}
+
+                                    <motion.div variants={{ hidden: { opacity: 0, x: 24 }, show: { opacity: 1, x: 0 } }}>
+                                        <button
+                                            onClick={() => setIsMobileUniMenuOpen((v) => !v)}
+                                            aria-expanded={isMobileUniMenuOpen}
+                                            className="flex w-full items-center justify-between rounded-xl px-3 py-3 text-base font-medium text-text-secondary transition-colors hover:bg-white/[0.05] hover:text-text"
+                                        >
+                                            Universities
+                                            <ChevronDown size={17} className={`transition-transform duration-300 ${isMobileUniMenuOpen ? 'rotate-180' : ''}`} />
+                                        </button>
+                                        <AnimatePresence>
+                                            {isMobileUniMenuOpen && (
+                                                <motion.div
+                                                    initial={{ height: 0, opacity: 0 }}
+                                                    animate={{ height: 'auto', opacity: 1 }}
+                                                    exit={{ height: 0, opacity: 0 }}
+                                                    transition={{ duration: 0.35, ease: EASE }}
+                                                    className="overflow-hidden"
+                                                >
+                                                    <div className="ml-3 flex flex-col gap-0.5 border-l border-white/10 pl-4 py-1">
+                                                        <Link href="/top-universities" onClick={closeMobileMenu} className="rounded-lg px-2 py-2 text-sm font-semibold text-gold transition-colors hover:bg-white/[0.05]">Top universities</Link>
+                                                        <Link href="/universities" onClick={closeMobileMenu} className="rounded-lg px-2 py-2 text-sm text-text-secondary transition-colors hover:bg-white/[0.05] hover:text-text">All universities</Link>
+                                                        {streams.map((s) => (
+                                                            <Link key={s.id} href={`/universities?stream=${s.slug}`} onClick={closeMobileMenu} className="rounded-lg px-2 py-2 text-sm text-text-secondary transition-colors hover:bg-white/[0.05] hover:text-text">
+                                                                {s.name}
+                                                            </Link>
+                                                        ))}
+                                                    </div>
+                                                </motion.div>
+                                            )}
+                                        </AnimatePresence>
+                                    </motion.div>
+
+                                    {isAuthenticated && user?.role === 'admin' && (
+                                        <motion.div variants={{ hidden: { opacity: 0, x: 24 }, show: { opacity: 1, x: 0 } }}>
+                                            <Link href="/admin" onClick={closeMobileMenu} className="flex items-center gap-2 rounded-xl px-3 py-3 text-base font-medium text-text-secondary hover:bg-white/[0.05] hover:text-text">
+                                                <LayoutDashboard size={17} /> Admin dashboard
+                                            </Link>
+                                        </motion.div>
+                                    )}
+                                    {isAuthenticated && user?.role === 'agent' && (
+                                        <motion.div variants={{ hidden: { opacity: 0, x: 24 }, show: { opacity: 1, x: 0 } }}>
+                                            <Link href="/agent" onClick={closeMobileMenu} className="flex items-center gap-2 rounded-xl px-3 py-3 text-base font-medium text-text-secondary hover:bg-white/[0.05] hover:text-text">
+                                                <Briefcase size={17} /> Agent dashboard
+                                            </Link>
+                                        </motion.div>
+                                    )}
+                                </motion.div>
+                            </nav>
+
+                            <div className="border-t border-white/[0.07] px-5 py-4">
+                                <Link href="/book-appointment" onClick={closeMobileMenu} className="btn-gold btn-md w-full">
+                                    <CalendarCheck size={16} /> Book a session
+                                </Link>
+                                {isAuthenticated ? (
+                                    <button onClick={() => { closeMobileMenu(); logout(); }} className="mt-2.5 flex w-full items-center justify-center gap-2 rounded-xl border border-white/10 py-2.5 text-sm text-text-secondary transition-colors hover:border-rose/40 hover:text-rose-soft">
+                                        <LogOut size={15} /> Sign out
+                                    </button>
+                                ) : (
+                                    <div className="mt-2.5 grid grid-cols-2 gap-2.5">
+                                        <Link href="/login" onClick={closeMobileMenu} className="btn-ghost btn-md">Login</Link>
+                                        <Link href="/register" onClick={closeMobileMenu} className="btn-primary btn-md">Sign up</Link>
+                                    </div>
+                                )}
+                            </div>
+                        </motion.aside>
+                    </>
                 )}
             </AnimatePresence>
-        </header>
+        </>
     );
 }

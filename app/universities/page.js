@@ -480,7 +480,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import UniversityCard from '../components/UniversityCard';
 import api from '../utils/api';
-import { Search, SlidersHorizontal } from 'lucide-react';
+import { Search } from 'lucide-react';
 
 // A new component to handle the logic, wrapped in Suspense
 const UniversityFilterComponent = () => {
@@ -492,6 +492,8 @@ const UniversityFilterComponent = () => {
     const searchParams = useSearchParams();
     const streamQuery = searchParams.get('stream');
     const filterQuery = searchParams.get('filter');
+    const searchQuery = searchParams.get('search');
+    const cityQuery = searchParams.get('city');
 
     useEffect(() => {
         let initialStream = 'All';
@@ -500,6 +502,7 @@ const UniversityFilterComponent = () => {
             initialStream = formattedStream;
         }
         setStreamFilter(initialStream);
+        setSearchTerm(searchQuery || cityQuery || '');
 
         const fetchUniversities = async () => {
             setLoading(true);
@@ -513,9 +516,9 @@ const UniversityFilterComponent = () => {
             }
         };
         fetchUniversities();
-        // Only the stream query drives the initial filter; the university fetch is
-        // unfiltered, so other query changes must not re-trigger it.
-    }, [streamQuery]);
+        // Only URL queries drive initial state; the university fetch is unfiltered,
+        // so typing in the search box must not re-trigger it.
+    }, [streamQuery, searchQuery, cityQuery]);
 
     const filteredUniversities = useMemo(() => {
         let results = universities;
@@ -536,8 +539,10 @@ const UniversityFilterComponent = () => {
         }
 
         return results.filter(uni => {
-            const matchesSearch = uni.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                uni.location.toLowerCase().includes(searchTerm.toLowerCase());
+            const term = searchTerm.toLowerCase();
+            const matchesSearch = !term || uni.name.toLowerCase().includes(term) ||
+                uni.location.toLowerCase().includes(term) ||
+                (uni.streams || []).some(s => s.toLowerCase().includes(term));
             const matchesStream = streamFilter === 'All' || (uni.streams && uni.streams.includes(streamFilter));
             return matchesSearch && matchesStream;
         });
@@ -556,49 +561,93 @@ const UniversityFilterComponent = () => {
     }, [universities]);
 
     return (
-        <div className="container mx-auto px-6 py-12">
-            <h1 className="text-4xl font-bold text-center mb-4">Find Your University</h1>
-            <p className="text-text-secondary text-center mb-8 max-w-2xl mx-auto">
-                Explore our curated list of top institutions. Use the filters below to find the perfect match.
-            </p>
+        <div className="relative overflow-hidden">
+            <div aria-hidden="true" className="pointer-events-none absolute left-1/2 top-[-16rem] h-[26rem] w-[46rem] -translate-x-1/2 rounded-full bg-brand-600/15 blur-[140px]" />
+            <div className="container relative mx-auto px-5 py-14 sm:px-6 md:py-20">
+                <span className="eyebrow">Campus catalogue</span>
+                <h1 className="mt-4 max-w-3xl text-display-md font-bold text-text">
+                    Find the campus{' '}
+                    <span className="font-editorial italic font-normal text-gradient">your scores deserve.</span>
+                </h1>
+                <p className="mt-4 max-w-2xl text-sm leading-relaxed text-text-secondary md:text-base">
+                    Every listing carries verified fees, cutoffs and placement records — filter by stream,
+                    search by name or city, and apply when your profile is ready.
+                </p>
 
-            {/* Filter UI remains the same */}
-            <div className="sticky top-20 z-40 bg-background/80 backdrop-blur-sm py-4 mb-8 rounded-lg">
-                <div className="flex flex-col md:flex-row gap-4">
-                    <div className="relative flex-grow">
-                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-text-secondary" size={20} />
-                        <input
-                            type="text"
-                            placeholder="Search by name or location..."
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                            className="w-full bg-primary border-2 border-secondary rounded-lg p-3 pl-12 focus:outline-none focus:border-accent"
-                        />
-                    </div>
-                    <div className="relative flex-shrink-0">
-                        <SlidersHorizontal className="absolute left-4 top-1/2 -translate-y-1/2 text-text-secondary" size={20} />
-                        <select
-                            value={streamFilter}
-                            onChange={(e) => setStreamFilter(e.target.value)}
-                            className="w-full md:w-auto bg-primary border-2 border-secondary rounded-lg p-3 pl-12 pr-8 appearance-none focus:outline-none focus:border-accent"
-                        >
-                            {allStreams.map(stream => <option key={stream} value={stream}>{stream}</option>)}
-                        </select>
+                <div className="surface sticky top-24 z-40 mt-10 p-4 backdrop-blur-xl md:p-5">
+                    <div className="flex flex-col gap-4 lg:flex-row lg:items-center">
+                        <div className="relative flex-grow">
+                            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-muted" size={17} aria-hidden="true" />
+                            <input
+                                type="text"
+                                placeholder="Search by name, city or stream…"
+                                aria-label="Search universities"
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                                className="field pl-11"
+                            />
+                        </div>
+                        <div className="flex flex-wrap items-center gap-2" role="group" aria-label="Filter by stream">
+                            {allStreams.map(stream => (
+                                <button
+                                    key={stream}
+                                    type="button"
+                                    onClick={() => setStreamFilter(stream)}
+                                    aria-pressed={streamFilter === stream}
+                                    className={`rounded-full px-4 py-2 text-xs font-semibold transition-all duration-300 ${
+                                        streamFilter === stream
+                                            ? 'bg-brand-gradient text-white shadow-glow'
+                                            : 'border border-white/10 bg-white/[0.03] text-text-secondary hover:border-brand-400/40 hover:text-text'
+                                    }`}
+                                >
+                                    {stream}
+                                </button>
+                            ))}
+                        </div>
                     </div>
                 </div>
+
+                {loading ? (
+                    <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+                        {[0, 1, 2].map((i) => (
+                            <div key={i} className="surface h-80 animate-pulse p-6">
+                                <div className="h-36 w-full rounded-xl bg-white/[0.06]" />
+                                <div className="mt-5 h-5 w-2/3 rounded bg-white/[0.07]" />
+                                <div className="mt-3 h-3 w-full rounded bg-white/[0.05]" />
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    <>
+                        <p className="mt-8 text-xs font-semibold uppercase tracking-[0.16em] text-muted" aria-live="polite">
+                            {filteredUniversities.length} {filteredUniversities.length === 1 ? 'campus' : 'campuses'}
+                            {searchTerm ? ` matching “${searchTerm}”` : ''}
+                        </p>
+                        <div className="mt-4 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+                            {filteredUniversities.length > 0 ? (
+                                filteredUniversities.map(uni => <UniversityCard key={uni.id} university={uni} />)
+                            ) : (
+                                <div className="surface col-span-full flex flex-col items-center gap-4 p-14 text-center">
+                                    <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-500/15 text-brand-300">
+                                        <Search size={24} />
+                                    </span>
+                                    <p className="font-display text-lg font-bold text-text">No campuses match that search.</p>
+                                    <p className="max-w-md text-sm text-text-secondary">
+                                        Try a different name, city or stream — or ask a counsellor to build the shortlist for you.
+                                    </p>
+                                    <button
+                                        type="button"
+                                        onClick={() => { setSearchTerm(''); setStreamFilter('All'); }}
+                                        className="btn-ghost btn-sm"
+                                    >
+                                        Clear filters
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                    </>
+                )}
             </div>
-
-            {loading ? (
-                <div className="text-center py-10">Loading universities...</div>
-            ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-                    {filteredUniversities.length > 0 ? (
-                        filteredUniversities.map(uni => <UniversityCard key={uni.id} university={uni} />)
-                    ) : (
-                        <p className="col-span-full text-center text-text-secondary py-10">No universities match your criteria.</p>
-                    )}
-                </div>
-            )}
         </div>
     );
 };

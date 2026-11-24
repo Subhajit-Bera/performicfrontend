@@ -172,7 +172,7 @@ export default function CompleteProfileModal({ isOpen, onClose }) {
             setFormData({
                 phoneNumber: user.phone_number || '',
                 whatsAppNumber: user.whatsapp_number || '',
-                isWhatsAppSame: user.phone_number && user.phone_number === user.whatsapp_number,
+                isWhatsAppSame: Boolean(user.phone_number) && user.phone_number === user.whatsapp_number,
                 stateHometown: user.state_hometown || '',
                 choiceOfStream: user.choice_of_stream || '',
                 choiceOfStreamOther: user.choice_of_stream_other || '',
