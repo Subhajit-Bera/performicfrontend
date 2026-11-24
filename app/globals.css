@@ -3,16 +3,97 @@
 @tailwind utilities;
 
 @layer base {
+  /* ==========================================================================
+     COLOR PSYCHOLOGY RESEARCH FOR COUNSELLING & CAMPUS PLACEMENTS:
+     --------------------------------------------------------------------------
+     1. Trust & Pedigree (Dominant: Oxford Sapphire #1D4ED8 / #1E40AF)
+        - Higher education decisions involve major family finances and career stakes.
+        - Deep sapphire blue conveys academic pedigree, institutional authority,
+          and legitimacy—used by Ivy League portals, QS Rankings, and Crimson Education.
+     2. Outcome & Achievement (Accent: Sovereign Amber #D97706 & Gold #F5B301)
+        - Symbolizes graduation honors, merit scholarships, campus hire offers,
+          and career milestone achievements.
+     3. High-Contrast Readability (Text: Slate-900 #0F172A & Slate-700 #334155)
+        - Delivers crisp 7.8:1 WCAG AAA contrast for scanning fee sheets, cutoffs,
+          and application deadlines on pure white and slate surfaces.
+     ========================================================================== */
+
+  /* --------------------------------------------------------------------------
+     [ARCHIVED] PALETTE 0: ORIGINAL TECH-VIOLET / INDIGO (PRESERVED & COMMENTED OUT)
+     Uncomment to restore original Discord/SaaS style tech colors.
+     --------------------------------------------------------------------------
   :root {
-    /* Light Mode (Default) */
-    --color-bg: 248 250 252;          /* #F8FAFC (slate-50) */
-    --color-primary: 255 255 255;      /* #FFFFFF */
-    --color-secondary: 241 245 249;    /* #F1F5F9 (slate-100) */
-    --color-accent: 79 70 229;         /* #4F46E5 (indigo-600) */
-    --color-accent-hover: 67 56 202;   /* #4338CA (indigo-700) */
-    --color-text: 15 23 42;            /* #0F172A (slate-900) */
-    --color-text-secondary: 71 85 105; /* #475569 (slate-600) */
-    --color-muted: 100 116 139;        /* #64748B (slate-500) */
+    --color-bg: 248 250 252;
+    --color-primary: 255 255 255;
+    --color-secondary: 241 245 249;
+    --color-accent: 79 70 229;
+    --color-accent-hover: 67 56 202;
+    --color-text: 15 23 42;
+    --color-text-secondary: 71 85 105;
+    --color-muted: 100 116 139;
+
+    --color-ink-950: 255 255 255;
+    --color-ink-900: 248 250 252;
+    --color-ink-800: 255 255 255;
+    --color-ink-700: 241 245 249;
+    --color-ink-600: 226 232 240;
+    --color-ink-500: 203 213 225;
+  }
+  html.dark {
+    --color-bg: 5 7 15;
+    --color-primary: 14 20 38;
+    --color-secondary: 34 48 82;
+    --color-accent: 99 102 241;
+    --color-accent-hover: 129 140 248;
+    --color-text: 238 241 250;
+    --color-text-secondary: 154 165 196;
+    --color-muted: 107 118 153;
+
+    --color-ink-950: 5 7 15;
+    --color-ink-900: 10 14 28;
+    --color-ink-800: 14 20 38;
+    --color-ink-700: 20 28 51;
+    --color-ink-600: 27 36 64;
+    --color-ink-500: 34 48 82;
+  }
+  -------------------------------------------------------------------------- */
+
+  /* --------------------------------------------------------------------------
+     [OPTION 2 - READY TO TOGGLE]: EMERALD PLACEMENT & PRESTIGE NAVY
+     Best for: High-conversion outcome focus (offer letters, campus hiring, ROI)
+     --------------------------------------------------------------------------
+  :root {
+    --color-bg: 248 250 252;
+    --color-primary: 255 255 255;
+    --color-secondary: 241 245 249;
+    --color-accent: 13 148 136;
+    --color-accent-hover: 15 118 110;
+    --color-text: 15 23 42;
+    --color-text-secondary: 51 65 85;
+    --color-muted: 100 116 139;
+    --color-ink-950: 255 255 255;
+    --color-ink-900: 248 250 252;
+    --color-ink-800: 255 255 255;
+    --color-ink-700: 241 245 249;
+    --color-ink-600: 226 232 240;
+    --color-ink-500: 203 213 225;
+  }
+  -------------------------------------------------------------------------- */
+
+  /* ==========================================================================
+     [ACTIVE PALETTE 1 - RECOMMENDED]: OXFORD SAPPHIRE & SOVEREIGN AMBER
+     The Ivy-League / Academic Advisory Standard: Deep Trust Blue & Career Gold
+     ========================================================================== */
+  :root {
+    /* Light Theme (Default) */
+    --color-bg: 248 250 252;          /* #F8FAFC (Clean Academic Canvas) */
+    --color-primary: 255 255 255;      /* #FFFFFF (Pure Card Surface) */
+    --color-secondary: 241 245 249;    /* #F1F5F9 (Soft Slate Partition) */
+    --color-accent: 29 78 216;         /* #1D4ED8 (Deep Oxford Sapphire Blue) */
+    --color-accent-hover: 30 58 138;   /* #1E3A8A (Prestige Navy Blue) */
+    --color-text: 15 23 42;            /* #0F172A (Deep Obsidian Slate - Title Contrast) */
+    --color-text-secondary: 51 65 85;  /* #334155 (Slate-700 - 7.8:1 AAA Body Contrast) */
+    --color-muted: 100 116 139;        /* #64748B (Slate-500 - Secondary Meta) */
 
     --color-ink-950: 255 255 255;      /* #FFFFFF */
     --color-ink-900: 248 250 252;      /* #F8FAFC */
@@ -28,43 +109,43 @@
     --card-foreground: 222 47% 11%;
     --popover: 0 0% 100%;
     --popover-foreground: 222 47% 11%;
-    --primary: 239 84% 67%;
+    --primary: 221.2 83.2% 53.3%;      /* Sapphire Primary */
     --primary-foreground: 0 0% 100%;
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222 47% 11%;
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 239 84% 67%;
+    --ring: 221.2 83.2% 53.3%;
     --radius: 0.875rem;
   }
 
   html.dark {
-    /* Dark Mode */
-    --color-bg: 5 7 15;               /* #05070F */
-    --color-primary: 14 20 38;         /* #0E1426 */
-    --color-secondary: 34 48 82;       /* #223052 */
-    --color-accent: 99 102 241;        /* #6366F1 */
-    --color-accent-hover: 129 140 248; /* #818CF8 */
-    --color-text: 238 241 250;         /* #EEF1FA */
-    --color-text-secondary: 154 165 196;/* #9AA5C4 */
-    --color-muted: 107 118 153;        /* #6B7699 */
+    /* Dark Theme - Royal Navy Midnight */
+    --color-bg: 11 17 32;              /* #0B1120 (Refined Navy Midnight) */
+    --color-primary: 15 23 42;         /* #0F172A (Deep Slate Card Surface) */
+    --color-secondary: 30 41 59;       /* #1E293B (Partition Border/Plate) */
+    --color-accent: 59 130 246;        /* #3B82F6 (Electric Sapphire Blue) */
+    --color-accent-hover: 96 165 250;  /* #60A5FA (Bright Sapphire Glow) */
+    --color-text: 248 250 252;         /* #F8FAFC (Pristine Crisp Title) */
+    --color-text-secondary: 148 163 184;/* #94A3B8 (Soft Steel Body Text) */
+    --color-muted: 100 116 139;        /* #64748B (Muted Tertiary) */
 
-    --color-ink-950: 5 7 15;           /* #05070F */
-    --color-ink-900: 10 14 28;         /* #0A0E1C */
-    --color-ink-800: 14 20 38;         /* #0E1426 */
-    --color-ink-700: 20 28 51;         /* #141C33 */
-    --color-ink-600: 27 36 64;         /* #1B2440 */
-    --color-ink-500: 34 48 82;         /* #223052 */
+    --color-ink-950: 11 17 32;         /* #0B1120 */
+    --color-ink-900: 15 23 42;         /* #0F172A */
+    --color-ink-800: 23 37 68;         /* #172544 */
+    --color-ink-700: 30 41 59;         /* #1E293B */
+    --color-ink-600: 51 65 85;         /* #334155 */
+    --color-ink-500: 71 85 105;        /* #475569 */
 
     /* Shadcn dark */
-    --background: 228 45% 4%;
-    --foreground: 228 40% 96%;
-    --card: 226 42% 10%;
-    --card-foreground: 228 40% 96%;
-    --popover: 226 42% 10%;
-    --popover-foreground: 228 40% 96%;
-    --border: 224 42% 23%;
-    --input: 224 42% 23%;
+    --background: 222 47% 11%;
+    --foreground: 210 40% 98%;
+    --card: 222 47% 11%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222 47% 11%;
+    --popover-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
   }
 
   html {
@@ -80,7 +161,7 @@
   }
 
   ::selection {
-    background: rgba(99, 102, 241, 0.45);
+    background: rgba(29, 78, 216, 0.35);
     color: #fff;
   }
 
@@ -90,7 +171,7 @@
   }
 
   :focus-visible {
-    outline: 2px solid #818cf8;
+    outline: 2px solid #2563eb;
     outline-offset: 3px;
     border-radius: 6px;
   }
@@ -156,7 +237,7 @@
   .btn-primary {
     @apply btn text-white bg-brand-gradient bg-[length:200%_200%] shadow-glow
       hover:shadow-lift hover:-translate-y-0.5 active:translate-y-0;
-    background-image: linear-gradient(120deg, #4f46e5, #7c3aed 45%, #a855f7);
+    background-image: linear-gradient(120deg, #1d4ed8, #2563eb 45%, #3b82f6);
   }
   .btn-primary:hover {
     background-position: 100% 50%;
@@ -218,10 +299,10 @@
 
   .text-gradient {
     @apply bg-clip-text text-transparent;
-    background-image: linear-gradient(100deg, #4f46e5 0%, #6366f1 35%, #9333ea 70%, #d97706 100%);
+    background-image: linear-gradient(100deg, #1d4ed8 0%, #2563eb 35%, #4f46e5 70%, #d97706 100%);
   }
   html.dark .text-gradient {
-    background-image: linear-gradient(100deg, #a5b4fc 0%, #818cf8 35%, #c084fc 70%, #f5b301 100%);
+    background-image: linear-gradient(100deg, #60a5fa 0%, #93c5fd 35%, #a5b4fc 70%, #f5b301 100%);
   }
   .text-gradient-gold {
     @apply bg-clip-text text-transparent;

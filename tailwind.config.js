@@ -63,7 +63,7 @@ module.exports = {
         plate: '0 10px 30px -12px rgba(0,0,0,0.7)',
       },
       backgroundImage: {
-        'brand-gradient': 'linear-gradient(120deg, #4F46E5 0%, #7C3AED 45%, #A855F7 100%)',
+        'brand-gradient': 'linear-gradient(120deg, #1D4ED8 0%, #2563EB 45%, #3B82F6 100%)',
         'gold-gradient': 'linear-gradient(120deg, #F5B301 0%, #FF8A3D 100%)',
         'aurora-gradient': 'linear-gradient(135deg, #22D3EE 0%, #6366F1 50%, #A855F7 100%)',
         'fade-down': 'linear-gradient(180deg, rgba(var(--color-bg) / 0) 0%, rgb(var(--color-bg)) 100%)',
