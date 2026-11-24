@@ -5,6 +5,7 @@ import api from '../../../utils/api';
 import { toast } from 'sonner';
 import Link from 'next/link';
 import { ChevronLeft } from 'lucide-react';
+import { TableSkeleton } from '@/app/components/Skeleton';
 
 export default function AgentDetailPage() {
     const [agentData, setAgentData] = useState(null);
@@ -33,7 +34,30 @@ export default function AgentDetailPage() {
         });
     };
 
-    if (loading) return <div>Loading agent details...</div>;
+    if (loading) {
+        return (
+            <div>
+                <div className="h-4 w-32 rounded bg-secondary/60 animate-pulse mb-4" />
+                <div className="h-8 w-64 rounded bg-secondary/70 animate-pulse mb-2" />
+                <div className="h-4 w-44 rounded bg-secondary/50 animate-pulse mb-8" />
+                <div className="h-6 w-48 rounded bg-secondary/60 animate-pulse mb-4" />
+                <div className="bg-primary border border-secondary rounded-xl overflow-x-auto shadow-sm">
+                    <table className="w-full text-left text-sm min-w-[500px]">
+                        <thead className="bg-secondary/50">
+                            <tr>
+                                <th className="p-4">Student Name</th>
+                                <th className="p-4">Email</th>
+                                <th className="p-4">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <TableSkeleton rows={4} cols={3} colWidths={['35%', '40%', '25%']} />
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        );
+    }
     if (!agentData) return <div>Agent not found.</div>;
 
     return (

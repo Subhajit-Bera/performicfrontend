@@ -221,7 +221,39 @@ export default function ExamDetailPage() {
     const ICONS = { "Info": <Info size={16} />, "Application Form": <CreditCard size={16} />, "Important Dates": <CalendarDays size={16} />, "Syllabus": <BookMarked size={16} />, "Exam Pattern": <PencilRuler size={16} />, "Admit Card": <FileText size={16} />, "Result": <Trophy size={16} />, "Cut Off": <BarChart2 size={16} /> };
 
 
-    if (loading) return <div className="min-h-screen flex items-center justify-center bg-background">Loading...</div>;
+    if (loading) {
+        return (
+            <>
+                <Header />
+                <main className="pt-20 bg-background min-h-screen">
+                    <div className="container mx-auto px-4 py-8 space-y-8 animate-pulse">
+                        <div className="space-y-3">
+                            <div className="h-10 md:h-12 w-2/3 max-w-md rounded bg-secondary/70" />
+                            <div className="h-4 w-1/2 max-w-xs rounded bg-secondary/50" />
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4">
+                            <div className="h-44 rounded-xl bg-secondary/30 border border-secondary/40 p-5 space-y-3">
+                                <div className="h-5 w-1/2 rounded bg-secondary/60" />
+                                <div className="h-4 w-3/4 rounded bg-secondary/40" />
+                                <div className="h-4 w-2/3 rounded bg-secondary/40" />
+                            </div>
+                            <div className="h-44 rounded-xl bg-secondary/30 border border-secondary/40 p-5 space-y-3">
+                                <div className="h-5 w-1/2 rounded bg-secondary/60" />
+                                <div className="h-4 w-3/4 rounded bg-secondary/40" />
+                                <div className="h-4 w-2/3 rounded bg-secondary/40" />
+                            </div>
+                            <div className="h-44 rounded-xl bg-secondary/30 border border-secondary/40 p-5 space-y-3">
+                                <div className="h-5 w-1/2 rounded bg-secondary/60" />
+                                <div className="h-4 w-3/4 rounded bg-secondary/40" />
+                                <div className="h-4 w-2/3 rounded bg-secondary/40" />
+                            </div>
+                        </div>
+                    </div>
+                </main>
+                <Footer />
+            </>
+        );
+    }
     if (error) return <div className="min-h-screen flex items-center justify-center bg-background">{error}</div>;
     if (!exam) return null;
 

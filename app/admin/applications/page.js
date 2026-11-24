@@ -2,6 +2,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import api from '../../utils/api';
 import { toast } from 'sonner';
+import { TableSkeleton } from '@/app/components/Skeleton';
 
 const APPLICATION_STATUSES = ['Applied', 'Called', 'Converted', 'Rejected'];
 
@@ -64,7 +65,7 @@ export default function ManageApplicationsPage() {
                     </thead>
                     <tbody>
                         {loading ? (
-                            <tr><td colSpan="4" className="text-center p-4">Loading applications...</td></tr>
+                            <TableSkeleton rows={5} cols={4} colWidths={['35%', '30%', '20%', '15%']} />
                         ) : applications.length === 0 ? (
                             <tr><td colSpan="4" className="text-center p-4 text-text-secondary">No applications found.</td></tr>
                         ) : applications.map(app => (

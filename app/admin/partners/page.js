@@ -5,6 +5,7 @@ import { Plus, Edit, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'framer-motion';
 import PartnerForm from '../components/PartnerForm';
+import { TableSkeleton } from '@/app/components/Skeleton';
 
 export default function ManagePartnersPage() {
     const [partners, setPartners] = useState([]);
@@ -95,7 +96,7 @@ export default function ManagePartnersPage() {
                         </thead>
                         <tbody>
                             {loading ? (
-                                <tr><td colSpan="4" className="text-center p-8 text-text-secondary">Loading...</td></tr>
+                                <TableSkeleton rows={5} cols={4} colWidths={['30%', '25%', '30%', '15%']} />
                             ) : partners.length === 0 ? (
                                 <tr><td colSpan="4" className="text-center p-8 text-text-secondary">No partners found.</td></tr>
                             ) : (

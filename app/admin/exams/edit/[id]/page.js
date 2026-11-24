@@ -59,6 +59,7 @@ import api from '../../../../utils/api';
 import { toast } from 'sonner';
 import Link from 'next/link';
 import { ChevronLeft } from 'lucide-react';
+import { FormSkeleton } from '@/app/components/Skeleton';
 
 export default function EditExamPage() {
     const router = useRouter();
@@ -95,7 +96,7 @@ export default function EditExamPage() {
             <h1 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8">Edit Exam</h1>
             <div className="bg-primary p-4 sm:p-6 lg:p-8 rounded-xl border border-secondary shadow-sm">
                 {loading ? (
-                    <div>Loading form...</div>
+                    <FormSkeleton fields={6} />
                 ) : examData ? (
                     <ExamForm onSave={handleSave} initialData={examData} />
                 ) : (

@@ -2,6 +2,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import api from '../../utils/api';
 import { toast } from 'sonner';
+import { TableSkeleton } from '@/app/components/Skeleton';
 
 const APPOINTMENT_STATUSES = ['Booked', 'Called', 'Converted', 'Completed', 'Cancelled', 'No Show'];
 
@@ -63,7 +64,7 @@ export default function ManageAppointmentsPage() {
                     </thead>
                     <tbody>
                         {loading ? (
-                            <tr><td colSpan="5" className="text-center p-4">Loading appointments...</td></tr>
+                            <TableSkeleton rows={5} cols={5} colWidths={['25%', '25%', '20%', '30%', '15%']} />
                         ) : appointments.length === 0 ? (
                             <tr><td colSpan="5" className="text-center p-4 text-text-secondary">No appointments found.</td></tr>
                         ) : appointments.map(app => (

@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import api from '../../utils/api';
 import Link from 'next/link';
 import { Eye } from 'lucide-react';
+import { TableSkeleton } from '@/app/components/Skeleton';
 
 export default function ManageAgentsPage() {
     const [agents, setAgents] = useState([]);
@@ -48,7 +49,7 @@ export default function ManageAgentsPage() {
                     </thead>
                     <tbody>
                         {loading ? (
-                            <tr><td colSpan="5" className="text-center p-4">Loading agents...</td></tr>
+                            <TableSkeleton rows={5} cols={5} colWidths={['25%', '35%', '20%', '20%', '10%']} />
                         ) : agents.length === 0 ? (
                             <tr><td colSpan="5" className="text-center p-4 text-text-secondary">No agents found.</td></tr>
                         ) : agents.map(agent => (

@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import api from '../../utils/api';
 import { toast } from 'sonner';
 import { useAuth } from '../../context/AuthContext';
+import { TableSkeleton } from '@/app/components/Skeleton';
 
 const ROLES = [
     { value: 'user', label: 'User' },
@@ -69,7 +70,7 @@ export default function ManageUsersPage() {
                     </thead>
                     <tbody>
                         {loading ? (
-                            <tr><td colSpan="5" className="text-center p-4">Loading users...</td></tr>
+                            <TableSkeleton rows={6} cols={5} colWidths={['25%', '35%', '15%', '25%', '20%']} />
                         ) : users.length === 0 ? (
                             <tr><td colSpan="5" className="text-center p-4 text-text-secondary">No users found.</td></tr>
                         ) : users.map(user => (

@@ -5,6 +5,7 @@ import { Plus, Edit, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'framer-motion';
 import CourseForm from '../components/CourseForm';
+import { TableSkeleton } from '@/app/components/Skeleton';
 
 export default function ManageCoursesPage() {
     const [courses, setCourses] = useState([]);
@@ -100,7 +101,7 @@ export default function ManageCoursesPage() {
                         </thead>
                         <tbody>
                             {loading ? (
-                                <tr><td colSpan="4" className="text-center p-8 text-text-secondary">Loading...</td></tr>
+                                <TableSkeleton rows={5} cols={4} colWidths={['35%', '30%', '20%', '15%']} />
                             ) : courses.length === 0 ? (
                                 <tr><td colSpan="4" className="text-center p-8 text-text-secondary">No career options found.</td></tr>
                             ) : (

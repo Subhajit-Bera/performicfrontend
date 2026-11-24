@@ -615,7 +615,7 @@ import Image from 'next/image';
 import { MapPin, Building, Award, Ruler, BookOpen, Briefcase, Sparkles, CheckCircle, GraduationCap } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { toast } from 'sonner';
-import Loader from '@/app/components/Loader';
+import { DetailPageSkeleton } from '@/app/components/Skeleton';
 
 const DetailItem = ({ icon, label, value }) => (
     <div className="flex items-start gap-3">
@@ -683,7 +683,17 @@ export default function UniversityDetailPage() {
         });
     };
 
-    if (loading) return <Loader/>
+    if (loading) {
+        return (
+            <>
+                <Header />
+                <main className="pt-20 bg-background min-h-screen">
+                    <DetailPageSkeleton />
+                </main>
+                <Footer />
+            </>
+        );
+    }
     if (error) return <div className="min-h-screen flex items-center justify-center bg-background">{error}</div>;
     if (!university) return null;
 

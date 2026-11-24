@@ -375,6 +375,7 @@ import api from '../../utils/api';
 import { toast } from 'sonner';
 import { Plus, Edit, Trash2, X, Check, Loader2, BookCopy } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { StreamListSkeleton } from '@/app/components/Skeleton';
 
 // Modal for Adding/Editing a Stream Name
 const StreamFormModal = ({ stream, onSave, onClose }) => {
@@ -480,7 +481,16 @@ const ManageCoursesModal = ({ stream, onClose, onDone }) => {
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
             <motion.div initial={{ scale: 0.95 }} animate={{ scale: 1 }} exit={{ scale: 0.95 }} className="bg-primary rounded-2xl p-5 sm:p-8 max-w-lg w-full max-h-[90vh] flex flex-col relative shadow-2xl border border-secondary">
                 <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">Manage Courses for <span className="text-accent">{stream?.name}</span></h2>
-                {loading ? <div className="p-4 text-text-secondary">Loading courses...</div> : (
+                {loading ? (
+                    <div className="space-y-3 p-4">
+                        {[0, 1, 2, 3].map(i => (
+                            <div key={i} className="flex items-center gap-3">
+                                <div className="h-4 w-4 rounded bg-secondary/70 animate-pulse" />
+                                <div className="h-4 w-40 rounded bg-secondary/60 animate-pulse" />
+                            </div>
+                        ))}
+                    </div>
+                ) : (
                     <div className="space-y-2 flex-1 overflow-y-auto border border-secondary rounded-lg p-4 min-h-[120px] max-h-72">
                         {Array.isArray(allCourses) && allCourses.length > 0 ? (
                             allCourses.map(course => (
@@ -561,7 +571,7 @@ export default function ManageStreamsPage() {
             
             <div className="bg-primary border border-secondary rounded-xl p-4 sm:p-6 shadow-sm">
                 <div className="space-y-3">
-                    {loading ? ( <div className="p-4 text-text-secondary">Loading streams...</div> ) :
+                    {loading ? ( <StreamListSkeleton count={5} /> ) :
                      streams.map(stream => (
                         <div key={stream.id} className="flex flex-col sm:flex-row items-start sm:items-center justify-between bg-secondary/50 p-3.5 sm:p-4 rounded-lg gap-3">
                             <span className="font-medium text-sm sm:text-base">{stream.name}</span>

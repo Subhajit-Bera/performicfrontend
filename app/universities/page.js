@@ -657,7 +657,20 @@ export default function UniversitiesPage() {
         <>
             <Header />
             <main className="pt-24 min-h-screen bg-background">
-                <Suspense fallback={<div className="text-center py-10">Loading...</div>}>
+                <Suspense fallback={
+                    <div className="container mx-auto px-5 py-14">
+                        <div className="h-10 w-64 rounded bg-secondary/70 animate-pulse mb-8" />
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {[0, 1, 2, 3, 4, 5].map(i => (
+                                <div key={i} className="surface h-72 rounded-xl bg-secondary/30 border border-secondary/40 p-5 space-y-4 animate-pulse">
+                                    <div className="h-32 rounded-lg bg-secondary/50" />
+                                    <div className="h-5 w-3/4 rounded bg-secondary/60" />
+                                    <div className="h-3 w-1/2 rounded bg-secondary/40" />
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                }>
                     <UniversityFilterComponent />
                 </Suspense>
             </main>

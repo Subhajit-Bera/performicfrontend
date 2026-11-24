@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import api from '../utils/api';
 import { toast } from 'sonner';
+import { TableSkeleton } from '@/app/components/Skeleton';
 
 export default function MyReferralsPage() {
     const [referrals, setReferrals] = useState([]);
@@ -30,7 +31,7 @@ export default function MyReferralsPage() {
                     </thead>
                     <tbody>
                         {loading ? (
-                            <tr><td colSpan="5" className="text-center p-4">Loading referrals...</td></tr>
+                            <TableSkeleton rows={5} cols={5} colWidths={['25%', '30%', '20%', '20%', '15%']} />
                         ) : referrals.length === 0 ? (
                             <tr><td colSpan="5" className="text-center p-4 text-text-secondary">You have not referred any students yet.</td></tr>
                         ) : (

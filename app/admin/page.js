@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import api from '../utils/api';
 import { Users, Building, BookOpen, FileText } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { StatCardsSkeleton } from '../components/Skeleton';
 
 const StatCard = ({ title, value, icon }) => (
     <div className="bg-primary p-5 sm:p-6 rounded-xl flex items-center gap-4 sm:gap-6 border border-secondary shadow-sm">
@@ -26,7 +27,17 @@ export default function AdminDashboardPage() {
             .finally(() => setLoading(false));
     }, []);
 
-    if (loading) return <div className="p-4 text-text-secondary">Loading dashboard...</div>;
+    if (loading) {
+        return (
+            <div>
+                <div className="space-y-2 mb-6 sm:mb-8">
+                    <div className="h-8 w-60 rounded bg-secondary/70 animate-pulse" />
+                    <div className="h-4 w-44 rounded bg-secondary/50 animate-pulse" />
+                </div>
+                <StatCardsSkeleton count={4} />
+            </div>
+        );
+    }
 
     const firstName = user?.full_name ? user.full_name.split(' ')[0] : 'Admin';
 

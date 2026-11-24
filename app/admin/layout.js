@@ -3,6 +3,7 @@ import React from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../context/AuthContext';
 import AdminSidebar from './components/AdminSidebar';
+import Loader from '../components/Loader';
 import { LayoutDashboard, Building, BookOpen, GraduationCap, Users, CalendarCheck, FileText, Star, UserSquare } from 'lucide-react';
 
 export default function AdminLayout({ children }) {
@@ -10,12 +11,12 @@ export default function AdminLayout({ children }) {
     const router = useRouter();
 
     if (loading) {
-        return <div className="min-h-screen flex items-center justify-center bg-background">Authenticating...</div>;
+        return <Loader text="Authenticating..." />;
     }
 
     if (!user || user.role !== 'admin') {
         if (typeof window !== 'undefined') router.push('/login');
-        return <div className="min-h-screen flex items-center justify-center bg-background">Redirecting...</div>;
+        return <Loader text="Redirecting..." />;
     }
     
     const adminNavItems = [

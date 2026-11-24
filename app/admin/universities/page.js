@@ -4,7 +4,7 @@ import api from '../../utils/api';
 import Link from 'next/link';
 import { Plus, Edit, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
-import Loader from '@/app/components/Loader';
+import { TableSkeleton } from '@/app/components/Skeleton';
 
 export default function ManageUniversitiesPage() {
     const [universities, setUniversities] = useState([]);
@@ -68,11 +68,7 @@ export default function ManageUniversitiesPage() {
                         </thead>
                         <tbody>
                             {loading ? (
-                                <tr>
-                                    <td colSpan="5" className="text-center p-8 text-text-secondary">
-                                        <Loader />
-                                    </td>
-                                </tr>
+                                <TableSkeleton rows={6} cols={5} colWidths={['35%', '25%', '25%', '15%', '15%']} />
                             ) : universities.length === 0 ? (
                                 <tr>
                                     <td colSpan="5" className="text-center p-8 text-text-secondary">No universities found.</td>
