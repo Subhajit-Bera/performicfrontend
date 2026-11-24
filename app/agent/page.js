@@ -8,8 +8,8 @@ export default function MyReferralsPage() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        api.get('/agent/my-referrals')
-            .then(res => setReferrals(res.data))
+        api.get('/agent/my-referrals', { params: { limit: 100 } })
+            .then(res => setReferrals(res.data.data ?? res.data))
             .catch(() => toast.error("Failed to fetch your referrals."))
             .finally(() => setLoading(false));
     }, []);

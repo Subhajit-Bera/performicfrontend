@@ -18,29 +18,38 @@ const FormTextarea = ({ label, name, value, onChange, placeholder, rows = 3 }) =
 );
 
 
+const DEFAULT_FORM = {
+    name: '', exam_date: '', exam_level: '',
+    info: { exam_full_name: '', conducting_body: '', exam_frequency: '', courses_offered: '' },
+    application_form: { application_mode: '', application_fee_general: '', application_fee_obc: '', official_website: '' },
+    important_dates: { application_start: '', application_end: '', admit_card_release: '', result_declaration: '' },
+    syllabus: { Physics: '', Chemistry: '', Biology: '', Mathematics: '' },
+    exam_pattern: { mode_of_exam: '', duration: '', total_questions: '', marking_scheme: '' },
+    admit_card_details: '', result_details: '', cutoff_details: ''
+};
+
 export default function ExamForm({ onSave, initialData }) {
-    const [formData, setFormData] = useState({
-        name: '', exam_date: '', exam_level: '',
-        info: { exam_full_name: '', conducting_body: '', exam_frequency: '', courses_offered: '' },
-        application_form: { application_mode: '', application_fee_general: '', application_fee_obc: '', official_website: '' },
-        important_dates: { application_start: '', application_end: '', admit_card_release: '', result_declaration: '' },
-        syllabus: { Physics: '', Chemistry: '', Biology: '', Mathematics: '' },
-        exam_pattern: { mode_of_exam: '', duration: '', total_questions: '', marking_scheme: '' },
-        admit_card_details: '', result_details: '', cutoff_details: ''
-    });
+    const [formData, setFormData] = useState(DEFAULT_FORM);
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        if (initialData) {
-             // Convert syllabus object values (arrays) to comma-separated strings for textarea
-            const syllabusForForm = {};
-            for (const key in initialData.syllabus) {
-                if(Array.isArray(initialData.syllabus[key])) {
-                    syllabusForForm[key] = initialData.syllabus[key].join(', ');
-                }
-            }
-            setFormData({ ...initialData, syllabus: { ...initialData.syllabus, ...syllabusForForm } });
+        if (!initialData) return;
+
+        // Every JSONB column is nullable, so each section is merged over its defaults.
+        const syllabusForForm = {};
+        for (const [key, value] of Object.entries(initialData.syllabus ?? {})) {
+            syllabusForForm[key] = Array.isArray(value) ? value.join(', ') : value;
         }
+
+        setFormData({
+            ...DEFAULT_FORM,
+            ...initialData,
+            info: { ...DEFAULT_FORM.info, ...(initialData.info ?? {}) },
+            application_form: { ...DEFAULT_FORM.application_form, ...(initialData.application_form ?? {}) },
+            important_dates: { ...DEFAULT_FORM.important_dates, ...(initialData.important_dates ?? {}) },
+            exam_pattern: { ...DEFAULT_FORM.exam_pattern, ...(initialData.exam_pattern ?? {}) },
+            syllabus: { ...DEFAULT_FORM.syllabus, ...(initialData.syllabus ?? {}), ...syllabusForForm },
+        });
     }, [initialData]);
 
     const handleChange = (e, section = null) => {
@@ -61,9 +70,11 @@ export default function ExamForm({ onSave, initialData }) {
         
         // Convert syllabus strings back to arrays
         const syllabusForApi = {};
-        for (const key in formData.syllabus) {
-            if (formData.syllabus[key] && typeof formData.syllabus[key] === 'string') {
-                syllabusForApi[key] = formData.syllabus[key].split(',').map(s => s.trim()).filter(Boolean);
+        for (const [key, value] of Object.entries(formData.syllabus ?? {})) {
+            if (typeof value === 'string' && value.trim() !== '') {
+                syllabusForApi[key] = value.split(',').map(s => s.trim()).filter(Boolean);
+            } else if (Array.isArray(value)) {
+                syllabusForApi[key] = value;
             }
         }
 

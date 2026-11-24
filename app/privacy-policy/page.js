@@ -20,7 +20,7 @@ export default function PrivacyPolicyPage() {
                     <p className="text-text-secondary mb-8">Last Updated: September 16, 2025</p>
 
                     <PolicySection title="1. Introduction">
-                        <p>Welcome to Performic Consultancy Services ("we," "our," or "us"). We are committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our website and services. Please read this policy carefully.</p>
+                        <p>Welcome to Performic Consultancy Services (&quot;we,&quot; &quot;our,&quot; or &quot;us&quot;). We are committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our website and services. Please read this policy carefully.</p>
                     </PolicySection>
 
                     <PolicySection title="2. Information We Collect">

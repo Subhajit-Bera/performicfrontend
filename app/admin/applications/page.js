@@ -1,19 +1,27 @@
 "use client";
-import React, { useState, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import api from '../../utils/api';
 import { toast } from 'sonner';
+
+const APPLICATION_STATUSES = ['Applied', 'Called', 'Converted', 'Rejected'];
 
 export default function ManageApplicationsPage() {
     const [applications, setApplications] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-    const fetchApplications = () => {
-        api.get('/admin/applications').then(res => setApplications(res.data)).finally(() => setLoading(false));
-    };
+    const fetchApplications = useCallback(() => {
+        setLoading(true);
+        setError(null);
+        api.get('/admin/applications', { params: { limit: 100 } })
+            .then(res => setApplications(res.data.data ?? res.data))
+            .catch(err => setError(err.response?.data?.message || 'Could not load applications.'))
+            .finally(() => setLoading(false));
+    }, []);
 
     useEffect(() => {
         fetchApplications();
-    }, []);
+    }, [fetchApplications]);
 
     const handleStatusChange = (id, status) => {
         toast.promise(api.put(`/admin/applications/${id}`, { status }), {
@@ -22,16 +30,31 @@ export default function ManageApplicationsPage() {
                 fetchApplications();
                 return 'Status updated successfully.';
             },
-            error: 'Failed to update status.'
+            // The API rejects impossible transitions with an explanation; refresh so the
+            // select snaps back to the stored value.
+            error: (err) => {
+                fetchApplications();
+                return err.response?.data?.message || 'Failed to update status.';
+            },
         });
     };
 
     return (
         <div>
             <h1 className="text-3xl font-bold mb-8">Manage Applications</h1>
+
+            {error && (
+                <div className="mb-6 flex flex-wrap items-center justify-between gap-4 rounded-lg border border-red-500/40 bg-red-500/10 p-4 text-sm text-red-300">
+                    <span role="alert">{error}</span>
+                    <button type="button" onClick={fetchApplications} className="rounded-md bg-red-500/20 px-3 py-1.5 font-semibold text-red-200 hover:bg-red-500/30">
+                        Retry
+                    </button>
+                </div>
+            )}
+
             <div className="bg-primary border border-secondary rounded-xl overflow-x-auto">
                 <table className="w-full text-left text-sm">
-                     <thead className="bg-secondary/50">
+                    <thead className="bg-secondary/50">
                         <tr>
                             <th className="p-4">Applicant</th>
                             <th className="p-4">University</th>
@@ -39,23 +62,26 @@ export default function ManageApplicationsPage() {
                             <th className="p-4">Status</th>
                         </tr>
                     </thead>
-                     <tbody>
+                    <tbody>
                         {loading ? (
-                             <tr><td colSpan="4" className="text-center p-4">Loading applications...</td></tr>
+                            <tr><td colSpan="4" className="text-center p-4">Loading applications...</td></tr>
+                        ) : applications.length === 0 ? (
+                            <tr><td colSpan="4" className="text-center p-4 text-text-secondary">No applications found.</td></tr>
                         ) : applications.map(app => (
                             <tr key={app.id} className="border-b border-secondary">
-                                <td className="p-4">{app.full_name}<br/><span className="text-text-secondary">{app.email}</span></td>
+                                <td className="p-4">{app.full_name}<br /><span className="text-text-secondary">{app.email}</span></td>
                                 <td className="p-4">{app.university_name}</td>
                                 <td className="p-4">{app.phone_number || 'N/A'}</td>
                                 <td className="p-4">
-                                     <select 
-                                        value={app.status} 
+                                    <select
+                                        value={app.status}
+                                        aria-label={`Application status for ${app.full_name}`}
                                         onChange={(e) => handleStatusChange(app.id, e.target.value)}
                                         className="bg-secondary/50 border border-secondary rounded-md p-1 focus:outline-none focus:border-accent"
                                     >
-                                        <option value="Applied">Applied</option>
-                                        <option value="Called">Called</option>
-                                        <option value="Converted">Converted</option>
+                                        {APPLICATION_STATUSES.map(status => (
+                                            <option key={status} value={status}>{status}</option>
+                                        ))}
                                     </select>
                                 </td>
                             </tr>

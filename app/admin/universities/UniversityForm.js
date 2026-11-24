@@ -1268,6 +1268,7 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import api from '../../utils/api'
+import { toast } from 'sonner';
 import { Loader2, PlusCircle, XCircle } from 'lucide-react';
 
 // Reusable input component for clean forms
@@ -1351,7 +1352,7 @@ export default function UniversityForm({ onSave, initialData }) {
     }, [initialData]);
 
     const handleChange = (e, section = null, index = null, field = null) => {
-        const { name, value, type, checked } = e.target;
+        const { name, value, checked } = e.target;
         const simpleSetters = {
             "admission_open": () => setFormData(prev => ({ ...prev, admission_open: checked })),
             "is_top_university": () => setFormData(prev => ({...prev, is_top_university: checked, top_stream_ids: checked ? prev.top_stream_ids : []}))
@@ -1374,6 +1375,11 @@ export default function UniversityForm({ onSave, initialData }) {
         setFormData(prev => {
             const currentIds = prev[fieldName] || [];
             const newIds = currentIds.includes(id) ? currentIds.filter(i => i !== id) : [...currentIds, id];
+            // The backend rejects a top stream that is not also a university stream,
+            // so dropping a stream must drop it from the top selection too.
+            if (fieldName === 'stream_ids') {
+                return { ...prev, stream_ids: newIds, top_stream_ids: (prev.top_stream_ids || []).filter(sid => newIds.includes(sid)) };
+            }
             return { ...prev, [fieldName]: newIds };
         });
     };
@@ -1394,13 +1400,35 @@ export default function UniversityForm({ onSave, initialData }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        const details = formData.details ?? {};
+        const placements = formData.placements ?? {};
+        const streamIds = formData.stream_ids ?? [];
+        const topStreamIds = formData.is_top_university ? (formData.top_stream_ids ?? []) : [];
+
+        const notAlsoSelected = topStreamIds.filter(id => !streamIds.includes(id));
+        if (notAlsoSelected.length > 0) {
+            const names = allStreams.filter(s => notAlsoSelected.includes(s.id)).map(s => s.name).join(', ');
+            toast.error(`"Top in Streams" must also be selected under University Streams: ${names}`);
+            return;
+        }
+
+        const toList = (value) => (Array.isArray(value) ? value : String(value ?? '').split(',').map(s => s.trim()).filter(Boolean));
+        const rating = parseFloat(formData.rating);
+
         setLoading(true);
         const payload = {
             ...formData,
-            rating: parseFloat(formData.rating),
-            details: { ...formData.details, established_year: parseInt(formData.details.established_year, 10) || null, campus_size_acres: parseInt(formData.details.campus_size_acres, 10) || null },
-            placements: { ...formData.placements, top_recruiters: formData.placements.top_recruiters.split(',').map(s => s.trim()).filter(Boolean) },
-            facilities: formData.facilities.split(',').map(s => s.trim()).filter(Boolean)
+            stream_ids: streamIds,
+            top_stream_ids: topStreamIds,
+            rating: Number.isFinite(rating) ? rating : null,
+            details: {
+                ...details,
+                established_year: parseInt(details.established_year, 10) || null,
+                campus_size_acres: parseInt(details.campus_size_acres, 10) || null
+            },
+            placements: { ...placements, top_recruiters: toList(placements.top_recruiters) },
+            facilities: toList(formData.facilities)
         };
         try { await onSave(payload); } catch (error) {} finally { setLoading(false); }
     };

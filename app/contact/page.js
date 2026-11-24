@@ -5,6 +5,7 @@ import Footer from '../components/Footer';
 import { motion } from 'framer-motion';
 import { Phone, Mail, MapPin, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
+import api from '../utils/api';
 
 export default function ContactUsPage() {
     const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: '' });
@@ -14,18 +15,18 @@ export default function ContactUsPage() {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
-        // In a real app, you would send this data to your backend API
-        console.log("Form submitted:", formData);
-        
-        // Simulate API call
-        setTimeout(() => {
+        try {
+            await api.post('/contact', formData);
             toast.success("Your message has been sent successfully!");
             setFormData({ name: '', email: '', phone: '', message: '' });
+        } catch (error) {
+            toast.error(error.response?.data?.message || "Could not send your message. Please try again.");
+        } finally {
             setLoading(false);
-        }, 1500);
+        }
     };
 
     return (
@@ -41,7 +42,7 @@ export default function ContactUsPage() {
                     >
                         <h1 className="text-5xl font-extrabold mb-4">Get In Touch</h1>
                         <p className="text-lg text-text-secondary max-w-2xl mx-auto">
-                            We're here to help you on your educational journey. Reach out to us with any questions or to schedule a counseling session.
+                            We&apos;re here to help you on your educational journey. Reach out to us with any questions or to schedule a counseling session.
                         </p>
                     </motion.div>
                     
@@ -82,6 +83,7 @@ export default function ContactUsPage() {
                             </div>
                              <div className="rounded-xl overflow-hidden border border-secondary">
                                 <iframe 
+                                    title="Map showing the Performic office at 2/1 Russel St, Park Street area, Kolkata"
                                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3684.331490288806!2d88.3503382759367!3d22.566637833075677!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a02770252516625%3A0x33b33b72c676ef5c!2s2%2F1%2C%20Russel%20St%2C%20Park%20Street%20area%2C%20Kolkata%2C%20West%20Bengal%20700071!5e0!3m2!1sen!2sin!4v1726487965902!5m2!1sen!2sin" 
                                     width="100%" 
                                     height="300" 

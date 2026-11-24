@@ -92,7 +92,7 @@ export default function AdminDashboardPage() {
     return (
         <div>
             <h1 className="text-3xl font-bold mb-2">Welcome back, {user?.full_name.split(' ')[0]}!</h1>
-            <p className="text-text-secondary mb-8">Here's a snapshot of your platform.</p>
+            <p className="text-text-secondary mb-8">Here&apos;s a snapshot of your platform.</p>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <StatCard title="Total Users" value={stats?.totalUsers || 0} icon={<Users size={32} />} />
                 <StatCard title="Total Universities" value={stats?.totalUniversities || 0} icon={<Building size={32} />} />

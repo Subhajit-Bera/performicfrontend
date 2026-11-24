@@ -9,25 +9,25 @@ export default function CourseForm({ course, onSave, onDone }) {
         name: '',
         description: '',
         icon_name: 'GraduationCap',
-        related_university_ids: []
+        stream_ids: []
     });
-    const [universities, setUniversities] = useState([]);
+    const [streams, setStreams] = useState([]);
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        // Fetch all universities to populate the multi-select
-        api.get('/admin/universities')
-            .then(res => setUniversities(res.data))
-            .catch(() => toast.error("Could not load universities list."));
+        api.get('/admin/streams')
+            .then(res => setStreams(res.data.data ?? res.data))
+            .catch(() => toast.error("Could not load the streams list."));
+    }, []);
 
-        if (course) {
-            setFormData({
-                name: course.name || '',
-                description: course.description || '',
-                icon_name: course.icon_name || 'GraduationCap',
-                related_university_ids: course.related_university_ids || []
-            });
-        }
+    useEffect(() => {
+        if (!course) return;
+        setFormData({
+            name: course.name || '',
+            description: course.description || '',
+            icon_name: course.icon_name || 'GraduationCap',
+            stream_ids: course.stream_ids || []
+        });
     }, [course]);
 
     const handleChange = (e) => {
@@ -35,9 +35,13 @@ export default function CourseForm({ course, onSave, onDone }) {
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 
-    const handleUniversitySelect = (e) => {
-        const selectedIds = Array.from(e.target.selectedOptions, option => parseInt(option.value, 10));
-        setFormData(prev => ({ ...prev, related_university_ids: selectedIds }));
+    const toggleStream = (id) => {
+        setFormData(prev => ({
+            ...prev,
+            stream_ids: prev.stream_ids.includes(id)
+                ? prev.stream_ids.filter(streamId => streamId !== id)
+                : [...prev.stream_ids, id]
+        }));
     };
 
     const handleSubmit = async (e) => {
@@ -67,21 +71,23 @@ export default function CourseForm({ course, onSave, onDone }) {
                 <label htmlFor="description" className="block text-sm font-medium text-text-secondary mb-1">Description</label>
                 <textarea id="description" name="description" value={formData.description} onChange={handleChange} rows="4" className="w-full bg-secondary/50 border-2 border-secondary rounded-lg p-2.5 focus:outline-none focus:border-accent" />
             </div>
-            {/* <div>
-                <label htmlFor="related_university_ids" className="block text-sm font-medium text-text-secondary mb-1">Related Universities (Ctrl+Click to select multiple)</label>
-                <select
-                    id="related_university_ids"
-                    name="related_university_ids"
-                    multiple
-                    value={formData.related_university_ids}
-                    onChange={handleUniversitySelect}
-                    className="w-full h-48 bg-secondary/50 border-2 border-secondary rounded-lg p-2.5 focus:outline-none focus:border-accent"
-                >
-                    {universities.map(uni => (
-                        <option key={uni.id} value={uni.id}>{uni.name}</option>
+            <fieldset>
+                <legend className="block text-sm font-medium text-text-secondary mb-2">Streams</legend>
+                <div className="grid grid-cols-2 gap-2">
+                    {streams.map(stream => (
+                        <div key={stream.id} className="flex items-center">
+                            <input
+                                type="checkbox"
+                                id={`course-stream-${stream.id}`}
+                                checked={formData.stream_ids.includes(stream.id)}
+                                onChange={() => toggleStream(stream.id)}
+                                className="h-4 w-4 rounded border-secondary text-accent focus:ring-accent"
+                            />
+                            <label htmlFor={`course-stream-${stream.id}`} className="ml-2 text-sm text-text">{stream.name}</label>
+                        </div>
                     ))}
-                </select>
-            </div> */}
+                </div>
+            </fieldset>
             <div className="flex justify-end gap-4 pt-4">
                 <button type="button" onClick={onDone} className="bg-secondary text-text font-bold py-2 px-4 rounded-lg">Cancel</button>
                 <button type="submit" disabled={loading} className="bg-accent text-white font-bold py-2 px-6 rounded-lg flex items-center justify-center disabled:bg-accent/50">

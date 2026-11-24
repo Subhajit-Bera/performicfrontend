@@ -513,9 +513,9 @@ const UniversityFilterComponent = () => {
             }
         };
         fetchUniversities();
-        // THE FIX: Add the whole searchParams object to the dependency array.
-        // This makes the component re-render whenever ANY URL parameter changes.
-    }, [searchParams]);
+        // Only the stream query drives the initial filter; the university fetch is
+        // unfiltered, so other query changes must not re-trigger it.
+    }, [streamQuery]);
 
     const filteredUniversities = useMemo(() => {
         let results = universities;

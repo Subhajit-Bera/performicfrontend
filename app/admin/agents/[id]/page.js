@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'next/navigation';
 import api from '../../../utils/api';
 import { toast } from 'sonner';
@@ -11,13 +11,16 @@ export default function AgentDetailPage() {
     const [loading, setLoading] = useState(true);
     const { id } = useParams();
 
-    const fetchAgentDetails = () => {
-         api.get(`/admin/agents/${id}`).then(res => setAgentData(res.data)).finally(() => setLoading(false));
-    };
+    const fetchAgentDetails = useCallback(() => {
+        api.get(`/admin/agents/${id}`)
+            .then(res => setAgentData(res.data))
+            .catch(err => toast.error(err.response?.data?.message || 'Could not load this agent.'))
+            .finally(() => setLoading(false));
+    }, [id]);
 
     useEffect(() => {
-        if(id) fetchAgentDetails();
-    }, [id]);
+        if (id) fetchAgentDetails();
+    }, [id, fetchAgentDetails]);
 
     const handleStatusChange = (referralId, status) => {
         toast.promise(api.put(`/admin/referrals/${referralId}/status`, { status }), {

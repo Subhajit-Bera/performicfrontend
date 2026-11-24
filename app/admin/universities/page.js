@@ -9,12 +9,14 @@ import Loader from '@/app/components/Loader';
 export default function ManageUniversitiesPage() {
     const [universities, setUniversities] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     const fetchUniversities = () => {
         setLoading(true);
-        api.get('/admin/universities')
-            .then(res => setUniversities(res.data))
-            .catch(err => toast.error("Failed to fetch universities."))
+        setError(null);
+        api.get('/admin/universities', { params: { limit: 100 } })
+            .then(res => setUniversities(res.data.data ?? res.data))
+            .catch(err => setError(err.response?.data?.message || "Failed to fetch universities."))
             .finally(() => setLoading(false));
     };
 
@@ -45,6 +47,13 @@ export default function ManageUniversitiesPage() {
                 </Link>
             </div>
             
+            {error && (
+                <div className="mb-6 flex flex-wrap items-center justify-between gap-4 rounded-lg border border-red-500/40 bg-red-500/10 p-4 text-sm text-red-300">
+                    <span role="alert">{error}</span>
+                    <button type="button" onClick={fetchUniversities} className="rounded-md bg-red-500/20 px-3 py-1.5 font-semibold text-red-200 hover:bg-red-500/30">Retry</button>
+                </div>
+            )}
+
             <div className="bg-primary border border-secondary rounded-xl overflow-hidden">
                  <div className="overflow-x-auto">
                     <table className="w-full text-left">
@@ -58,7 +67,7 @@ export default function ManageUniversitiesPage() {
                         </thead>
                         <tbody>
                             {loading ? (
-                                <Loader/>
+                                <tr><td colSpan="4" className="p-8 text-center"><Loader/></td></tr>
                             ) : universities.length === 0 ? (
                                 <tr><td colSpan="4" className="text-center p-4 text-text-secondary">No universities found.</td></tr>
                             ) : (
@@ -69,8 +78,8 @@ export default function ManageUniversitiesPage() {
                                         <td className="p-4 text-text-secondary">{uni.stream_name || 'N/A'}</td>
                                         <td className="p-4">
                                             <div className="flex gap-2">
-                                                <Link href={`/admin/universities/edit/${uni.id}`} className="text-text-secondary hover:text-accent p-1"><Edit size={16}/></Link>
-                                                <button onClick={() => handleDelete(uni.id)} className="text-text-secondary hover:text-red-500 p-1"><Trash2 size={16}/></button>
+                                                <Link href={`/admin/universities/edit/${uni.id}`} aria-label={`Edit ${uni.name}`} className="text-text-secondary hover:text-accent p-1"><Edit size={16} aria-hidden="true"/></Link>
+                                                <button onClick={() => handleDelete(uni.id)} aria-label={`Delete ${uni.name}`} className="text-text-secondary hover:text-red-500 p-1"><Trash2 size={16} aria-hidden="true"/></button>
                                             </div>
                                         </td>
                                     </tr>

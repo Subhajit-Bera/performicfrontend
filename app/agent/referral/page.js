@@ -15,7 +15,7 @@ export default function ReferStudentPage() {
         setLoading(true);
         setSearchResults([]);
         try {
-            const { data } = await api.get(`/agent/search-user?name=${name}&contact=${contact}`);
+            const { data } = await api.get('/agent/search-user', { params: { name, contact } });
             setSearchResults(data);
             if (data.length === 0) {
                 toast.info("No users found matching your criteria.");

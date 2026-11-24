@@ -9,14 +9,16 @@ import PartnerForm from '../components/PartnerForm';
 export default function ManagePartnersPage() {
     const [partners, setPartners] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [currentPartner, setCurrentPartner] = useState(null);
 
     const fetchPartners = () => {
         setLoading(true);
-        api.get('/admin/partners')
-            .then(res => setPartners(res.data))
-            .catch(() => toast.error("Failed to fetch partners."))
+        setError(null);
+        api.get('/admin/partners', { params: { limit: 100 } })
+            .then(res => setPartners(res.data.data ?? res.data))
+            .catch(err => setError(err.response?.data?.message || "Failed to fetch partners."))
             .finally(() => setLoading(false));
     };
 
@@ -72,6 +74,13 @@ export default function ManagePartnersPage() {
                 </button>
             </div>
             
+            {error && (
+                <div className="mb-6 flex flex-wrap items-center justify-between gap-4 rounded-lg border border-red-500/40 bg-red-500/10 p-4 text-sm text-red-300">
+                    <span role="alert">{error}</span>
+                    <button type="button" onClick={fetchPartners} className="rounded-md bg-red-500/20 px-3 py-1.5 font-semibold text-red-200 hover:bg-red-500/30">Retry</button>
+                </div>
+            )}
+
              <div className="bg-primary border border-secondary rounded-xl overflow-hidden">
                  <div className="overflow-x-auto">
                     <table className="w-full text-left">
@@ -86,6 +95,8 @@ export default function ManagePartnersPage() {
                         <tbody>
                             {loading ? (
                                 <tr><td colSpan="4" className="text-center p-4">Loading...</td></tr>
+                            ) : partners.length === 0 ? (
+                                <tr><td colSpan="4" className="text-center p-4 text-text-secondary">No partners found.</td></tr>
                             ) : (
                                 partners.map(partner => (
                                     <tr key={partner.id} className="border-b border-secondary">
@@ -94,8 +105,8 @@ export default function ManagePartnersPage() {
                                         <td className="p-4 text-text-secondary">{partner.featured_text}</td>
                                         <td className="p-4">
                                             <div className="flex gap-2">
-                                                <button onClick={() => handleOpenModal(partner)} className="text-text-secondary hover:text-accent p-1"><Edit size={16}/></button>
-                                                <button onClick={() => handleDelete(partner.id)} className="text-text-secondary hover:text-red-500 p-1"><Trash2 size={16}/></button>
+                                                <button onClick={() => handleOpenModal(partner)} aria-label={`Edit ${partner.name}`} className="text-text-secondary hover:text-accent p-1"><Edit size={16} aria-hidden="true"/></button>
+                                                <button onClick={() => handleDelete(partner.id)} aria-label={`Delete ${partner.name}`} className="text-text-secondary hover:text-red-500 p-1"><Trash2 size={16} aria-hidden="true"/></button>
                                             </div>
                                         </td>
                                     </tr>

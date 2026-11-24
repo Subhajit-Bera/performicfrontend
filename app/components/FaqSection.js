@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useId } from 'react';
 import { ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -39,18 +39,24 @@ const faqData = [
 
 const FaqItem = ({ question, answer }) => {
     const [isOpen, setIsOpen] = useState(false);
+    const panelId = useId();
     return (
         <div className="border-b border-secondary">
             <button
+                type="button"
                 onClick={() => setIsOpen(!isOpen)}
+                aria-expanded={isOpen}
+                aria-controls={panelId}
                 className="w-full flex justify-between items-center text-left py-4 px-2"
             >
                 <span className="font-semibold text-text">{question}</span>
-                <ChevronDown size={20} className={`transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
+                <ChevronDown size={20} aria-hidden="true" className={`transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
             </button>
             <AnimatePresence>
                 {isOpen && (
                     <motion.div
+                        id={panelId}
+                        role="region"
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: 'auto', opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
@@ -70,7 +76,7 @@ export default function FaqSection() {
     const [activeCategory, setActiveCategory] = useState(faqData[0].category);
 
     return (
-        <section className="py-24 bg-primary/30">
+        <section id="faq" aria-label="Frequently asked questions" className="py-24 bg-primary/30">
             <div className="container mx-auto px-6">
                 <h2 className="text-4xl font-bold text-center mb-12">Frequently Asked Questions</h2>
                 <div className="flex flex-col md:flex-row gap-8">
@@ -80,7 +86,9 @@ export default function FaqSection() {
                             {faqData.map(cat => (
                                 <button 
                                     key={cat.category}
+                                    type="button"
                                     onClick={() => setActiveCategory(cat.category)}
+                                    aria-current={activeCategory === cat.category}
                                     className={`w-full text-left p-3 rounded-lg font-semibold transition-colors ${
                                         activeCategory === cat.category ? 'bg-accent text-white' : 'bg-primary hover:bg-secondary'
                                     }`}

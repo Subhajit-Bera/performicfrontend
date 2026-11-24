@@ -9,14 +9,16 @@ import CourseForm from '../components/CourseForm';
 export default function ManageCoursesPage() {
     const [courses, setCourses] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [currentCourse, setCurrentCourse] = useState(null);
 
     const fetchCourses = () => {
         setLoading(true);
-        api.get('/admin/courses')
-            .then(res => setCourses(res.data))
-            .catch(() => toast.error("Failed to fetch courses."))
+        setError(null);
+        api.get('/admin/courses', { params: { limit: 100 } })
+            .then(res => setCourses(res.data.data ?? res.data))
+            .catch(err => setError(err.response?.data?.message || "Failed to fetch courses."))
             .finally(() => setLoading(false));
     };
 
@@ -27,6 +29,13 @@ export default function ManageCoursesPage() {
     const handleOpenModal = (course = null) => {
         setCurrentCourse(course);
         setIsModalOpen(true);
+        // The list row carries stream_names but not stream_ids, so load the full
+        // record before editing to avoid wiping the stream links on save.
+        if (course) {
+            api.get(`/admin/courses/${course.id}`)
+                .then(({ data }) => setCurrentCourse(data))
+                .catch(err => toast.error(err.response?.data?.message || "Could not load this course."));
+        }
     };
 
     const handleCloseModal = () => {
@@ -74,6 +83,13 @@ export default function ManageCoursesPage() {
                 </button>
             </div>
             
+            {error && (
+                <div className="mb-6 flex flex-wrap items-center justify-between gap-4 rounded-lg border border-red-500/40 bg-red-500/10 p-4 text-sm text-red-300">
+                    <span role="alert">{error}</span>
+                    <button type="button" onClick={fetchCourses} className="rounded-md bg-red-500/20 px-3 py-1.5 font-semibold text-red-200 hover:bg-red-500/30">Retry</button>
+                </div>
+            )}
+
             <div className="bg-primary border border-secondary rounded-xl overflow-hidden">
                  <div className="overflow-x-auto">
                     <table className="w-full text-left">
@@ -88,6 +104,8 @@ export default function ManageCoursesPage() {
                         <tbody>
                             {loading ? (
                                 <tr><td colSpan="4" className="text-center p-4">Loading...</td></tr>
+                            ) : courses.length === 0 ? (
+                                <tr><td colSpan="4" className="text-center p-4 text-text-secondary">No career options found.</td></tr>
                             ) : (
                                 courses.map(course => (
                                     <tr key={course.id} className="border-b border-secondary">
@@ -96,8 +114,8 @@ export default function ManageCoursesPage() {
                                         <td className="p-4 text-text-secondary">{course.icon_name}</td>
                                         <td className="p-4">
                                             <div className="flex gap-2">
-                                                <button onClick={() => handleOpenModal(course)} className="text-text-secondary hover:text-accent p-1"><Edit size={16}/></button>
-                                                <button onClick={() => handleDelete(course.id)} className="text-text-secondary hover:text-red-500 p-1"><Trash2 size={16}/></button>
+                                                <button onClick={() => handleOpenModal(course)} aria-label={`Edit ${course.name}`} className="text-text-secondary hover:text-accent p-1"><Edit size={16} aria-hidden="true"/></button>
+                                                <button onClick={() => handleDelete(course.id)} aria-label={`Delete ${course.name}`} className="text-text-secondary hover:text-red-500 p-1"><Trash2 size={16} aria-hidden="true"/></button>
                                             </div>
                                         </td>
                                     </tr>

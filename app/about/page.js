@@ -37,7 +37,7 @@ export default function AboutUsPage() {
                     
                     <div className="grid md:grid-cols-3 gap-8 mb-20">
                         <StatCard icon={<Target size={40} />} title="Our Vision">
-                            To become India's most trusted educational and career guidance platform, empowering students to achieve their full potential.
+                            To become India&apos;s most trusted educational and career guidance platform, empowering students to achieve their full potential.
                         </StatCard>
                         <StatCard icon={<Flag size={40} />} title="Our Mission">
                             To make the path to higher education clear and accessible by providing comprehensive resources and personalized support.
@@ -57,7 +57,7 @@ export default function AboutUsPage() {
                         >
                             <h2 className="text-4xl font-bold mb-4">Our Approach</h2>
                             <p className="text-text-secondary leading-relaxed">
-                                At Performic, we believe that every student deserves a clear path to their dream career. Our approach is built on three pillars: comprehensive data, personalized guidance, and unwavering support. We meticulously gather information on universities, exams, and courses to ensure you have the most accurate and up-to-date resources at your fingertips. Our expert counselors then work with you to understand your unique aspirations and challenges, helping you craft a personalized roadmap to success. From application to admission, we're with you every step of the way.
+                                At Performic, we believe that every student deserves a clear path to their dream career. Our approach is built on three pillars: comprehensive data, personalized guidance, and unwavering support. We meticulously gather information on universities, exams, and courses to ensure you have the most accurate and up-to-date resources at your fingertips. Our expert counselors then work with you to understand your unique aspirations and challenges, helping you craft a personalized roadmap to success. From application to admission, we&apos;re with you every step of the way.
                             </p>
                         </motion.div>
                         <motion.div 

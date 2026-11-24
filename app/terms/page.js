@@ -28,7 +28,7 @@ export default function TermsAndConditionsPage() {
                     </PolicySection>
                     
                     <PolicySection title="3. Intellectual Property Rights">
-                        <p>Unless otherwise indicated, the website is our proprietary property and all source code, databases, functionality, software, website designs, audio, video, text, photographs, and graphics on the site (collectively, the "Content") and the trademarks, service marks, and logos contained therein (the "Marks") are owned or controlled by us or licensed to us, and are protected by copyright and trademark laws.</p>
+                        <p>Unless otherwise indicated, the website is our proprietary property and all source code, databases, functionality, software, website designs, audio, video, text, photographs, and graphics on the site (collectively, the &quot;Content&quot;) and the trademarks, service marks, and logos contained therein (the &quot;Marks&quot;) are owned or controlled by us or licensed to us, and are protected by copyright and trademark laws.</p>
                     </PolicySection>
                     
                     <PolicySection title="4. Prohibited Activities">

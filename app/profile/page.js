@@ -95,19 +95,23 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import CompleteProfileModal from '../components/CompleteProfileModal';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import { User, Mail, Phone, MapPin, GraduationCap, Building2, HelpCircle } from 'lucide-react';
+import api from '../utils/api';
+import { User, Mail, Phone, MapPin, GraduationCap, Building2, HelpCircle, FileText, CheckCircle, Clock } from 'lucide-react';
 import { FaWhatsapp } from 'react-icons/fa';
+import Link from 'next/link';
 
-
-export default function ProfilePage() {
+function ProfilePageContent() {
     const { user, isAuthenticated, loading, profileCompletion } = useAuth();
     const router = useRouter();
     const searchParams = useSearchParams();
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [applications, setApplications] = useState([]);
+    const [loadingApps, setLoadingApps] = useState(false);
 
     useEffect(() => {
         if (!loading && !isAuthenticated) {
@@ -115,6 +119,13 @@ export default function ProfilePage() {
         }
         if (searchParams.get('action') === 'complete') {
             setIsModalOpen(true);
+        }
+        if (isAuthenticated) {
+            setLoadingApps(true);
+            api.get('/users/applications')
+                .then(res => setApplications(res.data))
+                .catch(err => console.error('Failed to load applications:', err))
+                .finally(() => setLoadingApps(false));
         }
     }, [isAuthenticated, loading, router, searchParams]);
 
@@ -161,7 +172,7 @@ export default function ProfilePage() {
                         </div>
 
                         <h2 className="text-2xl font-bold mb-6 border-b border-secondary pb-2">Profile Details</h2>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
                             <ProfileDetail icon={<Phone size={24} />} label="Phone Number" value={user.phone_number} />
                             <ProfileDetail icon={<FaWhatsapp size={24} />} label="WhatsApp Number" value={user.whatsapp_number} />
                             <ProfileDetail icon={<MapPin size={24} />} label="State / Hometown" value={user.state_hometown} />
@@ -169,6 +180,48 @@ export default function ProfilePage() {
                              <ProfileDetail icon={<Building2 size={24} />} label="Entry Level" value={user.entry_level === 'Other' ? user.entry_level_other : user.entry_level} />
                             <ProfileDetail icon={<HelpCircle size={24} />} label="Where did you hear about us?" value={user.how_heard === 'Other' ? user.how_heard_other : user.how_heard} />
                         </div>
+
+                        {/* My Applications Section */}
+                        <h2 className="text-2xl font-bold mb-6 border-b border-secondary pb-2 flex items-center gap-2">
+                            <FileText className="text-accent" size={24} /> My University Applications ({applications.length})
+                        </h2>
+                        {loadingApps ? (
+                            <div className="text-center py-6 text-text-secondary text-sm">Loading applications...</div>
+                        ) : applications.length === 0 ? (
+                            <div className="text-center py-8 bg-secondary/20 rounded-lg p-6">
+                                <p className="text-text-secondary text-sm mb-4">You have not submitted applications to any universities yet.</p>
+                                <Link href="/universities" className="bg-accent hover:bg-accent-hover text-white text-xs font-semibold py-2 px-5 rounded-md transition-colors inline-block">
+                                    Explore Universities
+                                </Link>
+                            </div>
+                        ) : (
+                            <div className="space-y-3">
+                                {applications.map(app => (
+                                    <div key={app.id} className="p-4 bg-secondary/30 rounded-lg border border-secondary/50 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                                        <div>
+                                            <Link href={`/universities/${app.university_slug}`} className="font-bold text-text hover:text-accent transition-colors">
+                                                {app.university_name}
+                                            </Link>
+                                            <p className="text-xs text-text-secondary mt-0.5 flex items-center gap-1.5">
+                                                <MapPin size={12} /> {app.location} {app.course_name ? `• ${app.course_name}` : ''}
+                                            </p>
+                                        </div>
+                                        <div className="flex items-center gap-3">
+                                            <span className={`text-xs px-2.5 py-1 rounded-full font-semibold ${
+                                                app.status === 'Converted' ? 'bg-purple-500/20 text-purple-400' :
+                                                app.status === 'Called' ? 'bg-sky-500/20 text-sky-400' :
+                                                'bg-emerald-500/20 text-emerald-400'
+                                            }`}>
+                                                {app.status}
+                                            </span>
+                                            <span className="text-xs text-text-secondary">
+                                                {new Date(app.applied_at).toLocaleDateString()}
+                                            </span>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
                     </div>
                 </div>
             </main>
@@ -182,5 +235,13 @@ export default function ProfilePage() {
                 }}
             />
         </>
+    );
+}
+
+export default function ProfilePage() {
+    return (
+        <Suspense fallback={null}>
+            <ProfilePageContent />
+        </Suspense>
     );
 }

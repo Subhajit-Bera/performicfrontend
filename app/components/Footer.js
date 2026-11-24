@@ -104,19 +104,13 @@ export default function Footer() {
                                 height={40}
                             />
                         </Link>
-                        <div className="flex space-x-4">
-                            <a href="#" className="text-text-secondary hover:text-accent p-2 bg-secondary/50 rounded-full transition-colors"><Facebook size={18} /></a>
-                            <a href="#" className="text-text-secondary hover:text-accent p-2 bg-secondary/50 rounded-full transition-colors"><Linkedin size={18} /></a>
-                            <a href="#" className="text-text-secondary hover:text-accent p-2 bg-secondary/50 rounded-full transition-colors"><Twitter size={18} /></a>
-                            <a href="#" className="text-text-secondary hover:text-accent p-2 bg-secondary/50 rounded-full transition-colors"><Instagram size={18} /></a>
-                        </div>
                     </div>
 
                     {/* Column 2: Company Links */}
                     <div className="space-y-3">
                         <h4 className="font-bold text-base text-text mb-4">Company</h4>
                         <Link href="/about" className="block text-text-secondary hover:text-accent transition-colors">About Us</Link>
-                        <Link href="/courses" className="block text-text-secondary hover:text-accent transition-colors">Courses</Link>
+                        <Link href="/universities" className="block text-text-secondary hover:text-accent transition-colors">Universities</Link>
                         <Link href="/contact" className="block text-text-secondary hover:text-accent transition-colors">Contact Us</Link>
                     </div>
 
