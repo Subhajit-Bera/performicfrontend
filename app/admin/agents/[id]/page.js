@@ -41,12 +41,12 @@ export default function AgentDetailPage() {
             <Link href="/admin/agents" className="flex items-center gap-2 text-sm text-text-secondary hover:text-text mb-4">
                 <ChevronLeft size={18} /> Back to Agents List
             </Link>
-            <h1 className="text-3xl font-bold mb-2">Agent: {agentData.agent.full_name}</h1>
-            <p className="text-text-secondary mb-8">{agentData.agent.email}</p>
+            <h1 className="text-2xl sm:text-3xl font-bold mb-1 sm:mb-2">Agent: {agentData.agent.full_name}</h1>
+            <p className="text-text-secondary text-sm sm:text-base mb-6 sm:mb-8">{agentData.agent.email}</p>
 
-            <h2 className="text-2xl font-bold mb-4">Referred Students</h2>
-            <div className="bg-primary border border-secondary rounded-xl overflow-x-auto">
-                <table className="w-full text-left text-sm">
+            <h2 className="text-xl sm:text-2xl font-bold mb-4">Referred Students</h2>
+            <div className="bg-primary border border-secondary rounded-xl overflow-x-auto shadow-sm">
+                <table className="w-full text-left text-sm min-w-[500px]">
                      <thead className="bg-secondary/50">
                         <tr>
                             <th className="p-4">Student Name</th>

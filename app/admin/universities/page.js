@@ -40,10 +40,10 @@ export default function ManageUniversitiesPage() {
 
     return (
         <div>
-            <div className="flex justify-between items-center mb-8">
-                <h1 className="text-3xl font-bold">Manage Universities</h1>
-                <Link href="/admin/universities/add" className="bg-accent hover:bg-accent-hover text-white font-bold py-2 px-4 rounded-lg flex items-center gap-2">
-                    <Plus size={20} /> Add University
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 sm:mb-8">
+                <h1 className="text-2xl sm:text-3xl font-bold">Manage Universities</h1>
+                <Link href="/admin/universities/add" className="bg-accent hover:bg-accent-hover text-white font-bold py-2 px-4 rounded-lg flex items-center gap-2 text-sm sm:text-base">
+                    <Plus size={18} /> Add University
                 </Link>
             </div>
             
@@ -54,32 +54,46 @@ export default function ManageUniversitiesPage() {
                 </div>
             )}
 
-            <div className="bg-primary border border-secondary rounded-xl overflow-hidden">
+            <div className="bg-primary border border-secondary rounded-xl overflow-hidden shadow-sm">
                  <div className="overflow-x-auto">
-                    <table className="w-full text-left">
+                    <table className="w-full text-left text-sm min-w-[640px]">
                         <thead className="bg-secondary/50">
                             <tr>
-                                <th className="p-4 font-semibold text-sm">Name</th>
-                                <th className="p-4 font-semibold text-sm">Location</th>
-                                <th className="p-4 font-semibold text-sm">Stream</th>
-                                <th className="p-4 font-semibold text-sm">Actions</th>
+                                <th className="p-4 font-semibold">Name</th>
+                                <th className="p-4 font-semibold">Location</th>
+                                <th className="p-4 font-semibold">Streams</th>
+                                <th className="p-4 font-semibold">Rating</th>
+                                <th className="p-4 font-semibold">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             {loading ? (
-                                <tr><td colSpan="4" className="p-8 text-center"><Loader/></td></tr>
+                                <tr>
+                                    <td colSpan="5" className="text-center p-8 text-text-secondary">
+                                        <Loader />
+                                    </td>
+                                </tr>
                             ) : universities.length === 0 ? (
-                                <tr><td colSpan="4" className="text-center p-4 text-text-secondary">No universities found.</td></tr>
+                                <tr>
+                                    <td colSpan="5" className="text-center p-8 text-text-secondary">No universities found.</td>
+                                </tr>
                             ) : (
                                 universities.map(uni => (
-                                    <tr key={uni.id} className="border-b border-secondary">
-                                        <td className="p-4 text-text">{uni.name}</td>
+                                    <tr key={uni.id} className="border-b border-secondary hover:bg-secondary/20 transition-colors">
+                                        <td className="p-4 font-medium text-text">{uni.name}</td>
                                         <td className="p-4 text-text-secondary">{uni.location}</td>
-                                        <td className="p-4 text-text-secondary">{uni.stream_name || 'N/A'}</td>
+                                        <td className="p-4 text-text-secondary max-w-xs truncate" title={uni.stream_names?.join(', ')}>
+                                            {uni.stream_names?.join(', ') || 'N/A'}
+                                        </td>
+                                        <td className="p-4 text-text-secondary">{uni.rating || 'N/A'}</td>
                                         <td className="p-4">
                                             <div className="flex gap-2">
-                                                <Link href={`/admin/universities/edit/${uni.id}`} aria-label={`Edit ${uni.name}`} className="text-text-secondary hover:text-accent p-1"><Edit size={16} aria-hidden="true"/></Link>
-                                                <button onClick={() => handleDelete(uni.id)} aria-label={`Delete ${uni.name}`} className="text-text-secondary hover:text-red-500 p-1"><Trash2 size={16} aria-hidden="true"/></button>
+                                                <Link href={`/admin/universities/edit/${uni.id}`} aria-label={`Edit ${uni.name}`} className="text-text-secondary hover:text-accent p-1.5 rounded hover:bg-secondary/50 transition-colors">
+                                                    <Edit size={16} aria-hidden="true" />
+                                                </Link>
+                                                <button onClick={() => handleDelete(uni.id)} aria-label={`Delete ${uni.name}`} className="text-text-secondary hover:text-red-500 p-1.5 rounded hover:bg-secondary/50 transition-colors">
+                                                    <Trash2 size={16} aria-hidden="true" />
+                                                </button>
                                             </div>
                                         </td>
                                     </tr>

@@ -16,9 +16,9 @@ export default function MyReferralsPage() {
 
     return (
         <div>
-            <h1 className="text-3xl font-bold mb-8">My Referrals</h1>
-            <div className="bg-primary border border-secondary rounded-xl overflow-x-auto">
-                <table className="w-full text-left text-sm">
+            <h1 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8">My Referrals</h1>
+            <div className="bg-primary border border-secondary rounded-xl overflow-x-auto shadow-sm">
+                <table className="w-full text-left text-sm min-w-[600px]">
                      <thead className="bg-secondary/50">
                         <tr>
                             <th className="p-4">Name</th>

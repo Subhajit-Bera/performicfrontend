@@ -44,8 +44,8 @@ export default function ReferStudentPage() {
 
     return (
         <div>
-            <h1 className="text-3xl font-bold mb-8">Refer a Student</h1>
-            <div className="bg-primary p-6 rounded-xl border border-secondary">
+            <h1 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8">Refer a Student</h1>
+            <div className="bg-primary p-4 sm:p-6 rounded-xl border border-secondary shadow-sm">
                 <form onSubmit={handleSearch} className="flex flex-col md:flex-row gap-4 mb-8">
                     <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Student's Full Name" required className="w-full bg-secondary/50 border-2 border-secondary rounded-lg p-3 focus:outline-none focus:border-accent" />
                     <input value={contact} onChange={(e) => setContact(e.target.value)} placeholder="Student's Email or Phone" required className="w-full bg-secondary/50 border-2 border-secondary rounded-lg p-3 focus:outline-none focus:border-accent" />

@@ -543,24 +543,24 @@ export default function ManageStreamsPage() {
 
     return (
         <div>
-            <div className="flex justify-between items-center mb-8">
-                <h1 className="text-3xl font-bold">Manage Streams & Courses</h1>
-                <button onClick={() => handleOpenFormModal()} className="bg-accent hover:bg-accent-hover text-white font-bold py-2 px-4 rounded-lg flex items-center gap-2">
-                    <Plus size={20} /> Add New Stream
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 sm:mb-8">
+                <h1 className="text-2xl sm:text-3xl font-bold">Manage Streams & Courses</h1>
+                <button onClick={() => handleOpenFormModal()} className="bg-accent hover:bg-accent-hover text-white font-bold py-2 px-4 rounded-lg flex items-center gap-2 text-sm sm:text-base">
+                    <Plus size={18} /> Add New Stream
                 </button>
             </div>
             
-            <div className="bg-primary border border-secondary rounded-xl p-6">
+            <div className="bg-primary border border-secondary rounded-xl p-4 sm:p-6 shadow-sm">
                 <div className="space-y-3">
-                    {loading ? ( <div>Loading streams...</div> ) :
+                    {loading ? ( <div className="p-4 text-text-secondary">Loading streams...</div> ) :
                      streams.map(stream => (
-                        <div key={stream.id} className="flex items-center justify-between bg-secondary/50 p-3 rounded-md">
-                            <span className="font-medium">{stream.name}</span>
-                            <div className="flex items-center gap-4">
-                                <button onClick={() => handleOpenCoursesModal(stream)} className="text-accent hover:underline text-xs font-bold flex items-center gap-1"><BookCopy size={14} /> MANAGE COURSES</button>
-                                <div className="flex items-center gap-3">
-                                    <button onClick={() => handleOpenFormModal(stream)} className="text-text-secondary hover:text-accent"><Edit size={16} /></button>
-                                    <button onClick={() => handleDelete(stream.id)} className="text-text-secondary hover:text-red-500"><Trash2 size={16} /></button>
+                        <div key={stream.id} className="flex flex-col sm:flex-row items-start sm:items-center justify-between bg-secondary/50 p-3.5 sm:p-4 rounded-lg gap-3">
+                            <span className="font-medium text-sm sm:text-base">{stream.name}</span>
+                            <div className="flex items-center gap-3 sm:gap-4 flex-wrap w-full sm:w-auto justify-between sm:justify-end">
+                                <button onClick={() => handleOpenCoursesModal(stream)} className="text-accent hover:underline text-xs font-bold flex items-center gap-1.5"><BookCopy size={14} /> MANAGE COURSES</button>
+                                <div className="flex items-center gap-2">
+                                    <button onClick={() => handleOpenFormModal(stream)} className="text-text-secondary hover:text-accent p-1.5 rounded hover:bg-secondary transition-colors"><Edit size={16} /></button>
+                                    <button onClick={() => handleDelete(stream.id)} className="text-text-secondary hover:text-red-500 p-1.5 rounded hover:bg-secondary transition-colors"><Trash2 size={16} /></button>
                                 </div>
                             </div>
                         </div>

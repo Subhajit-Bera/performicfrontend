@@ -40,10 +40,10 @@ export default function ManageExamsPage() {
 
     return (
         <div>
-            <div className="flex justify-between items-center mb-8">
-                <h1 className="text-3xl font-bold">Manage Exams</h1>
-                <Link href="/admin/exams/add" className="bg-accent hover:bg-accent-hover text-white font-bold py-2 px-4 rounded-lg flex items-center gap-2">
-                    <Plus size={20} /> Add Exam
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 sm:mb-8">
+                <h1 className="text-2xl sm:text-3xl font-bold">Manage Exams</h1>
+                <Link href="/admin/exams/add" className="bg-accent hover:bg-accent-hover text-white font-bold py-2 px-4 rounded-lg flex items-center gap-2 text-sm sm:text-base">
+                    <Plus size={18} /> Add Exam
                 </Link>
             </div>
             
@@ -54,32 +54,42 @@ export default function ManageExamsPage() {
                 </div>
             )}
 
-            <div className="bg-primary border border-secondary rounded-xl overflow-hidden">
-                 <div className="overflow-x-auto">
-                    <table className="w-full text-left">
+            <div className="bg-primary border border-secondary rounded-xl overflow-hidden shadow-sm">
+                <div className="overflow-x-auto">
+                    <table className="w-full text-left text-sm min-w-[640px]">
                         <thead className="bg-secondary/50">
                             <tr>
-                                <th className="p-4 font-semibold text-sm">Exam Name</th>
-                                <th className="p-4 font-semibold text-sm">Exam Date</th>
-                                <th className="p-4 font-semibold text-sm">Level</th>
-                                <th className="p-4 font-semibold text-sm">Actions</th>
+                                <th className="p-4 font-semibold">Name</th>
+                                <th className="p-4 font-semibold">Date</th>
+                                <th className="p-4 font-semibold">Level</th>
+                                <th className="p-4 font-semibold">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             {loading ? (
-                                <tr><td colSpan="4" className="p-8 text-center"><Loader/></td></tr>
+                                <tr>
+                                    <td colSpan="4" className="text-center p-8 text-text-secondary">
+                                        <Loader />
+                                    </td>
+                                </tr>
                             ) : exams.length === 0 ? (
-                                <tr><td colSpan="4" className="text-center p-4 text-text-secondary">No exams found.</td></tr>
+                                <tr>
+                                    <td colSpan="4" className="text-center p-8 text-text-secondary">No exams found.</td>
+                                </tr>
                             ) : (
                                 exams.map(exam => (
-                                    <tr key={exam.id} className="border-b border-secondary">
-                                        <td className="p-4 text-text">{exam.name}</td>
-                                        <td className="p-4 text-text-secondary">{exam.exam_date}</td>
-                                        <td className="p-4 text-text-secondary">{exam.exam_level}</td>
+                                    <tr key={exam.id} className="border-b border-secondary hover:bg-secondary/20 transition-colors">
+                                        <td className="p-4 font-medium text-text">{exam.name}</td>
+                                        <td className="p-4 text-text-secondary">{exam.exam_date || 'TBD'}</td>
+                                        <td className="p-4 text-text-secondary">{exam.exam_level || 'N/A'}</td>
                                         <td className="p-4">
                                             <div className="flex gap-2">
-                                                <Link href={`/admin/exams/edit/${exam.id}`} aria-label={`Edit ${exam.name}`} className="text-text-secondary hover:text-accent p-1"><Edit size={16} aria-hidden="true"/></Link>
-                                                <button onClick={() => handleDelete(exam.id)} aria-label={`Delete ${exam.name}`} className="text-text-secondary hover:text-red-500 p-1"><Trash2 size={16} aria-hidden="true"/></button>
+                                                <Link href={`/admin/exams/edit/${exam.id}`} aria-label={`Edit ${exam.name}`} className="text-text-secondary hover:text-accent p-1.5 rounded hover:bg-secondary/50 transition-colors">
+                                                    <Edit size={16} aria-hidden="true" />
+                                                </Link>
+                                                <button onClick={() => handleDelete(exam.id)} aria-label={`Delete ${exam.name}`} className="text-text-secondary hover:text-red-500 p-1.5 rounded hover:bg-secondary/50 transition-colors">
+                                                    <Trash2 size={16} aria-hidden="true" />
+                                                </button>
                                             </div>
                                         </td>
                                     </tr>

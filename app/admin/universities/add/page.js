@@ -26,8 +26,8 @@ export default function AddUniversityPage() {
             <Link href="/admin/universities" className="flex items-center gap-2 text-sm text-text-secondary hover:text-text mb-4">
                 <ChevronLeft size={18} /> Back to Universities
             </Link>
-            <h1 className="text-3xl font-bold mb-8">Add New University</h1>
-            <div className="bg-primary p-8 rounded-xl border border-secondary">
+            <h1 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8">Add New University</h1>
+            <div className="bg-primary p-4 sm:p-6 lg:p-8 rounded-xl border border-secondary shadow-sm">
                 <UniversityForm onSave={handleSave} />
             </div>
         </div>

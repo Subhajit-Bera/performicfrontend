@@ -39,7 +39,7 @@ export default function ManageAppointmentsPage() {
 
     return (
         <div>
-            <h1 className="text-3xl font-bold mb-8">Manage Appointments</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8">Manage Appointments</h1>
 
             {error && (
                 <div className="mb-6 flex flex-wrap items-center justify-between gap-4 rounded-lg border border-red-500/40 bg-red-500/10 p-4 text-sm text-red-300">
@@ -50,8 +50,8 @@ export default function ManageAppointmentsPage() {
                 </div>
             )}
 
-            <div className="bg-primary border border-secondary rounded-xl overflow-x-auto">
-                <table className="w-full text-left text-sm">
+            <div className="bg-primary border border-secondary rounded-xl overflow-x-auto shadow-sm">
+                <table className="w-full text-left text-sm min-w-[700px]">
                     <thead className="bg-secondary/50">
                         <tr>
                             <th className="p-4">User</th>

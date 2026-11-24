@@ -24,9 +24,9 @@ export default function AgentLayout({ children }) {
     ];
     
     return (
-        <div className="flex bg-background min-h-screen">
+        <div className="min-h-screen bg-background flex flex-col lg:flex-row">
             <AdminSidebar navItems={agentNavItems} title="Agent Panel" />
-            <main className="ml-64 w-[calc(100%-16rem)] p-8">
+            <main className="flex-1 w-full lg:ml-64 lg:w-[calc(100%-16rem)] p-4 sm:p-6 lg:p-8 min-w-0 overflow-x-hidden">
                 {children}
             </main>
         </div>

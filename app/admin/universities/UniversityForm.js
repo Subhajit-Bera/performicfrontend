@@ -1537,8 +1537,8 @@ export default function UniversityForm({ onSave, initialData }) {
                 <h2 className="text-xl font-bold border-b border-secondary pb-2 mb-4">Courses & Fees</h2>
                 <div className="space-y-4">
                     {formData.courses_and_fees && formData.courses_and_fees.map((courseItem, index) => (
-                        <div key={index} className="grid grid-cols-1 md:grid-cols-7 gap-2 items-center">
-                            <div className="md:col-span-3">
+                        <div key={index} className="bg-secondary/20 p-3 sm:p-4 rounded-lg border border-secondary/50 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-7 gap-3 items-end">
+                            <div className="sm:col-span-2 md:col-span-3">
                                 <label className="block text-sm font-medium text-text-secondary mb-1">Course {index + 1} Name</label>
                                 <select 
                                     value={courseItem.course}
@@ -1551,9 +1551,13 @@ export default function UniversityForm({ onSave, initialData }) {
                                     )) : <option disabled>Select university streams first</option>}
                                 </select>
                             </div>
-                            <div className="md:col-span-2"><FormInput label="Fees Per Year" name="fees_per_year" value={courseItem.fees_per_year} onChange={(e) => handleChange(e, 'courses_and_fees', index, 'fees_per_year')} /></div>
-                            <div className="md:col-span-1"><FormInput label="Duration" name="duration" value={courseItem.duration} onChange={(e) => handleChange(e, 'courses_and_fees', index, 'duration')} /></div>
-                            <div className="pt-6"><button type="button" onClick={() => removeCourse(index)} className="text-red-500 hover:text-red-400"><XCircle /></button></div>
+                            <div className="sm:col-span-1 md:col-span-2"><FormInput label="Fees Per Year" name="fees_per_year" value={courseItem.fees_per_year} onChange={(e) => handleChange(e, 'courses_and_fees', index, 'fees_per_year')} /></div>
+                            <div className="sm:col-span-1 md:col-span-1"><FormInput label="Duration" name="duration" value={courseItem.duration} onChange={(e) => handleChange(e, 'courses_and_fees', index, 'duration')} /></div>
+                            <div className="flex justify-end md:justify-center pb-1">
+                                <button type="button" onClick={() => removeCourse(index)} className="text-red-400 hover:text-red-300 flex items-center gap-1 text-sm p-1.5 rounded hover:bg-secondary/50 transition-colors">
+                                    <XCircle size={20} /> <span className="md:hidden">Remove</span>
+                                </button>
+                            </div>
                         </div>
                     ))}
                 </div>
