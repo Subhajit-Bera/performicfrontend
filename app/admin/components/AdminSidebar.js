@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '../../context/AuthContext';
 import { LogOut, Menu, X } from 'lucide-react';
@@ -39,11 +40,20 @@ export default function AdminSidebar({ navItems = [], title = "Admin Panel" }) {
                 >
                     <Menu size={24} />
                 </button>
-                <div className="flex items-center gap-2">
-                    <Link href="/" className="text-xl font-bold tracking-tight">
-                        Per<span className="text-accent">Formic</span>
+                <div className="flex items-center gap-2.5">
+                    <Link href="/" className="inline-flex items-center">
+                        <span className="rounded-lg bg-[#F7F8FC] px-2 py-1 shadow-sm ring-1 ring-white/10">
+                            <Image
+                                src="/Logo.png"
+                                alt="PerFormic"
+                                width={100}
+                                height={28}
+                                priority
+                                className="h-6 w-auto object-contain"
+                            />
+                        </span>
                     </Link>
-                    <span className="text-xs px-2 py-0.5 rounded bg-secondary text-text-secondary font-medium">
+                    <span className="text-[11px] px-2 py-0.5 rounded-full bg-secondary text-text-secondary font-medium tracking-wide">
                         {title}
                     </span>
                 </div>
@@ -75,12 +85,21 @@ export default function AdminSidebar({ navItems = [], title = "Admin Panel" }) {
             >
                 {/* Sidebar Header */}
                 <div>
-                    <div className="flex items-center justify-between pb-6 mb-6 border-b border-secondary">
+                    <div className="flex items-center justify-between pb-5 mb-5 border-b border-secondary">
                         <div>
-                            <Link href="/" onClick={() => setMobileOpen(false)} className="text-2xl font-bold tracking-tight">
-                                Per<span className="text-accent">Formic</span>
+                            <Link href="/" onClick={() => setMobileOpen(false)} className="inline-flex items-center group">
+                                <span className="rounded-xl bg-[#F7F8FC] px-2.5 py-1.5 shadow-sm ring-1 ring-white/10 transition-transform duration-200 group-hover:scale-[1.02]">
+                                    <Image
+                                        src="/Logo.png"
+                                        alt="PerFormic Consultancy Services"
+                                        width={130}
+                                        height={38}
+                                        priority
+                                        className="h-8 w-auto object-contain"
+                                    />
+                                </span>
                             </Link>
-                            <p className="text-xs text-text-secondary font-medium mt-0.5">{title}</p>
+                            <p className="text-[11px] text-text-secondary font-semibold mt-2 tracking-wider uppercase">{title}</p>
                         </div>
                         {/* Mobile close button */}
                         <button
