@@ -16,11 +16,11 @@ export const setAccessToken = (token) => {
 
 export const clearAccessToken = () => setAccessToken(null);
 
-const api = axios.create({ baseURL: API_URL, withCredentials: true, timeout: 20000 });
+const api = axios.create({ baseURL: API_URL, withCredentials: true, timeout: 60000 });
 
 // Refresh calls must not go through `api`, otherwise a failed refresh would
 // re-enter the interceptor and loop.
-const authClient = axios.create({ baseURL: API_URL, withCredentials: true, timeout: 15000 });
+const authClient = axios.create({ baseURL: API_URL, withCredentials: true, timeout: 45000 });
 
 const AUTH_PATHS = ['/auth/login', '/auth/register', '/auth/refresh', '/auth/logout', '/auth/oauth/exchange'];
 const isAuthPath = (url = '') => AUTH_PATHS.some((path) => url.startsWith(path));
