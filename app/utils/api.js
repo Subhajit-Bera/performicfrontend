@@ -1,6 +1,28 @@
 import axios from 'axios';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
+export const resolveBaseUrl = () => {
+    if (typeof window !== 'undefined' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+        const env = process.env.NEXT_PUBLIC_API_URL;
+        if (!env || env.includes('localhost')) {
+            return 'https://performicserver.onrender.com/api';
+        }
+        return env;
+    }
+    return process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
+};
+
+export const resolveServerUrl = () => {
+    if (typeof window !== 'undefined' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+        const env = process.env.NEXT_PUBLIC_SERVER_URL;
+        if (!env || env.includes('localhost')) {
+            return 'https://performicserver.onrender.com';
+        }
+        return env;
+    }
+    return process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3001';
+};
+
+const API_URL = resolveBaseUrl();
 const TOKEN_KEY = 'accessToken';
 const SIGNED_OUT_EVENT = 'performic:signed-out';
 
@@ -25,11 +47,25 @@ const authClient = axios.create({ baseURL: API_URL, withCredentials: true, timeo
 const AUTH_PATHS = ['/auth/login', '/auth/register', '/auth/refresh', '/auth/logout', '/auth/oauth/exchange'];
 const isAuthPath = (url = '') => AUTH_PATHS.some((path) => url.startsWith(path));
 
+const ensureRemoteBaseUrl = (config) => {
+    if (isBrowser() && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+        if (!config.baseURL || config.baseURL.includes('localhost')) {
+            config.baseURL = 'https://performicserver.onrender.com/api';
+        }
+    }
+};
+
 api.interceptors.request.use((config) => {
+    ensureRemoteBaseUrl(config);
     const token = getAccessToken();
     if (token && !config.headers.Authorization) {
         config.headers.Authorization = `Bearer ${token}`;
     }
+    return config;
+});
+
+authClient.interceptors.request.use((config) => {
+    ensureRemoteBaseUrl(config);
     return config;
 });
 
