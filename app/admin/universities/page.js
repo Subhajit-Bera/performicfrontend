@@ -15,7 +15,7 @@ export default function ManageUniversitiesPage() {
         setLoading(true);
         setError(null);
         api.get('/admin/universities', { params: { limit: 100 } })
-            .then(res => setUniversities(res.data.data ?? res.data))
+            .then(res => setUniversities(Array.isArray(res.data?.data) ? res.data.data : (Array.isArray(res.data) ? res.data : [])))
             .catch(err => setError(err.response?.data?.message || "Failed to fetch universities."))
             .finally(() => setLoading(false));
     };

@@ -441,13 +441,18 @@ const ManageCoursesModal = ({ stream, onClose, onDone }) => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        api.get('/admin/courses')
-           .then(res => setAllCourses(res.data))
+        api.get('/admin/courses', { params: { limit: 100 } })
+           .then(res => {
+               const list = Array.isArray(res.data?.data) ? res.data.data : (Array.isArray(res.data) ? res.data : []);
+               setAllCourses(list);
+           })
            .catch(() => toast.error("Could not load the list of available courses."))
            .finally(() => setLoading(false));
         
         if (stream && stream.course_ids) {
-            setSelectedCourseIds(stream.course_ids);
+            setSelectedCourseIds(Array.isArray(stream.course_ids) ? stream.course_ids : []);
+        } else {
+            setSelectedCourseIds([]);
         }
     }, [stream]);
 
@@ -473,27 +478,31 @@ const ManageCoursesModal = ({ stream, onClose, onDone }) => {
 
     return (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-            <motion.div initial={{ scale: 0.9 }} animate={{ scale: 1 }} exit={{ scale: 0.9 }} className="bg-primary rounded-2xl p-8 max-w-lg w-full relative shadow-2xl border border-secondary">
-                <h2 className="text-2xl font-bold mb-6">Manage Courses for <span className="text-accent">{stream.name}</span></h2>
-                {loading ? <div>Loading courses...</div> : (
-                    <div className="space-y-2 max-h-64 overflow-y-auto border border-secondary rounded-lg p-4">
-                        {allCourses.map(course => (
-                            <div key={course.id} className="flex items-center">
-                                <input
-                                    type="checkbox"
-                                    id={`course-${course.id}`}
-                                    checked={selectedCourseIds.includes(course.id)}
-                                    onChange={() => handleCheckboxChange(course.id)}
-                                    className="h-4 w-4 rounded border-secondary text-accent focus:ring-accent"
-                                />
-                                <label htmlFor={`course-${course.id}`} className="ml-3 text-sm text-text">{course.name}</label>
-                            </div>
-                        ))}
+            <motion.div initial={{ scale: 0.95 }} animate={{ scale: 1 }} exit={{ scale: 0.95 }} className="bg-primary rounded-2xl p-5 sm:p-8 max-w-lg w-full max-h-[90vh] flex flex-col relative shadow-2xl border border-secondary">
+                <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">Manage Courses for <span className="text-accent">{stream?.name}</span></h2>
+                {loading ? <div className="p-4 text-text-secondary">Loading courses...</div> : (
+                    <div className="space-y-2 flex-1 overflow-y-auto border border-secondary rounded-lg p-4 min-h-[120px] max-h-72">
+                        {Array.isArray(allCourses) && allCourses.length > 0 ? (
+                            allCourses.map(course => (
+                                <div key={course.id} className="flex items-center py-1">
+                                    <input
+                                        type="checkbox"
+                                        id={`course-${course.id}`}
+                                        checked={selectedCourseIds.includes(course.id)}
+                                        onChange={() => handleCheckboxChange(course.id)}
+                                        className="h-4 w-4 rounded border-secondary text-accent focus:ring-accent"
+                                    />
+                                    <label htmlFor={`course-${course.id}`} className="ml-3 text-sm text-text cursor-pointer select-none">{course.name}</label>
+                                </div>
+                            ))
+                        ) : (
+                            <div className="text-sm text-text-secondary p-2">No career courses found.</div>
+                        )}
                     </div>
                 )}
-                <div className="flex justify-end gap-4 pt-6">
-                    <button type="button" onClick={onClose} className="bg-secondary text-text font-bold py-2 px-4 rounded-lg">Cancel</button>
-                    <button onClick={handleSave} className="bg-accent text-white font-bold py-2 px-6 rounded-lg">Save Changes</button>
+                <div className="flex justify-end gap-3 sm:gap-4 pt-6">
+                    <button type="button" onClick={onClose} className="bg-secondary text-text font-bold py-2 px-4 rounded-lg text-sm sm:text-base">Cancel</button>
+                    <button onClick={handleSave} className="bg-accent hover:bg-accent-hover text-white font-bold py-2 px-6 rounded-lg text-sm sm:text-base">Save Changes</button>
                 </div>
             </motion.div>
         </motion.div>
@@ -511,7 +520,7 @@ export default function ManageStreamsPage() {
     const fetchStreams = () => {
         setLoading(true);
         api.get('/admin/streams')
-            .then(res => setStreams(res.data))
+            .then(res => setStreams(Array.isArray(res.data?.data) ? res.data.data : (Array.isArray(res.data) ? res.data : [])))
             .catch(() => toast.error("Failed to fetch streams."))
             .finally(() => setLoading(false));
     };

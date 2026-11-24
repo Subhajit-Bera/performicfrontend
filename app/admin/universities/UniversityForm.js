@@ -1322,14 +1322,14 @@ export default function UniversityForm({ onSave, initialData }) {
 
     // Fetch all available streams once on component mount
     useEffect(() => {
-        api.get('/admin/streams').then(res => setAllStreams(res.data));
+        api.get('/admin/streams').then(res => setAllStreams(Array.isArray(res.data?.data) ? res.data.data : (Array.isArray(res.data) ? res.data : [])));
     }, []);
     
     // When the selected university streams change, fetch the courses for those streams
     useEffect(() => {
         if (formData.stream_ids && formData.stream_ids.length > 0) {
             api.get(`/admin/courses-by-streams?stream_ids=${formData.stream_ids.join(',')}`)
-               .then(res => setAvailableCourses(res.data));
+               .then(res => setAvailableCourses(Array.isArray(res.data?.data) ? res.data.data : (Array.isArray(res.data) ? res.data : [])));
         } else {
             setAvailableCourses([]); // Clear if no streams are selected
         }

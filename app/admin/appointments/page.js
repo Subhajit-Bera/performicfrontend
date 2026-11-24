@@ -14,7 +14,7 @@ export default function ManageAppointmentsPage() {
         setLoading(true);
         setError(null);
         api.get('/admin/appointments', { params: { limit: 100 } })
-            .then(res => setAppointments(res.data.data ?? res.data))
+            .then(res => setAppointments(Array.isArray(res.data?.data) ? res.data.data : (Array.isArray(res.data) ? res.data : [])))
             .catch(err => setError(err.response?.data?.message || 'Could not load appointments.'))
             .finally(() => setLoading(false));
     }, []);

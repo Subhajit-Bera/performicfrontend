@@ -17,7 +17,7 @@ export default function ManageCoursesPage() {
         setLoading(true);
         setError(null);
         api.get('/admin/courses', { params: { limit: 100 } })
-            .then(res => setCourses(res.data.data ?? res.data))
+            .then(res => setCourses(Array.isArray(res.data?.data) ? res.data.data : (Array.isArray(res.data) ? res.data : [])))
             .catch(err => setError(err.response?.data?.message || "Failed to fetch courses."))
             .finally(() => setLoading(false));
     };

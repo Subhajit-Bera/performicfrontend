@@ -14,7 +14,7 @@ export default function ManageApplicationsPage() {
         setLoading(true);
         setError(null);
         api.get('/admin/applications', { params: { limit: 100 } })
-            .then(res => setApplications(res.data.data ?? res.data))
+            .then(res => setApplications(Array.isArray(res.data?.data) ? res.data.data : (Array.isArray(res.data) ? res.data : [])))
             .catch(err => setError(err.response?.data?.message || 'Could not load applications.'))
             .finally(() => setLoading(false));
     }, []);

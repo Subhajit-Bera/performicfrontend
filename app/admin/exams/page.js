@@ -15,7 +15,7 @@ export default function ManageExamsPage() {
         setLoading(true);
         setError(null);
         api.get('/admin/exams', { params: { limit: 100 } })
-            .then(res => setExams(res.data.data ?? res.data))
+            .then(res => setExams(Array.isArray(res.data?.data) ? res.data.data : (Array.isArray(res.data) ? res.data : [])))
             .catch(err => setError(err.response?.data?.message || "Failed to fetch exams."))
             .finally(() => setLoading(false));
     };

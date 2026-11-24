@@ -16,7 +16,7 @@ export default function CourseForm({ course, onSave, onDone }) {
 
     useEffect(() => {
         api.get('/admin/streams')
-            .then(res => setStreams(res.data.data ?? res.data))
+            .then(res => setStreams(Array.isArray(res.data?.data) ? res.data.data : (Array.isArray(res.data) ? res.data : [])))
             .catch(() => toast.error("Could not load the streams list."));
     }, []);
 
