@@ -105,6 +105,18 @@ import { User, Mail, Phone, MapPin, GraduationCap, Building2, HelpCircle, FileTe
 import { FaWhatsapp } from 'react-icons/fa';
 import Link from 'next/link';
 
+function ProfileDetail({ icon, label, value }) {
+    return (
+        <div className="flex items-start gap-4 p-4 bg-secondary/50 rounded-lg">
+            <div className="text-accent">{icon}</div>
+            <div>
+                <p className="text-sm text-text-secondary">{label}</p>
+                <p className="font-medium text-text">{value || 'Not provided'}</p>
+            </div>
+        </div>
+    );
+}
+
 function ProfilePageContent() {
     const { user, isAuthenticated, loading, profileCompletion } = useAuth();
     const router = useRouter();
@@ -133,16 +145,6 @@ function ProfilePageContent() {
         return <div className="min-h-screen flex items-center justify-center">Loading profile...</div>;
     }
 
-    const ProfileDetail = ({ icon, label, value }) => (
-        <div className="flex items-start gap-4 p-4 bg-secondary/50 rounded-lg">
-            <div className="text-accent">{icon}</div>
-            <div>
-                <p className="text-sm text-text-secondary">{label}</p>
-                <p className="font-medium text-text">{value || 'Not provided'}</p>
-            </div>
-        </div>
-    );
-    
     return (
         <>
             <Header />

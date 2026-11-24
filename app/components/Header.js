@@ -343,35 +343,21 @@ const NavItemWithMenu = ({ label, children }) => {
 };
 
 
-export default function Header() {
-    const { isAuthenticated, user, logout, profileCompletion } = useAuth();
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [isMobileUniMenuOpen, setIsMobileUniMenuOpen] = useState(false);
-    const [streams, setStreams] = useState([]);
+function ProfileProgressCircle({ percentage }) {
+    const radius = 18;
+    const circumference = 2 * Math.PI * radius;
+    const offset = circumference - (percentage / 100) * circumference;
 
-    useEffect(() => {
-        api.get('/streams').then(res => setStreams(res.data)).catch(err => console.error("Failed to fetch streams"));
-    }, []);
+    return (
+        <svg className="w-10 h-10 transform -rotate-90" viewBox="0 0 40 40">
+            <circle className="text-secondary" strokeWidth="4" stroke="currentColor" fill="transparent" r={radius} cx="20" cy="20" />
+            <motion.circle className="text-accent" strokeWidth="4" strokeDasharray={circumference} strokeDashoffset={offset} strokeLinecap="round" stroke="currentColor" fill="transparent" r={radius} cx="20" cy="20" initial={{ strokeDashoffset: circumference }} animate={{ strokeDashoffset: offset }} transition={{ duration: 1, ease: "easeInOut" }} />
+        </svg>
+    );
+}
 
-    const closeMobileMenu = () => {
-        setIsMenuOpen(false);
-        setIsMobileUniMenuOpen(false);
-    };
-
-    const ProfileProgressCircle = ({ percentage }) => {
-        const radius = 18;
-        const circumference = 2 * Math.PI * radius;
-        const offset = circumference - (percentage / 100) * circumference;
-
-        return (
-            <svg className="w-10 h-10 transform -rotate-90" viewBox="0 0 40 40">
-                <circle className="text-secondary" strokeWidth="4" stroke="currentColor" fill="transparent" r={radius} cx="20" cy="20" />
-                <motion.circle className="text-accent" strokeWidth="4" strokeDasharray={circumference} strokeDashoffset={offset} strokeLinecap="round" stroke="currentColor" fill="transparent" r={radius} cx="20" cy="20" initial={{ strokeDashoffset: circumference }} animate={{ strokeDashoffset: offset }} transition={{ duration: 1, ease: "easeInOut" }} />
-            </svg>
-        );
-    };
-
-    const NavLinks = ({ inMobileMenu = false }) => (
+function NavLinks({ inMobileMenu = false, streams, isMobileUniMenuOpen, setIsMobileUniMenuOpen, closeMobileMenu, isAuthenticated, user }) {
+    return (
         <>
             <Link href="/" className="hover:text-accent transition-colors py-2 w-full text-left" onClick={() => inMobileMenu && closeMobileMenu()}>Home</Link>
 
@@ -420,6 +406,24 @@ export default function Header() {
             )}
         </>
     );
+}
+
+export default function Header() {
+    const { isAuthenticated, user, logout, profileCompletion } = useAuth();
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isMobileUniMenuOpen, setIsMobileUniMenuOpen] = useState(false);
+    const [streams, setStreams] = useState([]);
+
+    useEffect(() => {
+        api.get('/streams').then(res => setStreams(res.data)).catch(err => console.error("Failed to fetch streams"));
+    }, []);
+
+    const closeMobileMenu = () => {
+        setIsMenuOpen(false);
+        setIsMobileUniMenuOpen(false);
+    };
+
+    const navLinkProps = { streams, isMobileUniMenuOpen, setIsMobileUniMenuOpen, closeMobileMenu, isAuthenticated, user };
 
     return (
         <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm border-b border-secondary/50">
@@ -434,7 +438,7 @@ export default function Header() {
                         priority
                     />
                 </Link>
-                <nav className="hidden md:flex items-center space-x-8 text-sm font-medium text-text"><NavLinks /></nav>
+                <nav className="hidden md:flex items-center space-x-8 text-sm font-medium text-text"><NavLinks {...navLinkProps} /></nav>
                 <div className="flex items-center gap-4">
                     {isAuthenticated ? (
                         <div className="flex items-center gap-4">
@@ -456,7 +460,7 @@ export default function Header() {
             <AnimatePresence>
                 {isMenuOpen && (
                     <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} className="md:hidden bg-primary border-t border-secondary">
-                        <nav className="flex flex-col items-start divide-y divide-secondary/50 px-6 pt-2 pb-4 text-text"><NavLinks inMobileMenu={true} /></nav>
+                        <nav className="flex flex-col items-start divide-y divide-secondary/50 px-6 pt-2 pb-4 text-text"><NavLinks inMobileMenu={true} {...navLinkProps} /></nav>
                     </motion.div>
                 )}
             </AnimatePresence>
